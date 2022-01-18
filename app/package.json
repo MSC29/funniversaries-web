@@ -1,35 +1,37 @@
 {
-  "name": "funniversaries-webapp",
-  "description" : "Funniversaries Web App based on the Rust library, using WebAssembly",
-  "version": "0.1.0",
-  "main": "index.js",
-  "scripts": {
-    "build": "webpack --config webpack.config.js",
-    "start": "webpack-dev-server"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MSC29/funniversaries-web"
-  },
-  "keywords": [
-    "webassembly",
-    "wasm",
-    "rust",
-    "webpack"
-  ],
-  "authors" : ["Maël Sicard-Cras <mael.sicardcras@gmail.com>"],
-  "license": "(MIT OR Apache-2.0)",
-  "bugs": {
-    "url": "https://github.com/MSC29/funniversaries-web"
-  },
-  "homepage": "https://github.com/MSC29/funniversaries-web",
-  "dependencies": {  
-    "funniversaries-web": "file:../pkg"
-  },
-  "devDependencies": {
-    "webpack": "^4.29.3",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5",
-    "copy-webpack-plugin": "^5.0.0"
-  }
+    "name": "funniversaries-webapp",
+    "description": "Funniversaries Web App based on the Rust library, using WebAssembly",
+    "version": "0.1.0",
+    "main": "index.js",
+    "scripts": {
+        "build": "webpack --config webpack.config.js",
+        "start": "webpack-dev-server"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/MSC29/funniversaries-web"
+    },
+    "keywords": [
+        "webassembly",
+        "wasm",
+        "rust",
+        "webpack"
+    ],
+    "authors": [
+        "Maël Sicard-Cras <mael.sicardcras@gmail.com>"
+    ],
+    "license": "(MIT OR Apache-2.0)",
+    "bugs": {
+        "url": "https://github.com/MSC29/funniversaries-web"
+    },
+    "homepage": "https://github.com/MSC29/funniversaries-web",
+    "dependencies": {
+        "funniversaries-web": "file:../pkg"
+    },
+    "devDependencies": {
+        "webpack": "^4.29.3",
+        "webpack-cli": "^3.1.0",
+        "webpack-dev-server": "^3.1.5",
+        "copy-webpack-plugin": "^5.0.0"
+    }
 }
