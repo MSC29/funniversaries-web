@@ -1,5 +1,5 @@
 {
-    "name": "funniversaries-webapp",
+    "name": "funniversaries-web",
     "description": "Funniversaries Web App based on the Rust library, using WebAssembly",
     "version": "0.1.0",
     "main": "index.js",
@@ -26,7 +26,7 @@
     },
     "homepage": "https://github.com/MSC29/funniversaries-web",
     "dependencies": {
-        "funniversaries-web": "file:../pkg"
+        "funniversaries": "0.1.0"
     },
     "devDependencies": {
         "webpack": "^4.29.3",
