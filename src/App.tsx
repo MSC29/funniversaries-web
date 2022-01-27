@@ -1,48 +1,44 @@
-import React, { useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import { Anniversary } from "./entities/anniversary";
-import * as funniversaries from "funniversaries";
+import React, { useState } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import { Anniversary } from './entities/anniversary';
+import * as funniversaries from 'funniversaries';
+import DatePicker from 'react-date-picker';
 
 function App() {
-  const [anniversaries, setAnniversaries] = useState<Anniversary[]>([]);
+	const [anniversaries, setAnniversaries] = useState<Anniversary[]>([]);
+	const [inputDateTime, onChange] = useState<Date>(new Date());
 
-  React.useEffect(() => {
-    async function execute() {
-      const a = await funniversaries.generate_anniversaries(
-        "2020-01-02T03:04:05.006Z"
-      );
-      console.log("js");
-      console.log(a);
-      setAnniversaries(a);
-    }
+	React.useEffect(() => {
+		async function execute() {
+			console.log(inputDateTime);
+			const anniversaries: Anniversary[] = await funniversaries.generate_anniversaries(inputDateTime.toISOString()); //'1987-09-21T00:00:00.000Z');
 
-    void execute();
-  }, []);
+			//anniversaries are coming back sorted, but we're changing the sort order here
+			const anniversariesSorted = anniversaries.sort((a: Anniversary, b: Anniversary) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-          {anniversaries.map((a) => (
-            <li>
-              {a.date}: {a.name} {a.count} {a.unit}
-            </li>
-          ))}
-        </a>
-      </header>
-    </div>
-  );
+			setAnniversaries(anniversariesSorted);
+			console.log(anniversaries);
+		}
+
+		void execute();
+	}, [inputDateTime]);
+
+	return (
+		<div className="App">
+			<p>Funniversaries</p>
+			<p>
+				<DatePicker onChange={onChange} value={inputDateTime} />
+			</p>
+			<p>
+				{anniversaries.map(a => (
+					<li key={`${a.date}${a.name}${a.count}${a.unit}`}>
+						{a.date}: {a.name} {a.count} {a.unit}
+					</li>
+				))}
+			</p>
+		</div>
+	);
 }
 
 export default App;
