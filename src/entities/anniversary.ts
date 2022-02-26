@@ -2,5 +2,5 @@ export interface Anniversary {
 	name: string;
 	count: number;
 	unit: string;
-	date: string;
+	date: Date;
 }
