@@ -1,0 +1,11 @@
+{
+    "printWidth": 190,
+    "parser": "typescript",
+    "semi": true,
+    "tabWidth": 4,
+    "useTabs": true,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "bracketSpacing": true,
+    "arrowParens": "avoid"
+}
