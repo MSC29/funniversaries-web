@@ -1,10 +1,11 @@
+import { ReactElement } from 'react';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 // Views
 import Home from './views/Home';
 
-function App() {
+const App = (): ReactElement => {
 	return (
 		<BrowserRouter>
 			<Helmet titleTemplate="%s" defaultTitle="Funniversaries">
@@ -17,6 +18,6 @@ function App() {
 			</Switch>
 		</BrowserRouter>
 	);
-}
+};
 
 export default App;

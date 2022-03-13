@@ -6,7 +6,7 @@ import SecondImage from '../assets/images/feature-tile-icon-01.svg';
 import DayImage from '../assets/images/feature-tile-icon-02.svg';
 import WeekImage from '../assets/images/feature-tile-icon-03.svg';
 
-import SectionHeader from '../components/sections/partials/SectionHeader';
+// import SectionHeader from '../components/sections/partials/SectionHeader';
 
 import { Anniversary } from '../entities/anniversary';
 
@@ -42,8 +42,8 @@ const Home = () => {
 	}, [inputDateTime]);
 
 	const sectionHeader = {
-		title: 'Build up the whole picture',
-		paragraph: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum — semper quis lectus nulla at volutpat diam ut venenatis.'
+		title: 'Results',
+		paragraph: 'These are the anniversaries'
 	};
 
 	const getImageForUnit = (unit: string) => {
@@ -66,11 +66,11 @@ const Home = () => {
 						<div>
 							<div className="hero-content">
 								<h1 className="mt-0 mb-16 reveal-from-bottom" data-reveal-delay="200">
-									Landing template for <span className="text-color-primary">startups</span>
+									Fun Anniversaries
 								</h1>
 								<div className="container-xs">
 									<p className="m-0 mb-32 reveal-from-bottom" data-reveal-delay="400">
-										Our landing page template works on all devices, so you only have to set it up once, and get beautiful results forever.
+										Pick a date and discover its anniversaries worthy of celebrating!
 									</p>
 									<div className="reveal-from-bottom" data-reveal-delay="600">
 										<DatePicker onChange={onChange} value={inputDateTime} />
@@ -85,7 +85,7 @@ const Home = () => {
 			<section className="features-tiles section">
 				<div className="container">
 					<div className="features-tiles-inner section-inner pt-0">
-						<SectionHeader data={sectionHeader} className="center-content" />
+						{/* <SectionHeader data={sectionHeader} className="center-content" /> */}
 						<div className="tiles-wrap center-content">
 							{anniversaries.map(a => (
 								<div className="tiles-item reveal-from-bottom" key={`${a.date}${a.name}${a.count}${a.unit}`}>
