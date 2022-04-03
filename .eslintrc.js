@@ -12,7 +12,8 @@ module.exports = {
 		'security',
 		'security-node',
 		'prototype-pollution-security-rules',
-		'sonarjs'
+		'sonarjs',
+		'react-hooks'
 	],
 	extends: [
 		'plugin:@typescript-eslint/recommended',
@@ -20,7 +21,9 @@ module.exports = {
 		'prettier',
 		'plugin:security/recommended',
 		'plugin:security-node/recommended',
-		'plugin:sonarjs/recommended'
+		'plugin:sonarjs/recommended',
+		'plugin:react/recommended',
+		'plugin:react-hooks/recommended'
 	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
@@ -28,6 +31,12 @@ module.exports = {
 		sourceType: 'module'
 	},
 	rules: {
+		/** react **/
+		'react-hooks/rules-of-hooks': 'error',
+		'react-hooks/exhaustive-deps': 'warn',
+		'no-use-before-define': 'off',
+		'@typescript-eslint/no-use-before-define': ['error'],
+
 		/** prototype-pollution-security-rules **/
 		'prototype-pollution-security-rules/detect-merge': 1,
 		'prototype-pollution-security-rules/detect-merge-objects': 1,

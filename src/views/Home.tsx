@@ -10,19 +10,18 @@ import WeekImage from '../assets/images/feature-tile-icon-03.svg';
 
 import { Anniversary } from '../entities/anniversary';
 
-const Home = () => {
-	const [anniversaries, setAnniversaries] = useState<Anniversary[]>([]);
-	const [inputDateTime, onChange] = useState<Date>(new Date());
+const Home = (): JSX.Element => {
+	const [anniversaries, setAnniversaries]: [Anniversary[], React.Dispatch<React.SetStateAction<Anniversary[]>>] = useState<Anniversary[]>([]);
+	const [inputDateTime, onChange]: [Date, React.Dispatch<React.SetStateAction<Date>>] = useState<Date>(new Date());
 
 	React.useEffect(() => {
-		async function execute() {
-			console.log(inputDateTime);
-			const anniversaries: Anniversary[] = await funniversaries.generate_anniversaries(inputDateTime.toISOString());
+		const execute: () => Promise<void> = async () => {
+			const generatedAnniversaries: Anniversary[] = await funniversaries.generate_anniversaries(inputDateTime.toISOString());
 
 			//filtering out invalid JS dates
-			const validAnniversaries: Anniversary[] = anniversaries
+			const validAnniversaries: Anniversary[] = generatedAnniversaries
 				.map((a: Anniversary) => {
-					const dateObj = new Date(a.date);
+					const dateObj: Date = new Date(a.date);
 					if (dateObj instanceof Date && !isNaN(dateObj.valueOf())) {
 						a.date = dateObj;
 						return a;
@@ -32,19 +31,18 @@ const Home = () => {
 				.filter((item: Anniversary | undefined): item is Anniversary => item !== undefined);
 
 			//anniversaries are coming back sorted, but we're changing the sort order here
-			const anniversariesSorted = validAnniversaries.sort((a: Anniversary, b: Anniversary) => a.date.getTime() - b.date.getTime());
+			const anniversariesSorted: Anniversary[] = validAnniversaries.sort((a: Anniversary, b: Anniversary) => a.date.getTime() - b.date.getTime());
 
 			setAnniversaries(anniversariesSorted);
-			console.log(anniversaries);
-		}
+		};
 
 		void execute();
 	}, [inputDateTime]);
 
-	const sectionHeader = {
-		title: 'Results',
-		paragraph: 'These are the anniversaries'
-	};
+	// const sectionHeader: unknown = {
+	// 	title: 'Results',
+	// 	paragraph: 'These are the anniversaries'
+	// };
 
 	const getImageForUnit = (unit: string) => {
 		if (unit === 'seconds') {
@@ -87,8 +85,8 @@ const Home = () => {
 					<div className="features-tiles-inner section-inner pt-0">
 						{/* <SectionHeader data={sectionHeader} className="center-content" /> */}
 						<div className="tiles-wrap center-content">
-							{anniversaries.map(a => (
-								<div className="tiles-item reveal-from-bottom" key={`${a.date}${a.name}${a.count}${a.unit}`}>
+							{anniversaries.map((a: Anniversary) => (
+								<div className="tiles-item reveal-from-bottom" key={`${a.date.toISOString()}${a.name}${a.count}${a.unit}`}>
 									<div className="tiles-item-inner">
 										<div className="features-tiles-item-header">
 											<div className="features-tiles-item-image mb-16">

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/typedef */
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -30,7 +31,7 @@ interface Props extends InputProps {
 	tag: string;
 }
 
-const SectionHeader = ({ className, data, children, tag, ...props }: Props) => {
+const SectionHeader = ({ className, data, children, ...props }: Props) => {
 	const classes = classNames('section-header', className);
 
 	return (

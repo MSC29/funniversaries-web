@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/typedef */
 import PropTypes from 'prop-types';
 
 // Props shared by all sections

@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
