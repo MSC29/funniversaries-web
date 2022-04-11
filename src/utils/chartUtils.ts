@@ -42,7 +42,11 @@ export class ChartUtils {
 	static buildOptionsTimeSeries(): Highcharts.Options {
 		return {
 			chart: {
-				zoomType: 'x'
+				zoomType: 'x',
+				backgroundColor: '#151719',
+				style: {
+					color: '#9CA9B3'
+				}
 			},
 
 			title: {},
@@ -50,7 +54,8 @@ export class ChartUtils {
 			yAxis: {
 				title: {
 					text: 'Number of anniversaries'
-				}
+				},
+				gridLineColor: '#151719'
 			},
 
 			xAxis: {
@@ -60,12 +65,13 @@ export class ChartUtils {
 			},
 
 			legend: {
-				layout: 'vertical',
-				align: 'right',
-				verticalAlign: 'middle'
+				enabled: false
 			},
 
 			plotOptions: {
+				column: {
+					borderRadius: 2
+				},
 				series: {
 					label: {
 						connectorAllowed: false

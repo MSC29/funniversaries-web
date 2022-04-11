@@ -31,7 +31,7 @@ interface Props extends InputProps {
 	tag: string;
 }
 
-const SectionHeader = ({ className, data, children, ...props }: Props) => {
+const SectionHeader = ({ className, data, children, ...props }: Props): JSX.Element => {
 	const classes = classNames('section-header', className);
 
 	return (

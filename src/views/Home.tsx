@@ -4,18 +4,20 @@ import DatePicker from 'react-date-picker';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
-import { Title } from '../components/Title';
+// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+// import 'react-tabs/style/react-tabs.css';
+// import { Title } from '../components/Title';
 
-import SecondImage from '../assets/images/feature-tile-icon-01.svg';
-import DayImage from '../assets/images/feature-tile-icon-02.svg';
-import WeekImage from '../assets/images/feature-tile-icon-03.svg';
-
-// import SectionHeader from '../components/sections/partials/SectionHeader';
+import SectionHeader from '../components/sections/partials/SectionHeader';
 
 import { Anniversary } from '../entities/anniversary';
 import { ChartUtils } from '../utils/chartUtils';
+import DateItem from '../components/sections/partials/DateItem';
+
+interface Data {
+	title: string;
+	paragraph: string;
+}
 
 const Home = (): JSX.Element => {
 	const [anniversaries, setAnniversaries]: [Anniversary[], React.Dispatch<React.SetStateAction<Anniversary[]>>] = useState<Anniversary[]>([]);
@@ -28,8 +30,7 @@ const Home = (): JSX.Element => {
 			const generatedAnniversaries: Anniversary[] = await funniversaries.generate_future_anniversaries(inputDateTime.toISOString());
 
 			//filtering out invalid/useless JS dates
-			const now: Date = new Date();
-			const lifetime: number = now.getFullYear() + 50;
+			const lifetime: number = new Date().getFullYear() + 50;
 			const validAnniversaries: Anniversary[] = generatedAnniversaries
 				.map((a: Anniversary) => {
 					const dateObj: Date = new Date(a.date);
@@ -53,21 +54,19 @@ const Home = (): JSX.Element => {
 		void execute();
 	}, [inputDateTime]);
 
-	// const sectionHeader: unknown = {
-	// 	title: 'Results',
-	// 	paragraph: 'These are the anniversaries'
-	// };
+	const sectionHeaderCurrentYear: Data = {
+		title: 'This year',
+		paragraph: 'These are the anniversaries that happen this year'
+	};
 
-	const getImageForUnit = (unit: string) => {
-		if (unit === 'seconds') {
-			return SecondImage;
-		} else if (unit === 'days') {
-			return DayImage;
-		} else if (unit === 'weeks') {
-			return WeekImage;
-		} else {
-			return SecondImage;
-		}
+	const sectionHeaderNextYear: Data = {
+		title: 'Next year',
+		paragraph: 'These are the anniversaries that happen next year'
+	};
+
+	const sectionHeaderLater: Data = {
+		title: 'Later on',
+		paragraph: 'These are the anniversaries that will happen later on'
 	};
 
 	return (
@@ -94,47 +93,39 @@ const Home = (): JSX.Element => {
 				</div>
 			</section>
 
-			<Tabs>
-				<TabList>
-					<Tab>résultats</Tab>
-					<Tab>visualisation temps réel</Tab>
-				</TabList>
-
-				<TabPanel>
-					<Title>resultats</Title>
-
-					<section className="features-tiles section">
-						<div className="container">
-							<div className="features-tiles-inner section-inner pt-0">
-								{/* <SectionHeader data={sectionHeader} className="center-content" /> */}
-								<div className="tiles-wrap center-content">
-									{anniversaries.map((a: Anniversary) => (
-										<div className="tiles-item reveal-from-bottom" key={`${a.date.toISOString()}${a.name}${a.count}${a.unit}`}>
-											<div className="tiles-item-inner">
-												<div className="features-tiles-item-header">
-													<div className="features-tiles-item-image mb-16">
-														<img src={getImageForUnit(a.unit)} alt="Features tile icon 01" width="64" height="64" />
-													</div>
-												</div>
-												<div className="features-tiles-item-content">
-													<h4 className="mt-0 mb-8">
-														{a.count} {a.unit}
-													</h4>
-													<p className="m-0 text-sm">{new Date(a.date).toLocaleDateString()}</p>
-												</div>
-											</div>
-										</div>
-									))}
-								</div>
-							</div>
-						</div>
-					</section>
-				</TabPanel>
-				<TabPanel>
-					<h2>Distribution</h2>
+			<section className="features-tiles section">
+				<div className="container">
 					<HighchartsReact highcharts={Highcharts} options={rawVotesOptions} />
-				</TabPanel>
-			</Tabs>
+				</div>
+				<div className="container">
+					<div className="features-tiles-inner section-inner pt-0">
+						<SectionHeader data={sectionHeaderCurrentYear} className="center-content" />
+						<div className="tiles-wrap center-content">
+							{anniversaries
+								.filter((a: Anniversary) => a.date.getFullYear() <= new Date().getFullYear())
+								.map((a: Anniversary) => (
+									<DateItem key={`${a.date.toISOString()}${a.name}${a.count}${a.unit}`} anniversary={a}></DateItem>
+								))}
+						</div>
+						<SectionHeader data={sectionHeaderNextYear} className="center-content" />
+						<div className="tiles-wrap center-content">
+							{anniversaries
+								.filter((a: Anniversary) => a.date.getFullYear() > new Date().getFullYear() && a.date.getFullYear() <= new Date().getFullYear() + 1)
+								.map((a: Anniversary) => (
+									<DateItem key={`${a.date.toISOString()}${a.name}${a.count}${a.unit}`} anniversary={a}></DateItem>
+								))}
+						</div>
+						<SectionHeader data={sectionHeaderLater} className="center-content" />
+						<div className="tiles-wrap center-content">
+							{anniversaries
+								.filter((a: Anniversary) => a.date.getFullYear() > new Date().getFullYear() + 1)
+								.map((a: Anniversary) => (
+									<DateItem key={`${a.date.toISOString()}${a.name}${a.count}${a.unit}`} anniversary={a}></DateItem>
+								))}
+						</div>
+					</div>
+				</div>
+			</section>
 		</>
 	);
 };
