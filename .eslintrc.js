@@ -30,6 +30,15 @@ module.exports = {
 		project: 'tsconfig.json',
 		sourceType: 'module'
 	},
+	settings: {
+		react: {
+			createClass: 'createReactClass',
+			pragma: 'React',
+			fragment: 'Fragment',
+			version: 'detect',
+			flowVersion: '0.53'
+		}
+	},
 	rules: {
 		/** react **/
 		'react-hooks/rules-of-hooks': 'error',
