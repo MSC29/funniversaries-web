@@ -20,7 +20,9 @@ interface Data {
 }
 
 const Home = (): JSX.Element => {
-	const [anniversaries, setAnniversaries]: [Anniversary[], React.Dispatch<React.SetStateAction<Anniversary[]>>] = useState<Anniversary[]>([]);
+	const [anniversariesThisYear, setAnniversariesThisYear]: [Anniversary[], React.Dispatch<React.SetStateAction<Anniversary[]>>] = useState<Anniversary[]>([]);
+	const [anniversariesNextYear, setAnniversariesNextYear]: [Anniversary[], React.Dispatch<React.SetStateAction<Anniversary[]>>] = useState<Anniversary[]>([]);
+	const [anniversariesAfter, setAnniversariesAfter]: [Anniversary[], React.Dispatch<React.SetStateAction<Anniversary[]>>] = useState<Anniversary[]>([]);
 	const [inputDateTime, onChange]: [Date, React.Dispatch<React.SetStateAction<Date>>] = useState<Date>(new Date());
 
 	const [rawVotesOptions, setRawVotesOptions]: [unknown, React.Dispatch<React.SetStateAction<unknown>>] = useState<unknown>({});
@@ -45,9 +47,18 @@ const Home = (): JSX.Element => {
 			//anniversaries are coming back sorted, but we're changing the sort order here
 			const anniversariesSorted: Anniversary[] = validAnniversaries.sort((a: Anniversary, b: Anniversary) => a.date.getTime() - b.date.getTime());
 
-			setAnniversaries(anniversariesSorted);
+			const anniversariesSortedThisYear: Anniversary[] = anniversariesSorted.filter((a: Anniversary) => a.date.getFullYear() <= new Date().getFullYear());
+			const anniversariesSortedNextYear: Anniversary[] = anniversariesSorted.filter(
+				(a: Anniversary) => a.date.getFullYear() > new Date().getFullYear() && a.date.getFullYear() <= new Date().getFullYear() + 1
+			);
+			const anniversariesSortedAfter: Anniversary[] = anniversariesSorted.filter((a: Anniversary) => a.date.getFullYear() > new Date().getFullYear() + 1);
+
+			setAnniversariesThisYear(anniversariesSortedThisYear);
+			setAnniversariesNextYear(anniversariesSortedNextYear);
+			setAnniversariesAfter(anniversariesSortedAfter);
 
 			const rawVotesOptionsLocal: Highcharts.Options = ChartUtils.buildAnniversariesOptions(ChartUtils.buildOptionsTimeSeries(), anniversariesSorted);
+			// console.log(rawVotesOptionsLocal);
 			setRawVotesOptions(rawVotesOptionsLocal);
 		};
 
@@ -99,30 +110,36 @@ const Home = (): JSX.Element => {
 				</div>
 				<div className="container">
 					<div className="features-tiles-inner section-inner pt-0">
-						<SectionHeader data={sectionHeaderCurrentYear} className="center-content" />
-						<div className="tiles-wrap center-content">
-							{anniversaries
-								.filter((a: Anniversary) => a.date.getFullYear() <= new Date().getFullYear())
-								.map((a: Anniversary) => (
-									<DateItem key={`${a.date.toISOString()}${a.name}${a.count}${a.unit}`} anniversary={a}></DateItem>
-								))}
-						</div>
-						<SectionHeader data={sectionHeaderNextYear} className="center-content" />
-						<div className="tiles-wrap center-content">
-							{anniversaries
-								.filter((a: Anniversary) => a.date.getFullYear() > new Date().getFullYear() && a.date.getFullYear() <= new Date().getFullYear() + 1)
-								.map((a: Anniversary) => (
-									<DateItem key={`${a.date.toISOString()}${a.name}${a.count}${a.unit}`} anniversary={a}></DateItem>
-								))}
-						</div>
-						<SectionHeader data={sectionHeaderLater} className="center-content" />
-						<div className="tiles-wrap center-content">
-							{anniversaries
-								.filter((a: Anniversary) => a.date.getFullYear() > new Date().getFullYear() + 1)
-								.map((a: Anniversary) => (
-									<DateItem key={`${a.date.toISOString()}${a.name}${a.count}${a.unit}`} anniversary={a}></DateItem>
-								))}
-						</div>
+						{anniversariesThisYear.length > 0 && (
+							<>
+								<SectionHeader data={sectionHeaderCurrentYear} className="center-content" />
+								<div className="tiles-wrap center-content">
+									{anniversariesThisYear.map((a: Anniversary) => (
+										<DateItem key={`${a.date.toISOString()}${a.name}${a.count}${a.unit}`} anniversary={a}></DateItem>
+									))}
+								</div>
+							</>
+						)}
+						{anniversariesNextYear.length > 0 && (
+							<>
+								<SectionHeader data={sectionHeaderNextYear} className="center-content" />
+								<div className="tiles-wrap center-content">
+									{anniversariesNextYear.map((a: Anniversary) => (
+										<DateItem key={`${a.date.toISOString()}${a.name}${a.count}${a.unit}`} anniversary={a}></DateItem>
+									))}
+								</div>
+							</>
+						)}
+						{anniversariesAfter.length > 0 && (
+							<>
+								<SectionHeader data={sectionHeaderLater} className="center-content" />
+								<div className="tiles-wrap center-content">
+									{anniversariesAfter.map((a: Anniversary) => (
+										<DateItem key={`${a.date.toISOString()}${a.name}${a.count}${a.unit}`} anniversary={a}></DateItem>
+									))}
+								</div>
+							</>
+						)}
 					</div>
 				</div>
 			</section>

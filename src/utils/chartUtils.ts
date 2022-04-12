@@ -2,11 +2,17 @@ import { AxisOptions, Options, PointOptionsObject } from 'highcharts';
 import { Anniversary } from '../entities/anniversary';
 
 export class ChartUtils {
+	static readonly NUMBER_OF_YEAR: number = 50;
+
 	static buildAnniversariesOptions(options: Highcharts.Options, anniversaries: Anniversary[]): Options {
 		const points: PointOptionsObject[] = [];
 		const yearlyDistribution: Map<number, number> = new Map();
-		anniversaries.forEach((r: Anniversary) => {
-			const year: number = r.date.getFullYear();
+
+		const anniversariesScale: number[] = ChartUtils.buildAnniversariesPadding();
+		anniversariesScale.forEach((y: number) => yearlyDistribution.set(y, 0));
+
+		anniversaries.forEach((anniversary: Anniversary) => {
+			const year: number = anniversary.date.getFullYear();
 			if (yearlyDistribution.has(year)) {
 				const v: number = yearlyDistribution.get(year) || 1;
 				yearlyDistribution.set(year, v + 1);
@@ -39,6 +45,17 @@ export class ChartUtils {
 		return options;
 	}
 
+	static buildAnniversariesPadding(): number[] {
+		const list: number[] = [];
+
+		const init: number = new Date().getFullYear();
+		for (let i: number = 0; i < ChartUtils.NUMBER_OF_YEAR; i++) {
+			list.push(init + i);
+		}
+
+		return list;
+	}
+
 	static buildOptionsTimeSeries(): Highcharts.Options {
 		return {
 			chart: {
@@ -46,21 +63,37 @@ export class ChartUtils {
 				backgroundColor: '#151719',
 				style: {
 					color: '#9CA9B3'
-				}
+				},
+				height: 200,
+				spacingBottom: 50
 			},
 
 			title: {},
 
+			tooltip: {
+				formatter() {
+					return `${this.y} anniversaries in ${this.x}`;
+				}
+			},
+
 			yAxis: {
 				title: {
-					text: 'Number of anniversaries'
+					text: undefined
 				},
-				gridLineColor: '#151719'
+				gridLineColor: '#151719',
+				labels: {
+					enabled: false
+				}
 			},
 
 			xAxis: {
 				title: {
-					text: 'Years'
+					text: undefined
+				},
+				labels: {
+					align: 'right',
+					x: 10,
+					y: 15
 				}
 			},
 
