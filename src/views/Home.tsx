@@ -4,10 +4,6 @@ import DatePicker from 'react-date-picker';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-// import 'react-tabs/style/react-tabs.css';
-// import { Title } from '../components/Title';
-
 import SectionHeader from '../components/sections/partials/SectionHeader';
 
 import { Anniversary } from '../entities/anniversary';
