@@ -68,7 +68,7 @@
         "webpack": "^5.72.0",
         "webpack-dev-server": "^4.8.1",
         "webpack-manifest-plugin": "^4.0.2",
-        "workbox-webpack-plugin": "^6.5.3"
+        "workbox-webpack-plugin": "^7.1.0"
     },
     "devDependencies": {
         "@types/lodash": "^4.14.181",
