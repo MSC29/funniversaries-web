@@ -5,7 +5,7 @@
     "dependencies": {
         "@babel/core": "^7.17.9",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.5",
-        "@svgr/webpack": "^5.5.0",
+        "@svgr/webpack": "^6.0.0",
         "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react": "^12.1.5",
         "@testing-library/user-event": "^13.5.0",
@@ -68,7 +68,7 @@
         "webpack": "^5.72.0",
         "webpack-dev-server": "^4.8.1",
         "webpack-manifest-plugin": "^4.0.2",
-        "workbox-webpack-plugin": "^6.5.3"
+        "workbox-webpack-plugin": "^7.4.0"
     },
     "devDependencies": {
         "@types/lodash": "^4.14.181",
