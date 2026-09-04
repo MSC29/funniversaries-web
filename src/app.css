@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	width: 100%;
+	text-align: center;
+	background-color: #151719;
+	color: #9ca9b3;
+	font-size: 1rem;
+
+	/* font-family: 'Inter', sans-serif; */
+	font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+	font-weight: 400;
+	font-optical-sizing: auto;
+	font-style: normal;
+	font-variation-settings: 'slnt' 0;
+}
+#svelte-content {
+	text-align: left;
+	margin: 0px auto;
+	/* full screen */
+	/* display: contents; */
+
+	/* hack for browser support */
+	display: grid;
+	max-width: 800px;
+}
+
+#date-picker {
+	width: 100%;
+	display: block;
+	border-radius: 0.5rem;
+	--tw-text-opacity: 1;
+	color: rgb(17 24 39 / var(--tw-text-opacity));
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	padding: 0.625rem;
+	--tw-bg-opacity: 1;
+	background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+	--tw-border-opacity: 1;
+	border-color: rgb(209 213 219 / var(--tw-border-opacity));
+	text-align: center;
+
+	/* opacity-50 rtl:text-right p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 text-sm rounded-lg */
+}
