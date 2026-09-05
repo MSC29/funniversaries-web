@@ -3,6 +3,7 @@
 	import { Heading, P } from 'flowbite-svelte';
 	import { DateInput } from 'date-picker-svelte';
 	// broken npm import with wasm; will try to import wasm directly import * as funniversaries from 'funniversaries';
+	import * as lib from 'funniversaries-lib';
 
 	import { DatesService } from '$lib/services/dates.service';
 
@@ -60,9 +61,13 @@
 		nextAnniversaries[2] = anniversariesSorted[3];
 	};
 
-	const findAnniversaries = (): void => {
+	const findAnniversaries: () => Promise<void> = async () => {
 		console.log('findAnniversaries');
 		generateDates(dateReactive);
+		const generatedAnniversaries: Anniversary[] = await lib.generate_future_anniversaries(
+			dateReactive.toISOString()
+		);
+		console.log(generatedAnniversaries.length);
 	};
 
 	onMount(async () => {
@@ -70,6 +75,8 @@
 
 		const time: TimeEntity = dateService.init_time();
 		dateReactive = time.now;
+
+		await lib.default();
 	});
 </script>
 
