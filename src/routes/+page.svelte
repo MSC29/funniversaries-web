@@ -74,11 +74,8 @@
 </script>
 
 <div class="mb-10 text-center">
-	<Heading
-		tag="h1"
-		class="mb-4"
-		customSize="text-5xl font-extrabold  md:text-5xl lg:text-6xl"
-		color="white">Find your <br />Fun Anniversaries</Heading
+	<Heading tag="h1" class="mb-4 text-5xl font-extrabold  md:text-5xl lg:text-6xl" color="white"
+		>Find your <br />Fun Anniversaries</Heading
 	>
 	<P class="mb-6 text-center text-lg sm:px-16 lg:text-xl xl:px-48" color="white"
 		>Pick a date and discover the anniversaries worth celebrating!</P

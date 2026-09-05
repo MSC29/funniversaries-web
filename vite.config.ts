@@ -1,6 +1,7 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import type { UserConfig } from 'vite';
 import { SvelteKitPWA } from '@vite-pwa/sveltekit';
+import tailwindcss from '@tailwindcss/vite';
 
 const config: UserConfig = {
 	// WARN: this will not be necessary on your project
@@ -31,6 +32,7 @@ const config: UserConfig = {
 		strictPort: false
 	},
 	plugins: [
+		tailwindcss(),
 		sveltekit(),
 		SvelteKitPWA({
 			srcDir: './src',

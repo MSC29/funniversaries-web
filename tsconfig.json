@@ -1,7 +1,7 @@
 {
     "extends": "./.svelte-kit/tsconfig.json",
     "compilerOptions": {
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "target": "es2020",
         "module": "ESNext",
         "noEmit": true,
@@ -20,7 +20,7 @@
         "sourceMap": true,
         "strict": true,
         "types": [
-            "vite-plugin-pwa/svelte",
+            "vite-plugin-pwa",
         ]
     },
     "include": [
@@ -31,11 +31,12 @@
         // for the ENV imports
         ".svelte-kit/ambient.d.ts",
         // for 'virtual:pwa-info' imports
-        "node_modules/vite-plugin-pwa/svelte.d.ts"
+        "_node_modules/vite-plugin-pwa/svelte.d.ts"
     ],
     "exclude": [
         "dist",
-        "node_modules",
+        "archive",
+        "_node_modules",
         "test"
     ]
 }
