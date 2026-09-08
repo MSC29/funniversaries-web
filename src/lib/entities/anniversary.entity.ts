@@ -1,8 +1,4 @@
-export interface Anniversary {
-	// unit associated with anniversary
-	unit: string;
-	// anniversary date
-	date: Date | undefined;
+export interface FunNumberDef {
 	// human readable anniversary "123321", "π"
 	title: string;
 	// number associated with anniversary 123321, 3.14...
@@ -17,4 +13,24 @@ export interface Anniversary {
 	distance: string;
 	// bucket grouped by date
 	bucket: string;
+}
+
+export interface Anniversary {
+	// unit associated with anniversary
+	unit: string;
+	// anniversary date
+	date: Date | undefined;
+
+	// FunNumberDef
+	funNumber: FunNumberDef;
+}
+
+export interface AnniversaryPayload {
+	// unit associated with anniversary
+	unit: string;
+	// anniversary date
+	date: Date | undefined;
+
+	// FunNumberDef
+	fun_number: FunNumberDef;
 }

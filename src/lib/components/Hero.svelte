@@ -9,10 +9,10 @@
 	<section class="mb-16 text-center">
 		<p class="mb-2 text-sm text-[#c7c7d6]">{heroAnniversary.date}</p>
 		<p class="font-serif text-7xl leading-none tracking-tight text-[#eeeef3] sm:text-8xl">
-			{heroAnniversary.title}
+			{heroAnniversary.funNumber.title}
 		</p>
-		<p class="mt-3 text-lg text-[#7c7c8b]">{heroAnniversary.label}</p>
-		<p class="mt-4 text-sm text-[#9c9ca5]">{heroAnniversary.description}</p>
+		<p class="mt-3 text-lg text-[#7c7c8b]">{heroAnniversary.funNumber.label}</p>
+		<p class="mt-4 text-sm text-[#9c9ca5]">{heroAnniversary.funNumber.description}</p>
 	</section>
 {/if}
 

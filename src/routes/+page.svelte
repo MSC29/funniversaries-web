@@ -8,7 +8,7 @@
 	import { DatesService } from '$lib/services/dates.service';
 
 	import type { TimeEntity } from '$lib/entities/time.entity';
-	import type { Anniversary } from '$lib/entities/anniversary.entity';
+	import type { Anniversary, AnniversaryPayload } from '$lib/entities/anniversary.entity';
 	import Hero from '$lib/components/Hero.svelte';
 	import NextDate from '$lib/components/NextDate.svelte';
 
@@ -21,34 +21,39 @@
 	let nextAnniversaries: Anniversary[] = [];
 	$: nextAnniversaries = nextAnniversaries;
 
-	// let generatedAnniversaries: Anniversary[] = [
-	// 	{ count: 1, date: new Date(), name: 'A 1', unit: 'km 1' },
-	// 	{ count: 11, date: new Date(), name: 'A 11', unit: 'km 11' },
-	// 	{ count: 112, date: new Date(), name: 'A 112', unit: 'km 112' },
-	// 	{ count: 1123, date: new Date(), name: 'A 1123', unit: 'km 1123' }
-	// ];
-	// $: generatedAnniversaries = generatedAnniversaries;
-
-	const generateDates = async (date: Date): Promise<void> => {
-		const generatedAnniversaries: Anniversary[] =
-			await dateService.generateFutureAnniversaries(date);
+	const findAnniversaries: () => Promise<void> = async () => {
+		console.log(`findAnniversaries ${dateReactive.toISOString()}`);
+		// generateDates(dateReactive);
+		const generatedAnniversaries: AnniversaryPayload[] = await lib.generate_future_anniversaries(
+			dateReactive.toISOString()
+		);
+		console.log(generatedAnniversaries.length);
 
 		//filtering out invalid/useless JS dates
 		const lifetime: number = new Date().getFullYear() + 50;
-		const validAnniversaries: Anniversary[] = generatedAnniversaries
-			.map((a: Anniversary) => {
+		const validAnniversaries: Anniversary[] = [];
+
+		generatedAnniversaries
+			// .filter((item: Anniversary | undefined): item is Anniversary => item !== undefined);
+			.forEach((a: AnniversaryPayload) => {
+				if (!a) {
+					return undefined;
+				}
+
 				const dateObj: Date = new Date(a.date);
 				if (
 					dateObj instanceof Date &&
 					!isNaN(dateObj.valueOf()) &&
 					dateObj.getFullYear() < lifetime
 				) {
-					a.date = dateObj;
-					return a;
+					const annif: Anniversary = {
+						date: dateObj,
+						unit: a.unit,
+						funNumber: a.fun_number
+					};
+					validAnniversaries.push(annif);
 				}
-				return undefined;
-			})
-			.filter((item: Anniversary | undefined): item is Anniversary => item !== undefined);
+			});
 
 		//anniversaries are coming back sorted, but we're changing the sort order here
 		const anniversariesSorted: Anniversary[] = validAnniversaries.sort(
@@ -59,15 +64,6 @@
 		nextAnniversaries[0] = anniversariesSorted[1];
 		nextAnniversaries[1] = anniversariesSorted[2];
 		nextAnniversaries[2] = anniversariesSorted[3];
-	};
-
-	const findAnniversaries: () => Promise<void> = async () => {
-		console.log('findAnniversaries');
-		generateDates(dateReactive);
-		const generatedAnniversaries: Anniversary[] = await lib.generate_future_anniversaries(
-			dateReactive.toISOString()
-		);
-		console.log(generatedAnniversaries.length);
 	};
 
 	onMount(async () => {
