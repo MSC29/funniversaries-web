@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Heading, P } from 'flowbite-svelte';
-	import { DateInput } from 'date-picker-svelte';
+	import { Heading, P, Datepicker } from 'flowbite-svelte';
+	// import { DateInput } from 'date-picker-svelte';
 	// broken npm import with wasm; will try to import wasm directly import * as funniversaries from 'funniversaries';
 	import * as lib from 'funniversaries-lib';
 
@@ -76,32 +76,36 @@
 	});
 </script>
 
-<div class="mb-10 text-center">
+<div class="mt-5 mb-8 text-center">
 	<Heading tag="h1" class="mb-4 text-5xl font-extrabold  md:text-5xl lg:text-6xl" color="white"
-		>Find your <br />Fun Anniversaries</Heading
+		>Celebrate an Anniversary</Heading
 	>
-	<P class="mb-6 text-center text-lg sm:px-16 lg:text-xl xl:px-48" color="white"
+	<P class="text-center text-lg sm:px-16 lg:text-xl xl:px-48" color="white"
 		>Pick a date and discover the anniversaries worth celebrating!</P
 	>
-	<div class="">
-		<DateInput
+</div>
+
+<div class="flex items-center justify-center">
+	<div class="relative max-w-sm md:w-1/2">
+		<Datepicker
 			id="date-picker"
 			bind:value={dateReactive}
-			on:select={findAnniversaries}
-			format="yyyy-MM-dd"
-			closeOnSelection={true}
+			onselect={findAnniversaries}
+			dateFormat={{ year: 'numeric', month: 'short', day: '2-digit' }}
+			placeholder="Type a date or use calendar"
+			autohide={true}
 			required
-			class="m-auto w-2/5 text-center"
 		/>
 	</div>
 </div>
 
 {#if heroAnniversary}
-	<Hero {heroAnniversary}></Hero>
-
-	<hr class="mb-10 border-[#E4E4E0]" />
-
-	<NextDate {nextAnniversaries}></NextDate>
+	<div class="mt-16 flex items-center justify-center">
+		<div class="relative">
+			<Hero {heroAnniversary}></Hero>
+			<NextDate {nextAnniversaries}></NextDate>
+		</div>
+	</div>
 
 	<!-- Paid upsell — a link, never a blocking gate -->
 	<div class="mt-10 text-center">

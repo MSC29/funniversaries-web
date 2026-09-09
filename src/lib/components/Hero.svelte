@@ -1,23 +1,26 @@
 <script lang="ts">
 	import type { Anniversary } from '$lib/entities/anniversary.entity';
+	import { Badge, Button, Card } from 'flowbite-svelte';
 
 	export let heroAnniversary: Anniversary;
 </script>
 
 {#if heroAnniversary}
-	<!-- heroAnniversary: no card, just type, on the page background -->
-	<section class="mb-16 text-center">
-		<p class="mb-2 text-sm text-[#c7c7d6]">{heroAnniversary.date}</p>
-		<p class="font-serif text-7xl leading-none tracking-tight text-[#eeeef3] sm:text-8xl">
+	<Card size="lg" class="p-4 text-center sm:p-8 md:p-10">
+		<h5 class="mb-2 text-7xl font-bold text-gray-900 dark:text-white">
 			{heroAnniversary.funNumber.title}
-		</p>
-		<p class="mt-3 text-lg text-[#7c7c8b]">{heroAnniversary.funNumber.label}</p>
-		<p class="mt-4 text-sm text-[#9c9ca5]">{heroAnniversary.funNumber.description}</p>
-	</section>
-{/if}
+			{heroAnniversary.unit}
+		</h5>
+		<p class="mt-1 mb-4 text-lg text-[#7c7c8b]">On {heroAnniversary.date?.toLocaleDateString()}</p>
 
-<style>
-	.font-serif {
-		font-family: 'Fraunces', ui-serif, Georgia, serif;
-	}
-</style>
+		<p class="mb-5 text-sm text-gray-500 dark:text-gray-400">
+			{heroAnniversary.funNumber.label}
+		</p>
+		<p class="mt-1 mb-4 text-lg text-[#7c7c8b]">{heroAnniversary.funNumber.description}</p>
+		<div
+			class="items-center justify-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4 rtl:space-x-reverse"
+		>
+			<Button>Buy the tee shirt</Button>
+		</div>
+	</Card>
+{/if}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { DarkMode } from 'flowbite-svelte';
 	//   import { sineIn } from "svelte/easing";
 	import { pwaInfo } from 'virtual:pwa-info';
 	import { useRegisterSW } from 'virtual:pwa-register/svelte';
@@ -50,6 +51,7 @@
 </svelte:head>
 
 <main>
+	<!-- <DarkMode /> -->
 	<div style="height:100%;" class="pt-8 pr-5 pb-8 pl-5">
 		<slot />
 	</div>
