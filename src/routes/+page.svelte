@@ -3,7 +3,7 @@
 	import { Heading, P, Datepicker } from 'flowbite-svelte';
 	// import { DateInput } from 'date-picker-svelte';
 	// broken npm import with wasm; will try to import wasm directly import * as funniversaries from 'funniversaries';
-	import * as lib from 'funniversaries-lib';
+	import * as lib from '@msc29/funniversaries-lib';
 
 	import { DatesService } from '$lib/services/dates.service';
 

@@ -1,8 +1,10 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import type { UserConfig } from 'vite';
 import { SvelteKitPWA } from '@vite-pwa/sveltekit';
-import tailwindcss from '@tailwindcss/vite';
 import wasmPack from 'vite-plugin-wasm-pack';
+
+//last matters
+import tailwindcss from '@tailwindcss/vite';
 
 const config: UserConfig = {
 	// WARN: this will not be necessary on your project
@@ -33,8 +35,8 @@ const config: UserConfig = {
 		strictPort: false
 	},
 	plugins: [
+		wasmPack([], ['@msc29/funniversaries-lib']),
 		tailwindcss(),
-		wasmPack('./funniversaries-lib'), //should copy wasm file & put it in a local folder here?
 		sveltekit(),
 		SvelteKitPWA({
 			srcDir: './src',
