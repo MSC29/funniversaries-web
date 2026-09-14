@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Anniversary } from '$lib/entities/anniversary.entity';
-	import { Badge, Button, Card } from 'flowbite-svelte';
+	import { Button, Card } from 'flowbite-svelte';
 
 	export let heroAnniversary: Anniversary;
 </script>

@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { DarkMode } from 'flowbite-svelte';
-	//   import { sineIn } from "svelte/easing";
 	import { pwaInfo } from 'virtual:pwa-info';
 	import { useRegisterSW } from 'virtual:pwa-register/svelte';
 
@@ -47,7 +45,8 @@
 </script>
 
 <svelte:head>
-	{@html webManifest}
+	<!-- {@html webManifest} -->
+	{webManifest}
 </svelte:head>
 
 <main>

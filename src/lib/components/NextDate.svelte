@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Timeline, TimelineItem, Badge } from 'flowbite-svelte';
+	import { Timeline, TimelineItem } from 'flowbite-svelte';
 
 	import type { Anniversary } from '$lib/entities/anniversary.entity';
 
@@ -10,7 +10,7 @@
 	<p class="mb-10 text-center text-3xl font-medium text-[#7c7c8b]">Anniversaries coming up</p>
 
 	<Timeline>
-		{#each nextAnniversaries as item}
+		{#each nextAnniversaries as item (item.funNumber.count)}
 			<TimelineItem
 				title="{item.funNumber.title} {item.unit}"
 				date={item.date}
