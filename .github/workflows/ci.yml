@@ -22,6 +22,11 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm run build
       - run: npm run lint
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: build
+          retention-days: 1
 
   Security:
     needs: Install
@@ -43,18 +48,13 @@ jobs:
       deployments: write
     name: Deploy to Cloudflare Pages
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v7
+      - uses: actions/download-artifact@v4
         with:
-          node-version: 24
-          cache: npm
-          cache-dependency-path: package-lock.json
+          name: build
+          path: build
       - name: Publish
         uses: cloudflare/pages-action@v1
         with:
-          node-version: 24
-          cache: npm
-          cache-dependency-path: package-lock.json
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: funniversaries-web
