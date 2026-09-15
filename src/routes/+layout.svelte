@@ -63,8 +63,8 @@
 		name="description"
 		content="Pick a date and discover the anniversaries worth celebrating!"
 	/>
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html webManifest}
-	<!-- {webManifest} -->
 </svelte:head>
 
 <main>
