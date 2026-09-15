@@ -3,7 +3,7 @@ name: Continuous integration
 on: push
 
 jobs:
-  ci-workflow:
+  Install:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -23,10 +23,9 @@ jobs:
       - run: npm run build
       - run: npm run lint
 
-  security:
-    needs: ci-workflow
+  Security:
+    needs: Install
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v7
@@ -35,3 +34,30 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
       - run: npm run audit
+
+  Deploy:
+    needs: [Install, Security]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    name: Deploy to Cloudflare Pages
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - name: Publish
+        uses: cloudflare/pages-action@v1
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: package-lock.json
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: funniversaries-web
+          directory: build
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          wranglerVersion: '3'
