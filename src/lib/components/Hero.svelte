@@ -2,7 +2,11 @@
 	import type { Anniversary } from '$lib/entities/anniversary.entity';
 	import { Button, Card } from 'flowbite-svelte';
 
-	export let heroAnniversary: Anniversary;
+	interface Props {
+		heroAnniversary: Anniversary;
+	}
+
+	let { heroAnniversary }: Props = $props();
 </script>
 
 {#if heroAnniversary}

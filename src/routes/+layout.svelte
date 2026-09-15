@@ -4,23 +4,33 @@
 	import { useRegisterSW } from 'virtual:pwa-register/svelte';
 
 	import '../app.css';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
 
-	$: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : '';
-	let offline = false;
-	$: offline;
+	let { children }: Props = $props();
+
+	let webManifest = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : '');
+	let offline = $state(false);
 
 	onMount(async () => {
 		if (pwaInfo) {
 			const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW({
 				immediate: true,
 				onRegistered(r) {
-					r &&
+					if (r) {
 						setInterval(() => {
 							console.log(`Checking for sw update: ${r}`);
-							// since r.sync isn't avilable
-
 							r.update();
 						}, 20000 /* 20s for testing purposes */);
+					}
+					// r &&
+					// 	setInterval(() => {
+					// 		console.log(`Checking for sw update: ${r}`);
+					// 		// since r.sync isn't avilable
+
+					// 		r.update();
+					// 	}, 20000 /* 20s for testing purposes */);
 				},
 				onRegisterError(error) {
 					console.log('SW registration error', error);
@@ -37,7 +47,7 @@
 			}
 
 			if (offlineReady) {
-				console.log('Offline Ready');
+				console.log('Offline Ready: ' + offline);
 				offline = true;
 			}
 		}
@@ -52,6 +62,6 @@
 <main>
 	<!-- <DarkMode /> -->
 	<div style="height:100%;" class="pt-8 pr-5 pb-8 pl-5">
-		<slot />
+		{@render children?.()}
 	</div>
 </main>

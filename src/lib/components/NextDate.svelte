@@ -3,7 +3,11 @@
 
 	import type { Anniversary } from '$lib/entities/anniversary.entity';
 
-	export let nextAnniversaries: Anniversary[];
+	interface Props {
+		nextAnniversaries: Anniversary[];
+	}
+
+	let { nextAnniversaries }: Props = $props();
 </script>
 
 <section class="mt-10">

@@ -14,12 +14,10 @@
 
 	let dateService: DatesService;
 
-	$: dateReactive = new Date();
+	let dateReactive = $derived(new Date());
 
-	let heroAnniversary: Anniversary;
-	$: heroAnniversary = heroAnniversary;
-	let nextAnniversaries: Anniversary[] = [];
-	$: nextAnniversaries = nextAnniversaries;
+	let heroAnniversary: Anniversary | undefined = $state<Anniversary>();
+	let nextAnniversaries: Anniversary[] = $state([]);
 
 	const findAnniversaries: () => Promise<void> = async () => {
 		console.log(`findAnniversaries ${dateReactive.toISOString()}`);
