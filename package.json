@@ -8,6 +8,7 @@
         "run-dev": "vite dev --host --mode dev",
         "run-production": "vite dev --host --mode production",
         "build": "vite build",
+        "build:prod": "vite build --mode prod",
         "preview": "vite preview --host",
         "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",

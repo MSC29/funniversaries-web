@@ -55,6 +55,11 @@
 </script>
 
 <svelte:head>
+	<title>Funniversaries — Celebrate the fun milestones</title>
+	<meta
+		name="description"
+		content="Pick a date and discover the anniversaries worth celebrating!"
+	/>
 	<!-- {@html webManifest} -->
 	{webManifest}
 </svelte:head>
