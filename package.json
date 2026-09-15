@@ -16,6 +16,7 @@
         "lint-prettier": "prettier --check ./src",
         "lint-eslint": "eslint .",
         "format": "prettier --write .",
+        "audit": "npm audit --audit-level moderate",
         "wasm": "wasm-pack build ../funniversaries-lib --target web"
     },
     "devDependencies": {
