@@ -15,6 +15,9 @@
 
 	onMount(async () => {
 		if (pwaInfo) {
+			console.log('pwaInfo available');
+			console.log(`pwa info link tag ${pwaInfo.webManifest.linkTag}`);
+
 			const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW({
 				immediate: true,
 				onRegistered(r) {
@@ -60,8 +63,8 @@
 		name="description"
 		content="Pick a date and discover the anniversaries worth celebrating!"
 	/>
-	<!-- {@html webManifest} -->
-	{webManifest}
+	{@html webManifest}
+	<!-- {webManifest} -->
 </svelte:head>
 
 <main>

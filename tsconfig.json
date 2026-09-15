@@ -31,12 +31,12 @@
         // for the ENV imports
         ".svelte-kit/ambient.d.ts",
         // for 'virtual:pwa-info' imports
-        "_node_modules/vite-plugin-pwa/svelte.d.ts"
+        "node_modules/vite-plugin-pwa/svelte.d.ts"
     ],
     "exclude": [
         "dist",
         "archive",
-        "_node_modules",
+        "node_modules",
         "test"
     ]
 }
