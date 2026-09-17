@@ -1,0 +1,34 @@
+# findings
+
+- prime number
+- reverse: enter a number, get a date from now/date
+- need more findings, like 1 a year
+  - hex
+  - https://en.wikipedia.org/wiki/Hexspeak
+  - https://stjerneskinn.com/hexadecimal-words.htm
+  - famous constants?
+  - analogies, distances in the universe? time taken at light speed to reach?
+  - work week
+  - milli & nano
+- should dynamically increase the size of the array of cool dates
+  - multipliers, 10, 100, power of, ...
+  - maybe only for the next 1-5 years?
+  - take nb seconds/days/... in the next 1-5 years
+  - build array for each cool number & multiplier, in range
+  - share results
+
+# ui ux
+
+- export ics
+- copy date
+- chart should be in another page
+- wording
+- big numbers should be text too (10 Billion seconds)
+
+# tech
+
+- offline pwa
+
+# $$$
+
+- shopify

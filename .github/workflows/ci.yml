@@ -3,25 +3,61 @@ name: Continuous integration
 on: push
 
 jobs:
-  ci-workflow:
+  Install:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: 16
+          node-version: 24
           cache: npm
+          cache-dependency-path: package-lock.json
+          registry-url: https://npm.pkg.github.com
+          scope: '@msc29'
       - run: npm ci
-      - run: npm run build          
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm run build:prod
       - run: npm run lint
-  
-  security:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/upload-artifact@v4
         with:
-          node-version: 16
+          name: build
+          path: build
+          retention-days: 1
+
+  Security:
+    needs: Install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
           cache: npm
+          cache-dependency-path: package-lock.json
       - run: npm run audit
+
+  Deploy:
+    needs: [Install, Security]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    name: Deploy to Cloudflare Pages
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: build
+      - name: Publish
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: funniversaries-web
+          directory: build
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          wranglerVersion: '3'
