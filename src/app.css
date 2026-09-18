@@ -32,7 +32,6 @@
 @source '../node_modules/flowbite-svelte-icons/dist';
 
 @layer base {
-	/* disable chrome cancel button */
 	input[type='search']::-webkit-search-cancel-button {
 		display: none;
 	}
@@ -41,9 +40,44 @@
 /* full screen
 display: contents;
 hack for browser support */
-#svelte-content {
-	/* text-align: left; */
+/* #svelte-content {
 	margin: 0px auto;
-	/* display: grid; */
 	max-width: 800px;
+} */
+
+:root {
+	--bg: #0e1626;
+	--surface: #141f36;
+	--surface-2: #16223a;
+	--line: #1f2e4c;
+	--line-2: #2a3a5c;
+	--ink: #f2f5fa;
+	--ink-2: #c8d3e8;
+	--muted: #aebbd4;
+	--muted-2: #93a1bc;
+	--muted-3: #7a89a8;
+	--accent: #ff5a2b;
+	--accent-hover: #ff7a4d;
+	--font: Outfit, system-ui, sans-serif;
+}
+html,
+body {
+	margin: 0;
+	background: var(--bg);
+}
+body {
+	font-family: var(--font);
+	color: var(--ink);
+	-webkit-font-smoothing: antialiased;
+}
+a {
+	color: var(--accent-hover);
+	text-decoration: none;
+}
+a:hover {
+	color: #ff9a75;
+	text-decoration: underline;
+}
+button {
+	font-family: inherit;
 }

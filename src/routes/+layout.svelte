@@ -67,9 +67,14 @@
 	{@html webManifest}
 </svelte:head>
 
-<main>
-	<!-- <DarkMode /> -->
+<!-- <main>
 	<div style="height:100%;" class="pt-8 pr-5 pb-8 pl-5">
 		{@render children?.()}
 	</div>
-</main>
+</main> -->
+
+<div style="min-height:100vh;background:var(--bg);padding:20px 20px 0;box-sizing:border-box">
+	<div style="max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:48px">
+		{@render children()}
+	</div>
+</div>
