@@ -35,7 +35,7 @@ const config: UserConfig = {
 		strictPort: false
 	},
 	plugins: [
-		wasmPack([], ['@msc29/funniversaries-lib']),
+		wasmPack([], ['@msc29/funniversaries-wasm']),
 		tailwindcss(),
 		sveltekit(),
 		SvelteKitPWA({

@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
-	import { Heading, P, Datepicker, Button } from 'flowbite-svelte';
 	import {
 		upcoming,
 		select,
@@ -15,64 +13,6 @@
 		fmt,
 		DEFAULT_ORIGIN
 	} from '$lib/milestones';
-	import * as lib from '@msc29/funniversaries-wasm';
-
-	import { DatesService } from '$lib/services/dates.service';
-
-	import type { TimeEntity } from '$lib/entities/time.entity';
-	import type { Anniversary, AnniversaryPayload } from '$lib/entities/anniversary.entity';
-
-	let dateService: DatesService;
-
-	let dateReactive = $derived(new Date());
-
-	let heroAnniversary: Anniversary | undefined = $state<Anniversary>();
-	let nextAnniversaries: Anniversary[] = $state([]);
-
-	const findAnniversaries: () => Promise<void> = async () => {
-		console.log(`findAnniversaries ${dateReactive.toISOString()}`);
-		// generateDates(dateReactive);
-		const generatedAnniversaries: AnniversaryPayload[] = await lib.compute_preview(
-			dateReactive.toISOString()
-		);
-		console.log(generatedAnniversaries.length);
-
-		//filtering out invalid/useless JS dates
-		const lifetime: number = new Date().getFullYear() + 50;
-		const validAnniversaries: Anniversary[] = [];
-
-		generatedAnniversaries
-			// .filter((item: Anniversary | undefined): item is Anniversary => item !== undefined);
-			.forEach((a: AnniversaryPayload) => {
-				if (!a) {
-					return undefined;
-				}
-
-				const dateObj: Date = new Date(a.date);
-				if (
-					dateObj instanceof Date &&
-					!isNaN(dateObj.valueOf()) &&
-					dateObj.getFullYear() < lifetime
-				) {
-					const annif: Anniversary = {
-						date: dateObj,
-						unit: a.unit,
-						funNumber: a.fun_number
-					};
-					validAnniversaries.push(annif);
-				}
-			});
-
-		//anniversaries are coming back sorted, but we're changing the sort order here
-		const anniversariesSorted: Anniversary[] = validAnniversaries.sort(
-			(a: Anniversary, b: Anniversary) => a.date.getTime() - b.date.getTime()
-		);
-
-		heroAnniversary = anniversariesSorted[0];
-		nextAnniversaries[0] = anniversariesSorted[1];
-		nextAnniversaries[1] = anniversariesSorted[2];
-		nextAnniversaries[2] = anniversariesSorted[3];
-	};
 
 	let origin = $state(DEFAULT_ORIGIN);
 	let now = $state(Date.now());
@@ -87,15 +27,6 @@
 		{ label: 'The day the web went public', date: '1991-08-06' },
 		{ label: 'Y2K', date: '2000-01-01' }
 	];
-
-	onMount(async () => {
-		dateService = new DatesService();
-
-		const time: TimeEntity = dateService.init_time();
-		dateReactive = time.now;
-
-		await lib.default();
-	});
 </script>
 
 <svelte:head>
@@ -127,30 +58,16 @@
 		<p
 			style="margin:0;font-size:18px;line-height:1.55;color:var(--muted);max-width:46ch;text-wrap:pretty"
 		>
-			1000 days together. A billion seconds alive. 1,000 weeks at the same job. Pick a date and
-			we'll find every number worth throwing a party for.
+			666 days together. A billion seconds alive. 1,000 weeks at the same job. Pick a date and we'll
+			find every number worth throwing a party for.
 		</p>
 
 		<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-			<!-- <input
+			<input
 				type="date"
 				bind:value={origin}
-				onselect={findAnniversaries}
 				aria-label="The date you're counting from"
 				style="background:var(--surface-2);border:1px solid var(--line-2);border-radius:12px;color:var(--ink);font-family:inherit;font-size:16px;padding:13px 15px;color-scheme:dark;min-height:48px;box-sizing:border-box"
-			/> -->
-			<Datepicker
-				inputProps={{
-					id: 'date-picker',
-					style:
-						'background:var(--surface-2);border:1px solid var(--line-2);border-radius:12px;color:var(--ink);font-family:inherit;font-size:16px;padding:13px 15px;color-scheme:dark;min-height:48px;box-sizing:border-box'
-				}}
-				bind:value={dateReactive}
-				onselect={findAnniversaries}
-				dateFormat={{ year: 'numeric', month: 'short', day: '2-digit' }}
-				placeholder="Type a date or use calendar"
-				autohide={true}
-				required
 			/>
 			<button
 				onclick={() => goto(resolve('/d/' + origin, {}))}
@@ -173,15 +90,15 @@
 		</div>
 	</div>
 
-	{#if heroAnniversary}
-		<!-- {@const h = splitHeadline(heroAnniversary.headline)} -->
+	{#if hero}
+		{@const h = splitHeadline(hero.headline)}
 		<div
 			style="background:linear-gradient(160deg,#16233D,#121D33);border:1px solid #27385A;border-radius:20px;padding:28px 26px;display:flex;flex-direction:column;gap:16px;min-width:0;container-type:inline-size"
 		>
 			<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
 				<span
 					style="font-size:12px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--bg);background:var(--accent);border-radius:999px;padding:5px 11px"
-					>{heroAnniversary.funNumber.type}</span
+					>{hero.category}</span
 				>
 				<span style="font-size:13px;color:var(--muted-2)">{countdown(hero.ms, now)}</span>
 			</div>
@@ -189,12 +106,12 @@
 				<div
 					style="font-size:clamp(32px,11.5cqw,66px);line-height:0.98;font-weight:700;letter-spacing:-0.035em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere"
 				>
-					{heroAnniversary.funNumber.title}
+					{h.number}
 				</div>
 				<div
 					style="font-size:clamp(18px,4cqw,24px);font-weight:500;color:var(--ink-2);margin-top:6px"
 				>
-					{heroAnniversary.unit}
+					{h.unit}
 				</div>
 			</div>
 			<div style="font-size:15px;color:#E3E9F5;font-weight:500">{longDate(hero.ms)}</div>
@@ -209,14 +126,14 @@
 					style="font-size:12px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--muted-3)"
 					>Then</span
 				>
-				{#each nextAnniversaries as m}
+				{#each rest as m}
 					<div style="display:flex;gap:12px;align-items:baseline;justify-content:space-between">
 						<span
 							style="font-size:16px;font-weight:600;letter-spacing:-0.015em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere"
-							>{m.funNumber.title}</span
+							>{m.headline}</span
 						>
 						<span style="font-size:13px;color:var(--muted-2);white-space:nowrap"
-							>{shortDate(m.date)}</span
+							>{shortDate(m.ms)}</span
 						>
 					</div>
 				{/each}
