@@ -1,18 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
-	import { Heading, P, Datepicker, Button } from 'flowbite-svelte';
+	import { Datepicker } from 'flowbite-svelte';
 	import {
 		upcoming,
 		select,
-		splitHeadline,
 		countdown,
 		longDate,
 		shortDate,
-		fmt,
 		DEFAULT_ORIGIN
 	} from '$lib/milestones';
 	import * as lib from '@msc29/funniversaries-wasm';
@@ -20,7 +17,11 @@
 	import { DatesService } from '$lib/services/dates.service';
 
 	import type { TimeEntity } from '$lib/entities/time.entity';
-	import type { Anniversary, AnniversaryPayload } from '$lib/entities/anniversary.entity';
+	import type {
+		Anniversary,
+		AnniversaryExample,
+		AnniversaryPayload
+	} from '$lib/entities/anniversary.entity';
 
 	let dateService: DatesService;
 
@@ -80,12 +81,11 @@
 	const all = $derived(upcoming(origin, now));
 	const picks = $derived(select(all, 4, now));
 	const hero = $derived(picks[0]);
-	const rest = $derived(picks.slice(1, 4));
 
-	const examples = [
-		{ label: 'Moon landing', date: '1969-07-20' },
-		{ label: 'The day the web went public', date: '1991-08-06' },
-		{ label: 'Y2K', date: '2000-01-01' }
+	const examples: AnniversaryExample[] = [
+		{ id: 1, title: 'The day the web went public', date: new Date('1991-08-06') },
+		{ id: 2, title: 'Y2K', date: new Date('2000-01-01') },
+		{ id: 3, title: 'Bitcoin launched', date: new Date('2009-01-03') }
 	];
 
 	onMount(async () => {
@@ -96,6 +96,11 @@
 
 		await lib.default();
 	});
+
+	function selectExample(ex: AnniversaryExample): void {
+		dateReactive = ex.date!;
+		findAnniversaries();
+	}
 </script>
 
 <svelte:head>
@@ -132,13 +137,6 @@
 		</p>
 
 		<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-			<!-- <input
-				type="date"
-				bind:value={origin}
-				onselect={findAnniversaries}
-				aria-label="The date you're counting from"
-				style="background:var(--surface-2);border:1px solid var(--line-2);border-radius:12px;color:var(--ink);font-family:inherit;font-size:16px;padding:13px 15px;color-scheme:dark;min-height:48px;box-sizing:border-box"
-			/> -->
 			<Datepicker
 				inputProps={{
 					id: 'date-picker',
@@ -152,22 +150,17 @@
 				autohide={true}
 				required
 			/>
-			<button
-				onclick={() => goto(resolve('/d/' + origin, {}))}
-				style="font-size:16px;font-weight:600;color:var(--bg);background:var(--accent);border:0;border-radius:12px;padding:14px 22px;cursor:pointer;min-height:48px"
-				>Find my milestones</button
-			>
 		</div>
 
 		<div
 			style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px;color:var(--muted-3)"
 		>
 			<span>Try:</span>
-			{#each examples as ex}
+			{#each examples as ex (ex.id)}
 				<button
-					onclick={() => (origin = ex.date)}
+					onclick={() => selectExample(ex)}
 					style="font-size:14px;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line-2);border-radius:999px;padding:7px 13px;cursor:pointer"
-					>{ex.label}</button
+					>{ex.title}</button
 				>
 			{/each}
 		</div>
@@ -209,7 +202,7 @@
 					style="font-size:12px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--muted-3)"
 					>Then</span
 				>
-				{#each nextAnniversaries as m}
+				{#each nextAnniversaries as m (m.date)}
 					<div style="display:flex;gap:12px;align-items:baseline;justify-content:space-between">
 						<span
 							style="font-size:16px;font-weight:600;letter-spacing:-0.015em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere"
@@ -221,7 +214,7 @@
 					</div>
 				{/each}
 				<div style="font-size:13px;color:var(--muted-3);padding-top:2px">
-					{fmt(all.length)} more milestones from this date
+					See every milestone for this date →
 				</div>
 			</div>
 		</div>

@@ -2,18 +2,6 @@
 	import { resolve } from '$app/paths';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
-
-	const free = [
-		'The next 5 milestones for any date',
-		'Shareable link',
-		'Add a milestone to your calendar'
-	];
-	const paid = [
-		'Every milestone for that date, to 2100',
-		'Filter by unit and category',
-		'Export the whole list to your calendar',
-		'A reminder before each one'
-	];
 </script>
 
 <svelte:head>
@@ -47,7 +35,9 @@
 		<div
 			style="display:flex;flex-direction:column;gap:9px;font-size:15px;color:var(--ink-2);line-height:1.45"
 		>
-			{#each free as item}<span>{item}</span>{/each}
+			<span>The next 5 milestones for any date</span>
+			<span>Shareable link</span>
+			<span>Add a milestone to your calendar</span>
 		</div>
 		<a
 			href={resolve('/', {})}
@@ -70,7 +60,10 @@
 		<div
 			style="display:flex;flex-direction:column;gap:9px;font-size:15px;color:#E3E9F5;line-height:1.45"
 		>
-			{#each paid as item}<span>{item}</span>{/each}
+			<span>Every milestone for that date, to 2100</span>
+			<span>Filter by unit and category</span>
+			<span>Export the whole list to your calendar</span>
+			<span>A reminder before each one</span>
 		</div>
 		<button
 			onclick={() => alert('Wire this to your checkout provider.')}

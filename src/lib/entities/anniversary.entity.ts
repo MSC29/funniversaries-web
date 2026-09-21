@@ -19,7 +19,7 @@ export interface Anniversary {
 	// unit associated with anniversary
 	unit: string;
 	// anniversary date
-	date: Date | undefined;
+	date: Date;
 
 	// FunNumberDef
 	funNumber: FunNumberDef;
@@ -29,8 +29,14 @@ export interface AnniversaryPayload {
 	// unit associated with anniversary
 	unit: string;
 	// anniversary date
-	date: Date | undefined;
+	date: Date;
 
 	// FunNumberDef
 	fun_number: FunNumberDef;
+}
+
+export interface AnniversaryExample {
+	id: number;
+	date: Date;
+	title: string;
 }

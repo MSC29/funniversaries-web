@@ -8,7 +8,6 @@
 	<span>Funniversaries</span>
 	<div style="display:flex;flex-wrap:wrap;gap:18px">
 		<a href={resolve('/pricing', {})} style="color:var(--muted)">Pricing</a>
-		<a href={resolve('/d/2024-02-29', {})} style="color:var(--muted)">Example date</a>
 		<a href={resolve('/privacy', {})} style="color:var(--muted)">Privacy</a>
 	</div>
 </footer>
