@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	let { children } = $props();
 </script>
 
 <header
@@ -15,5 +14,8 @@
 			>F</span
 		> <span style="font-size:17px;font-weight:600;letter-spacing:-0.01em">Funniversaries</span>
 	</a>
-	<nav style="display:flex;align-items:center;gap:20px;font-size:14px">{@render children?.()}</nav>
+
+	<nav style="display:flex;align-items:center;gap:20px;font-size:14px">
+		<a href={resolve('/pricing', {})} style="color:var(--muted)">Pricing</a>
+	</nav>
 </header>

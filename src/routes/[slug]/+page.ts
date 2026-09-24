@@ -16,7 +16,7 @@ export const entries: EntryGenerator = () => [
 
 export const load: PageLoad = ({ params }) => {
 	const dateType = dateTypes.find((d) => d.slug === params.slug);
-	if (dateType) return { kind: 'date-type' as const, entry: dateType };
+	if (dateType) return dateType;
 
 	// const famous = famousDates.find((d) => d.slug === params.slug);
 	// if (famous) return { kind: 'famous-date' as const, entry: famous };

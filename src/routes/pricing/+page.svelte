@@ -9,9 +9,7 @@
 	<meta name="description" content="Free to look. $4 unlocks every milestone for a date." />
 </svelte:head>
 
-<Header>
-	<a href={resolve('/', {})} style="color:var(--muted)">Home</a>
-</Header>
+<Header />
 
 <section style="display:flex;flex-direction:column;gap:10px">
 	<h1

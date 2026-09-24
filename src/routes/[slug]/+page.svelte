@@ -1,18 +1,25 @@
 <!-- src/routes/[slug]/+page.svelte -->
 <script lang="ts">
-	export let data;
+	import Header from '$lib/components/Header.svelte';
+	import MilestoneCalculator from '$lib/components/MilestoneCalculator.svelte';
+	import type { DateTypeCalculator } from '$lib/content/dateTypes';
+	import Footer from '$lib/components/Footer.svelte';
+
+	export let data: DateTypeCalculator;
 </script>
 
 <svelte:head>
-	<title>{data.entry.title}</title>
-	<meta name="description" content={data.entry.description} />
+	<title>{data.title}</title>
+	<meta name="description" content={data.description} />
+	<meta property="og:title" content="Your next weird anniversary is closer than you think." />
+	<meta
+		property="og:description"
+		content="Pick a date and we'll find every number worth throwing a party for."
+	/>
 </svelte:head>
 
-<h1>{data.entry.h1 ?? data.entry.title}</h1>
-<p>{data.entry.subtitle}</p>
+<Header />
 
-<!-- same hero/timeline component from earlier, just pre-flavored -->
-<!-- <MilestoneCalculator
-	prefillDate={data.kind === 'famous-date' ? data.entry.date : undefined}
-	contextLabel={data.kind === 'date-type' ? data.entry.defaultLabel : undefined}
-/> -->
+<MilestoneCalculator dataType={data}></MilestoneCalculator>
+
+<Footer />

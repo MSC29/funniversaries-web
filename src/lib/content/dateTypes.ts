@@ -10,6 +10,17 @@ export interface DateTypeCalculator {
 
 export const dateTypes: DateTypeCalculator[] = [
 	{
+		slug: 'default',
+		title: 'Find Your Next Milestone',
+		h1: 'Your next weird anniversary is closer than you think.',
+		subtitle:
+			"1000 days together. A billion seconds alive. 1,000 weeks at the same job. Pick a date and we'll find every number worth throwing a party for.",
+		description:
+			'Pick the date you started dating and find every round number, palindrome, and meme-worthy milestone still ahead — perfect for planning a surprise.',
+		defaultLabel: 'engine'
+	},
+
+	{
 		slug: 'relationship-anniversary-calculator',
 		title: 'Relationship Anniversary Calculator — Find Your Next Milestone',
 		h1: 'Your next relationship milestone is closer than you think',
