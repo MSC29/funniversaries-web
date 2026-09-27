@@ -55,10 +55,10 @@ const config: UserConfig = {
 				start_url: '/',
 				scope: '/',
 				display: 'standalone',
-				theme_color: '#ffffff',
-				background_color: '#ffffff',
+				theme_color: '#0e1626',
+				background_color: '#0e1626',
 				icons: [
-					{ src: '/favicon.png', type: 'image/x-icon', sizes: '16x16 32x32' },
+					{ src: '/favicon.png', type: 'image/png', sizes: '32x32' },
 					{ src: '/icon-48.png', type: 'image/png', sizes: '48x48', purpose: 'maskable' },
 					{ src: '/icon-72.png', type: 'image/png', sizes: '72x72', purpose: 'maskable' },
 					{ src: '/icon-96.png', type: 'image/png', sizes: '96x96', purpose: 'maskable' },
@@ -70,14 +70,14 @@ const config: UserConfig = {
 					},
 					{ src: '/icon-192.png', type: 'image/png', sizes: '192x192' },
 					{
-						src: '/icon-192.png',
+						src: '/icon-192-maskable.png',
 						type: 'image/png',
 						sizes: '192x192',
 						purpose: 'maskable'
 					},
 					{ src: '/icon-512.png', type: 'image/png', sizes: '512x512' },
 					{
-						src: '/icon-512.png',
+						src: '/icon-512-maskable.png',
 						type: 'image/png',
 						sizes: '512x512',
 						purpose: 'maskable'

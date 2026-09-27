@@ -36,15 +36,6 @@
 		{dataType.subtitle}
 	</p>
 
-	<!-- <h1>{data.entry.h1 ?? data.entry.title}</h1>
-<p>{data.entry.subtitle}</p> -->
-
-	<!-- same hero/timeline component from earlier, just pre-flavored -->
-	<!-- <MilestoneCalculator
-	prefillDate={data.kind === 'famous-date' ? data.entry.date : undefined}
-	contextLabel={data.kind === 'date-type' ? data.entry.defaultLabel : undefined}
-/> -->
-
 	<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
 		<Datepicker
 			inputProps={{

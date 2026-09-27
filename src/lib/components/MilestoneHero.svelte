@@ -6,9 +6,14 @@
 		heroAnniversary: Anniversary;
 		now: number;
 		nextAnniversaries: Anniversary[];
+		postPricing: (type: string) => Promise<void>;
 	}
 
-	let { heroAnniversary, now, nextAnniversaries }: Props = $props();
+	let { heroAnniversary, now, nextAnniversaries, postPricing }: Props = $props();
+
+	const postPricingSingleDate: () => Promise<void> = async () => {
+		await postPricing('single-date');
+	};
 </script>
 
 <div
@@ -55,7 +60,11 @@
 			</div>
 		{/each}
 		<div style="font-size:13px;color:var(--muted-3);padding-top:2px">
-			See every milestone for this date →
+			<button
+				onclick={() => postPricingSingleDate()}
+				style="font-size:15px;font-weight:600;color:var(--bg);background:var(--accent);border-radius:12px;padding:13px 20px;min-height:46px;align-items:center;text-decoration:none;cursor: pointer;"
+				>See every milestone for this date</button
+			>
 		</div>
 	</div>
 </div>

@@ -15,14 +15,19 @@
 	import MilestoneHero from './MilestoneHero.svelte';
 	import type { DateTypeCalculator } from '$lib/content/dateTypes';
 	import { ListPlaceholder } from 'flowbite-svelte';
+	import NextDates from './NextDates.svelte';
+	import { ApiService } from '$lib/services/api.service';
+	import type { CheckoutPayload } from '$lib/payloads/checkout.payload';
 
 	let dateService: DatesService;
+	let apiService: ApiService;
 
 	// let dateReactive = $derived(new Date());
 	let dateReactive = $state(new Date());
 
 	let heroAnniversary: Anniversary | undefined = $state<Anniversary>();
 	let nextAnniversaries: Anniversary[] = $state([]);
+	let paid: boolean = $state(true);
 
 	// let origin = $state(DEFAULT_ORIGIN);
 	let now = $state(Date.now());
@@ -84,6 +89,8 @@
 		const time: TimeEntity = dateService.init_time();
 		dateReactive = time.now;
 
+		apiService = new ApiService();
+
 		await lib.default();
 		findAnniversaries();
 	});
@@ -94,6 +101,16 @@
 		dateReactive = ex.date!;
 		findAnniversaries();
 	};
+
+	const postPricing: (type: string) => Promise<void> = async (type: string) => {
+		const payload: CheckoutPayload = {
+			date: dateReactive.toISOString(),
+			scope: type
+		};
+		console.log('posting');
+		await apiService.postCheckout(payload);
+		console.log('posted');
+	};
 </script>
 
 <section
@@ -102,12 +119,18 @@
 	<MilestoneLabel {dataType} {findAnniversaries} {selectExample} bind:dateReactive></MilestoneLabel>
 
 	{#if heroAnniversary}
-		<MilestoneHero {heroAnniversary} {now} {nextAnniversaries}></MilestoneHero>
+		<MilestoneHero {heroAnniversary} {now} {nextAnniversaries} {postPricing}></MilestoneHero>
 	{:else}
 		<div
 			style="background:linear-gradient(160deg,#16233D,#121D33);border:1px solid #27385A;border-radius:20px;padding:28px 26px;display:flex;flex-direction:column;gap:16px;min-width:0;container-type:inline-size"
 		>
 			<ListPlaceholder />
 		</div>
+	{/if}
+</section>
+
+<section>
+	{#if paid}
+		<NextDates {nextAnniversaries}></NextDates>
 	{/if}
 </section>

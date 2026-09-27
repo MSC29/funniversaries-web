@@ -4,5 +4,5 @@
 /// <reference types="vite-plugin-pwa/info" />
 
 interface ImportMetaEnv {
-	PUBLIC_ENV: string;
+	API_URL: string;
 }

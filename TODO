@@ -1,34 +1,58 @@
-# findings
-
-- prime number
-- reverse: enter a number, get a date from now/date
-- need more findings, like 1 a year
-  - hex
-  - https://en.wikipedia.org/wiki/Hexspeak
-  - https://stjerneskinn.com/hexadecimal-words.htm
-  - famous constants?
-  - analogies, distances in the universe? time taken at light speed to reach?
-  - work week
-  - milli & nano
-- should dynamically increase the size of the array of cool dates
-  - multipliers, 10, 100, power of, ...
-  - maybe only for the next 1-5 years?
-  - take nb seconds/days/... in the next 1-5 years
-  - build array for each cool number & multiplier, in range
-  - share results
-
 # ui ux
 
-- export ics
-- copy date
-- chart should be in another page
+- Claude design
+- Skeleton slight display issue
 - wording
-- big numbers should be text too (10 Billion seconds)
+
+Format consistency
+Right now the hero card shows a weekday + full date ("Tuesday, September 29, 2026") while the timeline below drops the weekday ("October 11, 2026"). Pick one and use it everywhere — I'd drop the weekday from both. It doesn't add signal here, since "Ascending sequence" / "seconds" already tell the story. So: MMMM d, yyyy (e.g. "October 11, 2026") consistently, formatted client-side with Intl.DateTimeFormat(locale, { year:'numeric', month:'long', day:'numeric' }) so it respects the visitor's locale automatically instead of hardcoding English.
+
+Relative vs absolute
+Keep "tomorrow" as a relative label, but only for genuinely near dates (today/tomorrow/this week) — past that, relative labels ("in 14 days") get noisy next to a list of long-range milestones stretching to 2030. So: relative badge for anything within ~7 days, absolute date only beyond that. That's basically what you're already doing in the hero card; just don't extend it into the timeline list.
+
+Vertical list — yes, but tighten it; cf claude
 
 # tech
 
-- offline pwa
+- tech debt
+- audit
+- follow?
+
+1. Check the date math first
+   With a start date of Sept 24 at midnight, 123,456 seconds is 1 day, 10 hours and 17 minutes, so it lands on Sept 25 at about 10:17, not Sept 26. The card also says "tomorrow", which fits Sept 25 but not Sept 26 if today is the 24th. The other three dates look a day late too: by my math 1,234,567 s lands on Oct 8, 12,345,678 s on Feb 13, and 123,456,789 s on Aug 22, 2030. It may be deliberate, for instance if you count the start date as an end-of-day. If not, it's an off-by-one, and it's worth fixing early, because the whole product is date math and someone will check it.
+
+2. Copy tweaks
+
+Number formatting: "1000 days" sits next to "1,000 weeks", so make them both "1,000".
+Date input: the field has no label, so people won't know whether to enter a birthday or a first date. A label like "When did it start?" solves the "what is it" problem at the point of use.
+Card label: "Ascending sequence" sounds like jargon. Something like "Counting up: 1-2-3-4-5-6" is friendlier and more fun.
+Pricing: "Prints are always available either way" is unclear, because I can't tell what a print is. Also say whether $4 is one-time and per date, since "for that date" suggests it is.
+Tagline: "The anniversaries you didn't know you had" would fit as a subhead or under the logo.
+Chips: "Bitcoin launched" is ambiguous, since the genesis block and the whitepaper have different dates. Consider adding a personal chip like "My birthday" to show the main use.
+
+3. Since you're forming the company
+
+Add "by Emessy Labs" to the footer.
+You're selling at $4 from France, so you'll probably need legal notices (mentions légales) and terms of sale (CGV) linked in the footer, and a payment setup that handles EU VAT. Merchants of record such as Paddle or Polar take care of that. Please verify these with an accountant, as I'm not one.
+
+- [ ] Rust api
+- [ ] Show full dates ui
+- [ ] Rust api ics
+- [ ] Dl ics from ui
+- [ ] Lemon squizz
+- [ ] Link authentication??? https://developers.cloudflare.com/email-service/examples/email-sending/magic-link/
+- [ ] Affiliate merch
+- [ ] Analytics
 
 # $$$
 
-- shopify
+- company name & product name
+- payment via Lemon
+- affiliate links
+
+Suggested first two weeks of actual work
+Sign up for Etsy/Amazon/Zazzle affiliate programs (a day, mostly waiting for approval).
+Add one "🎁 Find a gift for this date" button that opens a pre-filled affiliate search.
+Add 5–10 static SEO landing pages for the most-searched milestone numbers.
+Set up Lemon Squeezy, wire a single "Download poster" paid button using canvas-rendered output from the existing WASM calc.
+Let it sit for a month. Check clicks and conversions before building anything else — including the API, the T-shirt integration, or reminders.
