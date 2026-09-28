@@ -9,7 +9,10 @@ const config = {
 	kit: {
 		adapter: adapter({
 			fallback: '200.html'
-		})
+		}),
+		env: {
+			publicPrefix: 'PUBLIC_'
+		}
 	}
 };
 
