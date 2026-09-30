@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { ApiService } from '$lib/services/api.service';
 	import { UiError } from '$lib/entities/uierror.entity';

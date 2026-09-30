@@ -18,6 +18,9 @@
 	import NextDates from './NextDates.svelte';
 	import { ApiService } from '$lib/services/api.service';
 	import type { CheckoutPayload } from '$lib/payloads/checkout.payload';
+	import type { CheckoutResponse } from '$lib/responses/checkout.response';
+	import type { UiErrorEntity } from '$lib/entities/error.entity';
+	import UiErrorMessage from './UiErrorMessage.svelte';
 
 	let dateService: DatesService;
 	let apiService: ApiService;
@@ -28,6 +31,7 @@
 	let heroAnniversary: Anniversary | undefined = $state<Anniversary>();
 	let nextAnniversaries: Anniversary[] = $state([]);
 	let paid: boolean = $state(true);
+	let uiError: UiErrorEntity;
 
 	// let origin = $state(DEFAULT_ORIGIN);
 	let now = $state(Date.now());
@@ -103,13 +107,20 @@
 	};
 
 	const postPricing: (type: string) => Promise<void> = async (type: string) => {
-		const payload: CheckoutPayload = {
-			date: dateReactive.toISOString(),
-			scope: type
-		};
-		console.log('posting');
-		await apiService.postCheckout(payload);
-		console.log('posted');
+		try {
+			const payload: CheckoutPayload = {
+				date: dateReactive.toISOString(),
+				scope: type
+			};
+			console.log('posting');
+			const checkoutResponse: CheckoutResponse = await apiService.postCheckout(payload);
+			window.location.assign(checkoutResponse.checkout_url); // full-page redirect to outside svelte (not using goto)
+		} catch {
+			uiError = {
+				title: 'Checkout failed',
+				message: 'Could not start the checkout. Please try again.'
+			};
+		}
 	};
 </script>
 
@@ -134,3 +145,7 @@
 		<NextDates {nextAnniversaries}></NextDates>
 	{/if}
 </section>
+
+{#if uiError}
+	<UiErrorMessage {uiError} />
+{/if}
