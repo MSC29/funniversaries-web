@@ -1,4 +1,5 @@
 import { PUBLIC_API_URL } from '$env/static/public';
+import type { AnniversaryPayload } from '$lib/entities/anniversary.entity';
 import { UiError } from '$lib/entities/uierror.entity';
 
 import type { CheckoutPayload } from '$lib/payloads/checkout.payload';
@@ -73,5 +74,17 @@ export class ApiService {
 		if (!res.ok) {
 			throw new UiError('Could not send the link, please try again in a moment.');
 		}
+	}
+
+	async getAllAnniversaries(date: string): Promise<AnniversaryPayload[]> {
+		const res: Response = await fetch(`${PUBLIC_API_URL}/anniversaries?date=${date}`, {
+			credentials: 'include'
+		});
+
+		if (!res.ok) {
+			throw new UiError('Could not check your access, please try again.');
+		}
+
+		return await res.json();
 	}
 }

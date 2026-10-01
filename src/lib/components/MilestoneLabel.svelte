@@ -17,6 +17,8 @@
 		dateReactive = $bindable<Date>(new Date())
 	}: Props = $props();
 
+	console.log(`label date  ${dateReactive}`);
+
 	const examples: AnniversaryExample[] = [
 		{ id: 1, title: 'The day the web went public', date: new Date('1991-08-06') },
 		{ id: 2, title: 'Y2K', date: new Date('2000-01-01') },

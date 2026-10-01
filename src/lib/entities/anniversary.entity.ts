@@ -25,6 +25,7 @@ export interface Anniversary {
 	funNumber: FunNumberDef;
 }
 
+// TODO rename
 export interface AnniversaryPayload {
 	// unit associated with anniversary
 	unit: string;
