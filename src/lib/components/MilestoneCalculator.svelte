@@ -40,7 +40,6 @@
 
 	let session = $state<SessionResponse | null>(null);
 	let sessionLoaded = $state(false);
-	let data = $state<unknown>(null);
 	let loadError = $state(false);
 
 	// let origin = $state(DEFAULT_ORIGIN);
@@ -52,105 +51,58 @@
 
 	let { dataType }: Props = $props();
 
-	const findAnniversaries: () => Promise<void> = async () => {
-		console.log(`findAnniversaries ${dateReactive.toISOString()}`);
-		// generateDates(dateReactive);
-		const generatedAnniversaries: AnniversaryPayload[] = await lib.compute_preview(
-			dateReactive.toISOString()
-		);
-		console.log(generatedAnniversaries.length);
+	// const findAnniversaries: () => Promise<void> = async () => {
+	// 	console.log(`findAnniversaries ${dateReactive.toISOString()}`);
+	// 	// generateDates(dateReactive);
+	// 	const generatedAnniversaries: AnniversaryPayload[] = await lib.compute_preview(
+	// 		dateReactive.toISOString()
+	// 	);
+	// 	console.log(generatedAnniversaries.length);
 
-		//filtering out invalid/useless JS dates
-		const lifetime: number = new Date().getFullYear() + 50;
-		const validAnniversaries: Anniversary[] = [];
+	// 	//filtering out invalid/useless JS dates
+	// 	const lifetime: number = new Date().getFullYear() + 50;
+	// 	const validAnniversaries: Anniversary[] = [];
 
-		generatedAnniversaries
-			// .filter((item: Anniversary | undefined): item is Anniversary => item !== undefined);
-			.forEach((a: AnniversaryPayload) => {
-				if (!a) {
-					return undefined;
-				}
+	// 	generatedAnniversaries
+	// 		// .filter((item: Anniversary | undefined): item is Anniversary => item !== undefined);
+	// 		.forEach((a: AnniversaryPayload) => {
+	// 			if (!a) {
+	// 				return undefined;
+	// 			}
 
-				const dateObj: Date = new Date(a.date);
-				if (
-					dateObj instanceof Date &&
-					!isNaN(dateObj.valueOf()) &&
-					dateObj.getFullYear() < lifetime
-				) {
-					const annif: Anniversary = {
-						date: dateObj,
-						unit: a.unit,
-						funNumber: a.fun_number
-					};
-					validAnniversaries.push(annif);
-				}
-			});
+	// 			const dateObj: Date = new Date(a.date);
+	// 			if (
+	// 				dateObj instanceof Date &&
+	// 				!isNaN(dateObj.valueOf()) &&
+	// 				dateObj.getFullYear() < lifetime
+	// 			) {
+	// 				const annif: Anniversary = {
+	// 					date: dateObj,
+	// 					unit: a.unit,
+	// 					funNumber: a.fun_number
+	// 				};
+	// 				validAnniversaries.push(annif);
+	// 			}
+	// 		});
 
-		//anniversaries are coming back sorted, but we're changing the sort order here
-		const anniversariesSorted: Anniversary[] = validAnniversaries.sort(
-			(a: Anniversary, b: Anniversary) => a.date.getTime() - b.date.getTime()
-		);
+	// 	//anniversaries are coming back sorted, but we're changing the sort order here
+	// 	const anniversariesSorted: Anniversary[] = validAnniversaries.sort(
+	// 		(a: Anniversary, b: Anniversary) => a.date.getTime() - b.date.getTime()
+	// 	);
 
-		heroAnniversary = anniversariesSorted[0];
-		nextAnniversaries[0] = anniversariesSorted[1];
-		nextAnniversaries[1] = anniversariesSorted[2];
-		nextAnniversaries[2] = anniversariesSorted[3];
-	};
+	// 	heroAnniversary = anniversariesSorted[0];
+	// 	nextAnniversaries[0] = anniversariesSorted[1];
+	// 	nextAnniversaries[1] = anniversariesSorted[2];
+	// 	nextAnniversaries[2] = anniversariesSorted[3];
+	// };
 
 	// // Does the session cover the selected day?
 
-	// // Plain async function: all the awaiting lives here, outside the effect.
-	// const fetchData = async (key: string, full: boolean) => {
-	// 	if (!full) return apiService.getPreview(key);
-	// 	try {
-	// 		return await apiService.getAllAnniversaries(key);
-	// 	} catch {
-	// 		return apiService.getPreview(key); // e.g. session expired: degrade to the preview
-	// 	}
-	// };
-
-	// // Runs after the first render, then again whenever dateReactive, session or
-	// // sessionLoaded change (Svelte tracks what is read synchronously inside).
-	// $effect(() => {
-	// 	if (!sessionLoaded) return;
-	// 	const key = toDateKey(dateReactive);
-	// 	const full = entitled;
-	// 	let stale = false;
-	// 	loadError = false;
-
-	// 	fetchData(key, full)
-	// 		.then((result) => {
-	// 			if (!stale) data = result;
-	// 		})
-	// 		.catch(() => {
-	// 			if (!stale) loadError = true;
-	// 		});
-
-	// 	// Cleanup: runs before the next run. Late answers for an old date are ignored.
-	// 	return () => {
-	// 		stale = true;
-	// 	};
-	// });
-
-	onMount(async () => {
-		dateService = new DatesService();
-		apiService = new ApiService();
-		if (page.url.searchParams.get('date') !== null) {
-			const dateString = page.url.searchParams.get('date')!;
-			dateReactive = new Date(dateString);
-			console.log(`date from param  ${dateService.getDateString(dateReactive)}`);
-		}
-
-		const time: TimeEntity = dateService.init_time();
-		dateReactive = time.now;
-
-		session = await apiService.getSession().catch(() => null);
-		sessionLoaded = true;
-
-		await lib.default();
+	// Plain async function: all the awaiting lives here, outside the effect.
+	const fetchData = async () => {
+		console.log(`generating date from ${dateService.getDateString(dateReactive)}`);
 
 		let generatedAnniversaries: AnniversaryPayload[];
-
 		if (session && session.authenticated) {
 			const entitled = session.entitlements.some(
 				(e) =>
@@ -159,7 +111,9 @@
 			);
 
 			if (entitled) {
-				generatedAnniversaries = await apiService.getAllAnniversaries(dateReactive.toISOString());
+				generatedAnniversaries = await apiService.getAllAnniversaries(
+					dateService.getDateString(dateReactive)
+				);
 			} else {
 				generatedAnniversaries = await lib.compute_preview(dateReactive.toISOString());
 			}
@@ -167,38 +121,83 @@
 			generatedAnniversaries = await lib.compute_preview(dateReactive.toISOString());
 		}
 
-		const validAnniversaries: Anniversary[] = [];
-		generatedAnniversaries
-			// .filter((item: Anniversary | undefined): item is Anniversary => item !== undefined);
-			.forEach((a: AnniversaryPayload) => {
-				if (!a) {
-					return undefined;
-				}
+		return generatedAnniversaries;
+	};
 
-				const dateObj: Date = new Date(a.date);
-				if (dateObj instanceof Date && !isNaN(dateObj.valueOf())) {
-					const annif: Anniversary = {
-						date: dateObj,
-						unit: a.unit,
-						funNumber: a.fun_number
-					};
-					validAnniversaries.push(annif);
+	// Runs after the first render, then again whenever dateReactive, session or
+	// sessionLoaded change (Svelte tracks what is read synchronously inside).
+	$effect(() => {
+		if (!sessionLoaded) return;
+		let stale = false;
+		loadError = false;
+
+		console.log(`calculator date  ${dateReactive}`);
+
+		fetchData()
+			.then((result) => {
+				if (!stale) {
+					console.log(result.length);
+
+					const validAnniversaries: Anniversary[] = [];
+					result
+						// .filter((item: Anniversary | undefined): item is Anniversary => item !== undefined);
+						.forEach((a: AnniversaryPayload) => {
+							if (!a) {
+								return undefined;
+							}
+
+							const dateObj: Date = new Date(a.date);
+							if (dateObj instanceof Date && !isNaN(dateObj.valueOf())) {
+								const annif: Anniversary = {
+									date: dateObj,
+									unit: a.unit,
+									funNumber: a.fun_number
+								};
+								validAnniversaries.push(annif);
+							}
+						});
+
+					heroAnniversary = validAnniversaries[0];
+					console.log(heroAnniversary.funNumber.title);
+					nextAnniversaries[0] = validAnniversaries[1];
+					nextAnniversaries[1] = validAnniversaries[2];
+					nextAnniversaries[2] = validAnniversaries[3];
 				}
+			})
+			.catch(() => {
+				if (!stale) loadError = true;
 			});
 
-		heroAnniversary = validAnniversaries[0];
-		nextAnniversaries[0] = validAnniversaries[1];
-		nextAnniversaries[1] = validAnniversaries[2];
-		nextAnniversaries[2] = validAnniversaries[3];
+		// Cleanup: runs before the next run. Late answers for an old date are ignored.
+		return () => {
+			stale = true;
+		};
+	});
 
-		console.log(generatedAnniversaries.length);
+	onMount(async () => {
+		await lib.default();
+
+		dateService = new DatesService();
+		apiService = new ApiService();
+
+		session = await apiService.getSession().catch(() => null);
+		sessionLoaded = true;
+
+		const time: TimeEntity = dateService.init_time();
+		dateReactive = time.now;
+
+		if (page.url.searchParams.get('date') !== null) {
+			const dateString = page.url.searchParams.get('date')!;
+			dateReactive = new Date(dateString);
+			console.log(`date from param  ${dateService.getDateString(dateReactive)}`);
+		}
 	});
 
 	const selectExample: (ex: AnniversaryExample) => Promise<void> = async (
 		ex: AnniversaryExample
 	) => {
 		dateReactive = ex.date!;
-		findAnniversaries();
+		// findAnniversaries();
 	};
 
 	const postPricing: (type: string) => Promise<void> = async (type: string) => {
@@ -222,7 +221,7 @@
 <section
 	style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px;align-items:center"
 >
-	<MilestoneLabel {dataType} {findAnniversaries} {selectExample} bind:dateReactive></MilestoneLabel>
+	<MilestoneLabel {dataType} {selectExample} bind:dateReactive></MilestoneLabel>
 
 	{#if heroAnniversary}
 		<MilestoneHero {heroAnniversary} {now} {nextAnniversaries} {postPricing}></MilestoneHero>

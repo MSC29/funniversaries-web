@@ -5,19 +5,13 @@
 
 	interface Props {
 		dataType: DateTypeCalculator;
-		findAnniversaries: () => Promise<void>;
 		selectExample: (ex: AnniversaryExample) => Promise<void>;
 		dateReactive: Date;
 	}
 
-	let {
-		dataType,
-		findAnniversaries,
-		selectExample,
-		dateReactive = $bindable<Date>(new Date())
-	}: Props = $props();
+	let { dataType, selectExample, dateReactive = $bindable<Date>(new Date()) }: Props = $props();
 
-	console.log(`label date  ${dateReactive}`);
+	$effect(() => console.log(`label date  ${dateReactive}`));
 
 	const examples: AnniversaryExample[] = [
 		{ id: 1, title: 'The day the web went public', date: new Date('1991-08-06') },
@@ -46,7 +40,6 @@
 					'background:var(--surface-2);border:1px solid var(--line-2);border-radius:12px;color:var(--ink);font-family:inherit;font-size:16px;padding:13px 15px;color-scheme:dark;min-height:48px;box-sizing:border-box'
 			}}
 			bind:value={dateReactive}
-			onselect={findAnniversaries}
 			dateFormat={{ year: 'numeric', month: 'short', day: '2-digit' }}
 			placeholder="Type a date or use calendar"
 			autohide={true}

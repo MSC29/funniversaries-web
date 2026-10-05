@@ -18,6 +18,12 @@ Vertical list — yes, but tighten it; cf claude
 - audit
 - follow?
 
+how to fucking debug sourcemaps?
+rust error handling
+
+webhook corder created; update to say it's created
+create checkout should create a check with no order id
+
 1. Check the date math first
    With a start date of Sept 24 at midnight, 123,456 seconds is 1 day, 10 hours and 17 minutes, so it lands on Sept 25 at about 10:17, not Sept 26. The card also says "tomorrow", which fits Sept 25 but not Sept 26 if today is the 24th. The other three dates look a day late too: by my math 1,234,567 s lands on Oct 8, 12,345,678 s on Feb 13, and 123,456,789 s on Aug 22, 2030. It may be deliberate, for instance if you count the start date as an end-of-day. If not, it's an off-by-one, and it's worth fixing early, because the whole product is date math and someone will check it.
 
