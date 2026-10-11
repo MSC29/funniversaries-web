@@ -33,7 +33,7 @@ export interface AnniversaryPayload {
 	date: Date;
 
 	// FunNumberDef
-	fun_number: FunNumberDef;
+	funNumber: FunNumberDef;
 }
 
 export interface AnniversaryExample {

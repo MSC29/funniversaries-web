@@ -1,7 +1,37 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { onMount } from 'svelte';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
+
+	import { ApiService } from '$lib/services/api.service';
+	import type { CheckoutPayload } from '$lib/payloads/checkout.payload';
+	import type { CheckoutResponse } from '$lib/responses/checkout.response';
+	import type { UiErrorEntity } from '$lib/entities/error.entity';
+
+	let apiService: ApiService;
+	let uiError: UiErrorEntity;
+
+	onMount(async () => {
+		apiService = new ApiService();
+	});
+
+	const postPricing: () => Promise<void> = async () => {
+		try {
+			const payload: CheckoutPayload = {
+				date: undefined,
+				scope: 'all-dates'
+			};
+			console.log(`posting ${payload.scope}`);
+			const checkoutResponse: CheckoutResponse = await apiService.postCheckout(payload);
+			window.location.assign(checkoutResponse.checkout_url); // full-page redirect to outside svelte (not using goto)
+		} catch {
+			uiError = {
+				title: 'Checkout failed',
+				message: 'Could not start the checkout. Please try again.'
+			};
+		}
+	};
 </script>
 
 <svelte:head>
@@ -33,7 +63,7 @@
 		<div
 			style="display:flex;flex-direction:column;gap:9px;font-size:15px;color:var(--ink-2);line-height:1.45"
 		>
-			<span>The next 5 milestones for any date</span>
+			<span>The next 4 milestones for any date</span>
 			<span>Shareable link</span>
 			<span>Add a milestone to your calendar</span>
 		</div>
@@ -45,28 +75,45 @@
 	</div>
 
 	<div
-		style="background:linear-gradient(160deg,#1B2A47,#131F37);border:1px solid var(--accent);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px"
+		style="background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px"
 	>
-		<div style="display:flex;align-items:center;gap:10px">
-			<span style="font-size:18px;font-weight:600">Everything</span>
-			<span
-				style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--bg);background:var(--accent);border-radius:999px;padding:4px 9px"
-				>One-off</span
-			>
-		</div>
+		<div style="font-size:18px;font-weight:600">Single date</div>
 		<div style="font-size:34px;font-weight:700;letter-spacing:-0.03em">$4</div>
 		<div
-			style="display:flex;flex-direction:column;gap:9px;font-size:15px;color:#E3E9F5;line-height:1.45"
+			style="display:flex;flex-direction:column;gap:9px;font-size:15px;color:var(--ink-2);line-height:1.45"
 		>
 			<span>Every milestone for that date, to 2100</span>
 			<span>Filter by unit and category</span>
 			<span>Export the whole list to your calendar</span>
 			<span>A reminder before each one</span>
 		</div>
+		<a
+			href={resolve('/', {})}
+			style="font-size:15px;font-weight:600;color:var(--ink);background:transparent;border:1px solid #38496E;border-radius:12px;padding:13px 18px;min-height:46px;margin-top:auto;display:flex;align-items:center;justify-content:center;text-decoration:none"
+			>Pick the date</a
+		>
+	</div>
+
+	<div
+		style="background:linear-gradient(160deg,#1B2A47,#131F37);border:1px solid var(--accent);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px"
+	>
+		<div style="display:flex;align-items:center;gap:10px">
+			<span style="font-size:18px;font-weight:600">Any date</span>
+			<span
+				style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--bg);background:var(--accent);border-radius:999px;padding:4px 9px"
+				>One-off</span
+			>
+		</div>
+		<div style="font-size:34px;font-weight:700;letter-spacing:-0.03em">$10</div>
+		<div
+			style="display:flex;flex-direction:column;gap:9px;font-size:15px;color:#E3E9F5;line-height:1.45"
+		>
+			<span>Every milestone for every date</span>
+		</div>
 		<button
-			onclick={() => alert('Wire this to your checkout provider.')}
+			onclick={postPricing}
 			style="font-size:15px;font-weight:600;color:var(--bg);background:var(--accent);border:0;border-radius:12px;padding:13px 18px;cursor:pointer;min-height:46px;margin-top:auto"
-			>Unlock a date — $4</button
+			>Unlock all dates — $10</button
 		>
 	</div>
 </section>

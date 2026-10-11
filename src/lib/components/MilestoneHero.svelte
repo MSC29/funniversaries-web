@@ -5,15 +5,10 @@
 	interface Props {
 		heroAnniversary: Anniversary;
 		now: number;
-		nextAnniversaries: Anniversary[];
-		postPricing: (type: string) => Promise<void>;
+		topAnniversaries: Anniversary[];
 	}
 
-	let { heroAnniversary, now, nextAnniversaries, postPricing }: Props = $props();
-
-	const postPricingSingleDate: () => Promise<void> = async () => {
-		await postPricing('single-date');
-	};
+	let { heroAnniversary, now, topAnniversaries }: Props = $props();
 </script>
 
 <div
@@ -48,23 +43,23 @@
 			style="font-size:12px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--muted-3)"
 			>Then</span
 		>
-		{#each nextAnniversaries as m (m.date)}
+		{#each topAnniversaries as m (m.date)}
 			<div style="display:flex;gap:12px;align-items:baseline;justify-content:space-between">
 				<span
 					style="font-size:16px;font-weight:600;letter-spacing:-0.015em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere"
-					>{m.funNumber.title}</span
+					>{m.funNumber.title} {m.unit}</span
 				>
 				<span style="font-size:13px;color:var(--muted-2);white-space:nowrap"
 					>{shortDate(m.date)}</span
 				>
 			</div>
 		{/each}
-		<div style="font-size:13px;color:var(--muted-3);padding-top:2px">
+		<!-- <div style="font-size:13px;color:var(--muted-3);padding-top:2px">
 			<button
 				onclick={() => postPricingSingleDate()}
 				style="font-size:15px;font-weight:600;color:var(--bg);background:var(--accent);border-radius:12px;padding:13px 20px;min-height:46px;align-items:center;text-decoration:none;cursor: pointer;"
 				>See every milestone for this date</button
 			>
-		</div>
+		</div> -->
 	</div>
 </div>
