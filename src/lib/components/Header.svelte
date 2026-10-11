@@ -17,5 +17,6 @@
 
 	<nav style="display:flex;align-items:center;gap:20px;font-size:14px">
 		<a href={resolve('/pricing', {})} style="color:var(--muted)">Pricing</a>
+		<a href={resolve('/faq', {})} style="color:var(--muted)">FAQ</a>
 	</nav>
 </header>

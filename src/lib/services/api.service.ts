@@ -71,8 +71,22 @@ export class ApiService {
 			body: JSON.stringify(payload)
 		});
 
+		if (res.status === 429) {
+			throw new UiError('Too many requests. Wait a few minutes and try again.');
+		}
 		if (!res.ok) {
 			throw new UiError('Could not send the link, please try again in a moment.');
+		}
+	}
+
+	/** Recovery flow: the Worker always answers with the same generic message. */
+	async postVerifyLink(token: string): Promise<void> {
+		const res: Response = await fetch(`${PUBLIC_API_URL}/verify?token=${token}`, {
+			credentials: 'include'
+		});
+
+		if (!res.ok) {
+			throw new UiError('Could not verify the link, please try again in a moment.');
 		}
 	}
 

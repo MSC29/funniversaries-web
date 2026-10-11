@@ -7,7 +7,9 @@
 >
 	<span>Funniversaries</span>
 	<div style="display:flex;flex-wrap:wrap;gap:18px">
-		<a href={resolve('/pricing', {})} style="color:var(--muted)">Pricing</a>
+		<a href={resolve('/recover', {})} style="color:var(--muted)">Recover your license</a>
 		<a href={resolve('/privacy', {})} style="color:var(--muted)">Privacy</a>
+		<a href={resolve('/pricing', {})} style="color:var(--muted)">Pricing</a>
+		<a href={resolve('/pricing', {})} style="color:var(--muted)">FAQ</a>
 	</div>
 </footer>
