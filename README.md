@@ -79,3 +79,5 @@ Install CA from mkcert https://github.com/FiloSottile/mkcert?tab=readme-ov-file#
 Chrome ok, Firefox didn't work
 
 Offline mode...
+
+cheat deploy `npx wrangler pages deploy build --project-name=funniversaries-web`

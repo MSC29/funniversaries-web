@@ -3,6 +3,13 @@
 /// <reference types="vite-plugin-pwa/client" />
 /// <reference types="vite-plugin-pwa/info" />
 
-interface ImportMetaEnv {
-	PUBLIC_ENV: string;
+declare global {
+	namespace App {
+		// interface Locals {}
+		// interface PageData {}
+		// interface Error {}
+		// interface Platform {}
+	}
 }
+
+export {};

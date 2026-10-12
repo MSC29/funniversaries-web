@@ -17,7 +17,7 @@
 		{#each nextAnniversaries as item (item.funNumber.count)}
 			<TimelineItem
 				title="{item.funNumber.title} {item.unit}"
-				date={item.date}
+				date={item.date.toISOString()}
 				dateFormat="full-date"
 			>
 				<p class="text-sm text-[#c7c7d6]">{item.funNumber.label}</p>
