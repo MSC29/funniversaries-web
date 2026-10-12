@@ -6,7 +6,7 @@ import wasmPack from 'vite-plugin-wasm-pack';
 //last matters
 import tailwindcss from '@tailwindcss/vite';
 
-export default defineConfig(({ mode, command }) => {
+export default defineConfig(({ mode }) => {
 	const isProd = mode === 'production';
 
 	return {

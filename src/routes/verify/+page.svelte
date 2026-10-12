@@ -6,16 +6,11 @@
 	import { ApiService } from '$lib/services/api.service';
 	import type { Entitlement } from '$lib/responses/session.response';
 
-	const MAX_ATTEMPTS = 20;
-	const DELAY_MS = 1500;
-
 	// Same shape the API returns for the session
 	type View = { kind: 'working' } | { kind: 'failed'; reason: string } | { kind: 'timeout' };
 
 	let view = $state<View>({ kind: 'working' });
 	const apiService = new ApiService();
-
-	const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 	// Entitlements come newest purchase first, so [0] is what was just claimed.
 	// The date is already a YYYY-MM-DD day key: slice(0, 10) also tolerates old ISO values

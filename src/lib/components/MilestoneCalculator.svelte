@@ -31,18 +31,16 @@
 	// throws at build time. Start with today and apply ?date=YYYY-MM-DD in onMount (browser only).
 	// Date from /claim (?date=YYYY-MM-DD), else today
 	let dateReactive = $state(new Date());
-	let ready = $state(false); // render date-dependent UI only when true (avoids a flash of the build-time date)
 
 	let heroAnniversary: Anniversary | undefined = $state<Anniversary>();
 	let topAnniversaries: Anniversary[] = $state([]);
 	let nextAnniversaries: Anniversary[] = $state([]);
 
 	let paid: boolean = $state(false);
-	let uiError: UiErrorEntity;
+	let uiError: UiErrorEntity | undefined = $state(undefined);
 
 	let session = $state<SessionResponse | null>(null);
 	let sessionLoaded = $state(false);
-	let loadError = $state(false);
 
 	// let origin = $state(DEFAULT_ORIGIN);
 	let now = $state(Date.now());
@@ -86,7 +84,6 @@
 	$effect(() => {
 		if (!sessionLoaded) return;
 		let stale = false;
-		loadError = false;
 
 		console.log(`calculator date  ${dateReactive}`);
 
@@ -123,7 +120,7 @@
 				}
 			})
 			.catch(() => {
-				if (!stale) loadError = true;
+				// if (!stale) loadError = true;
 			});
 
 		// Cleanup: runs before the next run. Late answers for an old date are ignored.

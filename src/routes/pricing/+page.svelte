@@ -8,6 +8,7 @@
 	import type { CheckoutPayload } from '$lib/payloads/checkout.payload';
 	import type { CheckoutResponse } from '$lib/responses/checkout.response';
 	import type { UiErrorEntity } from '$lib/entities/error.entity';
+	import UiErrorMessage from '$lib/components/UiErrorMessage.svelte';
 
 	let apiService: ApiService;
 	let uiError: UiErrorEntity;
@@ -53,6 +54,10 @@
 		One payment per date, no subscription. Unlock the date you care about and keep it.
 	</p>
 </section>
+
+{#if uiError}
+	<UiErrorMessage {uiError} />
+{/if}
 
 <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
 	<div
