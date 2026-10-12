@@ -26,8 +26,16 @@ create checkout should create a check with no order id
 
 1. Check the date math first
    With a start date of Sept 24 at midnight, 123,456 seconds is 1 day, 10 hours and 17 minutes, so it lands on Sept 25 at about 10:17, not Sept 26. The card also says "tomorrow", which fits Sept 25 but not Sept 26 if today is the 24th. The other three dates look a day late too: by my math 1,234,567 s lands on Oct 8, 12,345,678 s on Feb 13, and 123,456,789 s on Aug 22, 2030. It may be deliberate, for instance if you count the start date as an end-of-day. If not, it's an off-by-one, and it's worth fixing early, because the whole product is date math and someone will check it.
-
 2. Copy tweaks
+3. check API contract; response has useless fields
+
+Issues I saw in the handlers
+
+The panic!("") in verify_magic_link. If the entitlement is missing, the Worker dies with an opaque 500 after the link has already been consumed. Return a proper error instead.
+Mail outages leak who has bought. send_magic_link(...).await? fails with a 500 for known emails when Resend is down, while unknown emails still get 200. It also ignores Resend’s HTTP status, so a 4xx or 5xx loses the email silently. I’d check the status, log failures, and still return the generic 200.
+Email scanners can burn the token. Outlook Safelinks and antivirus tools often GET links in emails before the user clicks, and your GET consumes the token, so the user sees “invalid or expired”. The usual fix is for /verify to be a page with a button that POSTs the token.
+The 15 minutes in the email is hardcoded while the TTL comes from MAGIC_LINK_TTL_MINUTES, so they can drift apart.
+The link points at {APP_ORIGIN}/verify, but the API route is /api/verify. I assumed something forwards one to the other. If nothing does, the link in the email is dead, and the SvelteKit /verify page doesn’t exist yet.
 
 Number formatting: "1000 days" sits next to "1,000 weeks", so make them both "1,000".
 Date input: the field has no label, so people won't know whether to enter a birthday or a first date. A label like "When did it start?" solves the "what is it" problem at the point of use.
