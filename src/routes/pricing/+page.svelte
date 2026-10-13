@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
-	import Header from '$lib/components/Header.svelte';
-	import Footer from '$lib/components/Footer.svelte';
 
 	import { ApiService } from '$lib/services/api.service';
 	import type { CheckoutPayload } from '$lib/payloads/checkout.payload';
@@ -39,8 +37,6 @@
 	<title>Pricing — Funniversaries</title>
 	<meta name="description" content="Free to look. $4 unlocks every milestone for a date." />
 </svelte:head>
-
-<Header />
 
 <section style="display:flex;flex-direction:column;gap:10px">
 	<h1
@@ -127,5 +123,3 @@
 	Every milestone can be printed on a shirt, mug, cap or poster through our print partners. That
 	part is always available, free or paid.
 </p>
-
-<Footer />

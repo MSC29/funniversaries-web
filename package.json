@@ -4,6 +4,7 @@
     "private": true,
     "scripts": {
         "run": "vite dev --host",
+        "run:test": "vite dev --host --mode test",
         "run:dev": "vite dev --host --mode dev",
         "run:production": "vite dev --host --mode production",
         "build": "vite build",
@@ -53,7 +54,7 @@
     },
     "type": "module",
     "dependencies": {
-        "@msc29/funniversaries-wasm": "^0.0.4",
+        "@msc29/funniversaries-wasm": "^0.0.5",
         "@vite-pwa/sveltekit": "^1.1.0",
         "date-picker-svelte": "^2.12.0"
     }

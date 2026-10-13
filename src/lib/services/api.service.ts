@@ -1,5 +1,5 @@
 import { PUBLIC_API_URL } from '$env/static/public';
-import type { AnniversaryPayload } from '$lib/entities/anniversary.entity';
+import type { AnniversariesResponse } from '$lib/entities/anniversary.entity';
 import { UiError } from '$lib/entities/uierror.entity';
 
 import type { CheckoutPayload } from '$lib/payloads/checkout.payload';
@@ -90,7 +90,7 @@ export class ApiService {
 		}
 	}
 
-	async getAllAnniversaries(date: string): Promise<AnniversaryPayload[]> {
+	async getAllAnniversaries(date: string): Promise<AnniversariesResponse> {
 		const res: Response = await fetch(`${PUBLIC_API_URL}/anniversaries?date=${date}`, {
 			credentials: 'include'
 		});

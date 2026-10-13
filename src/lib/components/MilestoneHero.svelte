@@ -6,9 +6,10 @@
 		heroAnniversary: Anniversary;
 		now: number;
 		topAnniversaries: Anniversary[];
+		numberAnniversariesGenerated: number;
 	}
 
-	let { heroAnniversary, now, topAnniversaries }: Props = $props();
+	let { heroAnniversary, now, topAnniversaries, numberAnniversariesGenerated }: Props = $props();
 </script>
 
 <div
@@ -43,7 +44,7 @@
 			style="font-size:12px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--muted-3)"
 			>Then</span
 		>
-		{#each topAnniversaries as m (m.date)}
+		{#each topAnniversaries as m (m.id)}
 			<div style="display:flex;gap:12px;align-items:baseline;justify-content:space-between">
 				<span
 					style="font-size:16px;font-weight:600;letter-spacing:-0.015em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere"
@@ -54,6 +55,9 @@
 				>
 			</div>
 		{/each}
+
+		another {numberAnniversariesGenerated} generated
+
 		<!-- <div style="font-size:13px;color:var(--muted-3);padding-top:2px">
 			<button
 				onclick={() => postPricingSingleDate()}

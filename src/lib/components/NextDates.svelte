@@ -5,18 +5,21 @@
 
 	interface Props {
 		nextAnniversaries: Anniversary[];
+		numberAnniversariesGenerated: number;
 	}
 
-	let { nextAnniversaries }: Props = $props();
+	let { nextAnniversaries, numberAnniversariesGenerated }: Props = $props();
 </script>
 
 <section class="mt-10">
-	<p class="mb-10 text-center text-3xl font-medium text-[#7c7c8b]">Anniversaries coming up</p>
+	<p class="mb-10 text-center text-3xl font-medium text-[#7c7c8b]">
+		{numberAnniversariesGenerated} Anniversaries coming up
+	</p>
 
 	<Timeline>
-		{#each nextAnniversaries as item (item.funNumber.count)}
+		{#each nextAnniversaries as item (item.id)}
 			<TimelineItem
-				title="{item.funNumber.title} {item.unit}"
+				title="{item.funNumber.title} {item.date}"
 				date={item.date.toISOString()}
 				dateFormat="full-date"
 			>

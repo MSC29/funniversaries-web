@@ -16,24 +16,24 @@ export interface FunNumberDef {
 }
 
 export interface Anniversary {
+	//for svelte to deduplicate in list
+	id: number;
 	// unit associated with anniversary
 	unit: string;
 	// anniversary date
 	date: Date;
-
 	// FunNumberDef
 	funNumber: FunNumberDef;
 }
 
-// TODO rename
-export interface AnniversaryPayload {
-	// unit associated with anniversary
-	unit: string;
-	// anniversary date
-	date: Date;
+export interface AnniversaryResponse {
+	id: number;
+	anniversary: Anniversary;
+}
 
-	// FunNumberDef
-	funNumber: FunNumberDef;
+export interface AnniversariesResponse {
+	anniversaries: AnniversaryResponse[];
+	total: number;
 }
 
 export interface AnniversaryExample {

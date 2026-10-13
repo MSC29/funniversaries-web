@@ -7,9 +7,10 @@
 
 	import type { TimeEntity } from '$lib/entities/time.entity';
 	import type {
+		AnniversariesResponse,
 		Anniversary,
 		AnniversaryExample,
-		AnniversaryPayload
+		AnniversaryResponse
 	} from '$lib/entities/anniversary.entity';
 	import MilestoneLabel from './MilestoneLabel.svelte';
 	import MilestoneHero from './MilestoneHero.svelte';
@@ -35,6 +36,7 @@
 	let heroAnniversary: Anniversary | undefined = $state<Anniversary>();
 	let topAnniversaries: Anniversary[] = $state([]);
 	let nextAnniversaries: Anniversary[] = $state([]);
+	let numberAnniversariesGenerated: number = $state(0);
 
 	let paid: boolean = $state(false);
 	let uiError: UiErrorEntity | undefined = $state(undefined);
@@ -55,7 +57,7 @@
 	const fetchData = async () => {
 		console.log(`generating date from ${dateService.getDateString(dateReactive)}`);
 
-		let generatedAnniversaries: AnniversaryPayload[];
+		let generatedAnniversaries: AnniversariesResponse;
 		let entitled = false;
 
 		if (session && session.authenticated) {
@@ -76,6 +78,8 @@
 			console.log(generatedAnniversaries);
 		}
 
+		numberAnniversariesGenerated = generatedAnniversaries.total;
+
 		return generatedAnniversaries;
 	};
 
@@ -90,22 +94,23 @@
 		fetchData()
 			.then((result) => {
 				if (!stale) {
-					console.log(result.length);
+					console.log(result.total);
 
 					const validAnniversaries: Anniversary[] = [];
-					result
+					result.anniversaries
 						// .filter((item: Anniversary | undefined): item is Anniversary => item !== undefined);
-						.forEach((a: AnniversaryPayload) => {
-							if (!a) {
+						.forEach((response: AnniversaryResponse) => {
+							if (!response) {
 								return undefined;
 							}
 
-							const dateObj: Date = new Date(a.date);
+							const dateObj: Date = new Date(response.anniversary.date);
 							if (dateObj instanceof Date && !isNaN(dateObj.valueOf())) {
 								const annif: Anniversary = {
+									id: response.id,
 									date: dateObj,
-									unit: a.unit,
-									funNumber: a.funNumber
+									unit: response.anniversary.unit,
+									funNumber: response.anniversary.funNumber
 								};
 								validAnniversaries.push(annif);
 							}
@@ -178,7 +183,8 @@
 	<MilestoneLabel {dataType} {selectExample} bind:dateReactive></MilestoneLabel>
 
 	{#if heroAnniversary}
-		<MilestoneHero {heroAnniversary} {now} {topAnniversaries}></MilestoneHero>
+		<MilestoneHero {heroAnniversary} {now} {topAnniversaries} {numberAnniversariesGenerated}
+		></MilestoneHero>
 	{:else}
 		<div
 			style="background:linear-gradient(160deg,#16233D,#121D33);border:1px solid #27385A;border-radius:20px;padding:28px 26px;display:flex;flex-direction:column;gap:16px;min-width:0;container-type:inline-size"
@@ -190,7 +196,7 @@
 
 <section>
 	{#if paid}
-		<NextDates {nextAnniversaries}></NextDates>
+		<NextDates {nextAnniversaries} {numberAnniversariesGenerated}></NextDates>
 	{:else}
 		<Paywall {postPricing}></Paywall>
 	{/if}

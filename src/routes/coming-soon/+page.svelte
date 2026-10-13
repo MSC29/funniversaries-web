@@ -1,8 +1,3 @@
-<script lang="ts">
-	import Footer from '$lib/components/Footer.svelte';
-	import Header from '$lib/components/Header.svelte';
-</script>
-
 <svelte:head>
 	<title>Funniversaries - your next weird anniversary - Coming soon</title>
 	<meta
@@ -16,8 +11,4 @@
 	/>
 </svelte:head>
 
-<Header />
-
 ... coming soon ...
-
-<Footer />

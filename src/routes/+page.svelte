@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Footer from '$lib/components/Footer.svelte';
-	import Header from '$lib/components/Header.svelte';
 	import MilestoneCalculator from '$lib/components/MilestoneCalculator.svelte';
 	import { dateTypes, type DateTypeCalculator } from '$lib/content/dateTypes';
 
@@ -20,8 +18,4 @@
 	/>
 </svelte:head>
 
-<Header />
-
 <MilestoneCalculator dataType={data}></MilestoneCalculator>
-
-<Footer />

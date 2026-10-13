@@ -156,7 +156,7 @@
 		<details>
 			<summary>I lost my license key</summary>
 			<p>
-				Use the <a href={resolve('/recover')}>recovery page</a>. Enter the email you used at
+				Use the <a href={resolve('/recover', {})}>recovery page</a>. Enter the email you used at
 				checkout and we'll send your key there. Check your spam folder if it doesn't arrive within a
 				few minutes.
 			</p>

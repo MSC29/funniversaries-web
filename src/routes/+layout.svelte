@@ -4,6 +4,8 @@
 	import { useRegisterSW } from 'virtual:pwa-register/svelte';
 
 	import '../app.css';
+	import Header from '$lib/components/Header.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
@@ -75,6 +77,10 @@
 
 <div style="min-height:100vh;background:var(--bg);padding:20px 20px 0;box-sizing:border-box">
 	<div style="max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:48px">
+		<Header />
+
 		{@render children()}
+
+		<Footer />
 	</div>
 </div>
