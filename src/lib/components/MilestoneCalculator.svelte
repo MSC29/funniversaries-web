@@ -183,7 +183,7 @@
 	<MilestoneLabel {dataType} {selectExample} bind:dateReactive></MilestoneLabel>
 
 	{#if heroAnniversary}
-		<MilestoneHero {heroAnniversary} {now} {topAnniversaries} {numberAnniversariesGenerated}
+		<MilestoneHero {heroAnniversary} {topAnniversaries} {numberAnniversariesGenerated}
 		></MilestoneHero>
 	{:else}
 		<div

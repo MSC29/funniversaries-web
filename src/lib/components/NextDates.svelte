@@ -19,7 +19,7 @@
 	<Timeline>
 		{#each nextAnniversaries as item (item.id)}
 			<TimelineItem
-				title="{item.funNumber.title} {item.date}"
+				title={`${item.funNumber.title} ${item.unit}`}
 				date={item.date.toISOString()}
 				dateFormat="full-date"
 			>

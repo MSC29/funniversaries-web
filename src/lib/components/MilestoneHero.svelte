@@ -1,15 +1,14 @@
 <script lang="ts">
 	import type { Anniversary } from '$lib/entities/anniversary.entity';
-	import { countdown, longDate, shortDate } from '$lib/milestones';
+	import { formatRelativeDays, formatCalendarDate } from '$lib/milestones';
 
 	interface Props {
 		heroAnniversary: Anniversary;
-		now: number;
 		topAnniversaries: Anniversary[];
 		numberAnniversariesGenerated: number;
 	}
 
-	let { heroAnniversary, now, topAnniversaries, numberAnniversariesGenerated }: Props = $props();
+	let { heroAnniversary, topAnniversaries, numberAnniversariesGenerated }: Props = $props();
 </script>
 
 <div
@@ -18,9 +17,11 @@
 	<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
 		<span
 			style="font-size:12px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--bg);background:var(--accent);border-radius:999px;padding:5px 11px"
-			>{heroAnniversary.funNumber.type}</span
+			>{formatCalendarDate(heroAnniversary.date)}</span
 		>
-		<span style="font-size:13px;color:var(--muted-2)">{countdown(heroAnniversary.date, now)}</span>
+		<span style="font-size:13px;color:var(--muted-2)"
+			>{formatRelativeDays(heroAnniversary.date)}</span
+		>
 	</div>
 	<div>
 		<div
@@ -32,10 +33,7 @@
 			{heroAnniversary.unit}
 		</div>
 	</div>
-	<div style="font-size:15px;color:#E3E9F5;font-weight:500">{longDate(heroAnniversary.date)}</div>
-	<p style="margin:0;font-size:15px;line-height:1.55;color:var(--muted);text-wrap:pretty">
-		{heroAnniversary.funNumber.label}
-	</p>
+	<div style="font-size:15px;color:#E3E9F5;font-weight:500"></div>
 
 	<div
 		style="border-top:1px solid #243450;padding-top:14px;display:flex;flex-direction:column;gap:10px"
@@ -51,12 +49,14 @@
 					>{m.funNumber.title} {m.unit}</span
 				>
 				<span style="font-size:13px;color:var(--muted-2);white-space:nowrap"
-					>{shortDate(m.date)}</span
+					>{formatCalendarDate(m.date)}</span
 				>
 			</div>
 		{/each}
-
-		another {numberAnniversariesGenerated} generated
+		<span
+			style="font-size:12px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--muted-3)"
+			>discover over {numberAnniversariesGenerated} other anniversaries</span
+		>
 
 		<!-- <div style="font-size:13px;color:var(--muted-3);padding-top:2px">
 			<button

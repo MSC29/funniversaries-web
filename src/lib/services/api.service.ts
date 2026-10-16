@@ -65,7 +65,7 @@ export class ApiService {
 
 	/** Recovery flow: the Worker always answers with the same generic message. */
 	async postResendAccess(payload: ResendAccessPayload): Promise<void> {
-		const res: Response = await fetch(`${PUBLIC_API_URL}/resend-access`, {
+		const res: Response = await fetch(`${PUBLIC_API_URL}/resend`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(payload)
