@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Anniversary } from '$lib/entities/anniversary.entity';
-	import { formatRelativeDays, formatCalendarDate } from '$lib/milestones';
+	import { formatRelativeDays, formatCalendarDate } from '$lib/dates';
 
 	interface Props {
 		heroAnniversary: Anniversary;
@@ -17,7 +17,7 @@
 	<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
 		<span
 			style="font-size:12px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--bg);background:var(--accent);border-radius:999px;padding:5px 11px"
-			>{formatCalendarDate(heroAnniversary.date)}</span
+			>{formatCalendarDate(heroAnniversary.date, 'fr')}</span
 		>
 		<span style="font-size:13px;color:var(--muted-2)"
 			>{formatRelativeDays(heroAnniversary.date)}</span
@@ -49,7 +49,7 @@
 					>{m.funNumber.title} {m.unit}</span
 				>
 				<span style="font-size:13px;color:var(--muted-2);white-space:nowrap"
-					>{formatCalendarDate(m.date)}</span
+					>{formatCalendarDate(m.date, 'fr')}</span
 				>
 			</div>
 		{/each}

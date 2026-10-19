@@ -53,6 +53,7 @@
 			view = { kind: 'failed', reason: 'Network error, please retry' };
 		}
 	};
+
 	onMount(() => {
 		let cancelled = false;
 		void run(() => cancelled);

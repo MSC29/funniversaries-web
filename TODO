@@ -24,15 +24,48 @@ rust error handling
 webhook corder created; update to say it's created
 create checkout should create a check with no order id
 
-1. Check the date math first
-   With a start date of Sept 24 at midnight, 123,456 seconds is 1 day, 10 hours and 17 minutes, so it lands on Sept 25 at about 10:17, not Sept 26. The card also says "tomorrow", which fits Sept 25 but not Sept 26 if today is the 24th. The other three dates look a day late too: by my math 1,234,567 s lands on Oct 8, 12,345,678 s on Feb 13, and 123,456,789 s on Aug 22, 2030. It may be deliberate, for instance if you count the start date as an end-of-day. If not, it's an off-by-one, and it's worth fixing early, because the whole product is date math and someone will check it.
-2. Copy tweaks
-3. reload is brutal in UI
-4. dates with locale & countdown fix
-5. error handling
-6. local server to test all cases & ask claude to generate all cases
 7. get all entilements, always, not just 1
-8. check API contract; response has useless fields
+8. preview has "more soon"
+9. API has buckets
+10. check API contract; response has useless fields
+11. bug; select date paid, then change date, paywall gone
+12. reload is brutal in UI
+13. error handling
+14. log level & turn them all in debug
+15. rate limiting server side
+16. refund & license removal
+17. Check the date math first
+    With a start date of Sept 24 at midnight, 123,456 seconds is 1 day, 10 hours and 17 minutes, so it lands on Sept 25 at about 10:17, not Sept 26. The card also says "tomorrow", which fits Sept 25 but not Sept 26 if today is the 24th. The other three dates look a day late too: by my math 1,234,567 s lands on Oct 8, 12,345,678 s on Feb 13, and 123,456,789 s on Aug 22, 2030. It may be deliberate, for instance if you count the start date as an end-of-day. If not, it's an off-by-one, and it's worth fixing early, because the whole product is date math and someone will check it.
+
+improve testing
+
+Isolation
+
+Given two different buyers, when A verifies, then B’s entitlements are not in the response. This is the most important security test, so write it early.
+Given an email that differs only by case or surrounding whitespace, when verify succeeds, then it still matches the same buyer.
+
+Verify edge cases
+
+Given an email with no purchases, when verify runs, then the response is identical to the success response (no enumeration) and no session carries entitlements.
+Given an expired or already-used verification token, when verify runs, then no session is created.
+Given a pending order (webhook not landed yet), when verify runs, then the response doesn’t claim failure for the other orders.
+
+Session
+
+Given an invalid or expired cookie, when the session is fetched, then authenticated=false.
+Given the cookie value, then only the hash is stored (assert the raw token isn’t in the database).
+
+tests
+
+Traffic-light tests to add
+Email grant returns all. Given two orders with the same email, when the session has an email grant, then both entitlements are returned.
+Order grant doesn’t leak. Given two orders with the same email, when the session has only an order grant for one, then only that entitlement is returned. This is your $4 attack test, so it should be the first one written.
+No duplicates. Given a session with both grants, then each entitlement appears once.
+Idempotent grants. Granting the same email twice, or the same order twice, creates one row each.
+Normalization. An email grant stored as Foo@Bar.com matches an entitlement stored as foo@bar.com.
+Isolation. An email grant for A returns nothing from B.
+Expiry. An expired session returns nothing for either grant type, and granting slides the expiry for both.
+Late purchase. A new order with the same email after the grant appears in the next fetch for email sessions but not for order sessions.
 
 Issues I saw in the handlers
 

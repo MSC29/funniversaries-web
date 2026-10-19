@@ -2,6 +2,7 @@
 	import { Datepicker } from 'flowbite-svelte';
 	import type { AnniversaryExample } from '$lib/entities/anniversary.entity';
 	import type { DateTypeCalculator } from '$lib/content/dateTypes';
+	import { Popover, Button } from 'flowbite-svelte';
 
 	interface Props {
 		dataType: DateTypeCalculator;
@@ -45,7 +46,14 @@
 			autohide={true}
 			required
 		/>
+		<Button>Default popover</Button>
+		<Popover class="w-64 text-sm font-light " title="Popover title"
+			>And here's some amazing content. It's very engaging. Right?</Popover
+		>
 	</div>
+	<div
+		style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px;color:var(--muted-3)"
+	></div>
 
 	<div
 		style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px;color:var(--muted-3)"

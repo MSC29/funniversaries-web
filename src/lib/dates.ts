@@ -21,6 +21,6 @@ function fmt(locale: string, opts: Intl.DateTimeFormatOptions) {
 }
 
 // "2020-03-14" -> "14 mars 2020" (fr) / "March 14, 2020" (en-US)
-export function formatCalendarDate(ms: Date) {
-	return fmt('fr', { dateStyle: 'long', timeZone: 'UTC' }).format(ms);
+export function formatCalendarDate(ms: Date, locale: string) {
+	return fmt(locale, { dateStyle: 'long', timeZone: 'UTC' }).format(ms);
 }
