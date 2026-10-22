@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import type { FunNumberDef } from '$lib/entities/anniversary.entity';
+	import type { FunNumberDefResponse } from '$lib/entities/anniversary.entity';
 
 	// Fill these in once; they're used throughout the page.
 	const PRICE = '[price]'; // e.g. '€9'
@@ -9,7 +9,7 @@
 
 	// Replace with a slice of FUN_NUMBERS so the sample can never drift from the app,
 	// e.g. const sample = FUN_NUMBERS.slice(0, 6).map(...)
-	const sample: FunNumberDef[] = [
+	const sample: FunNumberDefResponse[] = [
 		{
 			count: 123456,
 			title: '123,456',

@@ -1,11 +1,11 @@
-import type { Anniversary } from '../entities/anniversary.entity';
+import type { AnniversaryResponse } from '../entities/anniversary.entity';
 import type { TimeEntity } from '../entities/time.entity';
 
 export class DatesService {
-	async generateFutureAnniversaries(date: Date): Promise<Anniversary[]> {
-		const anniversariesList: Anniversary[] = [];
+	async generateFutureAnniversaries(date: Date): Promise<AnniversaryResponse[]> {
+		const anniversariesList: AnniversaryResponse[] = [];
 
-		const anniversary1: Anniversary = {
+		const anniversary1: AnniversaryResponse = {
 			unit: 'months',
 			date: date,
 			title: 'π',
@@ -16,7 +16,7 @@ export class DatesService {
 			distance: 'in 2 weeks',
 			bucket: 'This month'
 		};
-		const anniversary2: Anniversary = {
+		const anniversary2: AnniversaryResponse = {
 			unit: 'months',
 			date: date,
 			title: 'τ',
@@ -27,7 +27,7 @@ export class DatesService {
 			distance: 'in 5 weeks',
 			bucket: 'Next month'
 		};
-		const anniversary3: Anniversary = {
+		const anniversary3: AnniversaryResponse = {
 			unit: 'months',
 			date: date,
 			title: 'φ',
@@ -38,7 +38,7 @@ export class DatesService {
 			distance: 'in 7 weeks',
 			bucket: 'Next month'
 		};
-		const anniversary4: Anniversary = {
+		const anniversary4: AnniversaryResponse = {
 			unit: 'months',
 			date: date,
 			title: 'e',

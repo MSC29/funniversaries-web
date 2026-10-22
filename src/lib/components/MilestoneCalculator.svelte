@@ -7,15 +7,12 @@
 
 	import type { TimeEntity } from '$lib/entities/time.entity';
 	import type {
+		AnniversariesBucketResponse,
 		AnniversariesResponse,
-		Anniversary,
-		AnniversaryExample,
-		AnniversaryResponse
-	} from '$lib/entities/anniversary.entity';
+		AnniversaryBucketResponse
+	} from '$lib/responses/anniversary.response';
 	import MilestoneLabel from './MilestoneLabel.svelte';
-	import MilestoneHero from './MilestoneHero.svelte';
 	import type { DateTypeCalculator } from '$lib/content/dateTypes';
-	import { ListPlaceholder } from 'flowbite-svelte';
 	import NextDates from './NextDates.svelte';
 	import { ApiService } from '$lib/services/api.service';
 	import type { CheckoutPayload } from '$lib/payloads/checkout.payload';
@@ -24,6 +21,8 @@
 	import UiErrorMessage from './UiErrorMessage.svelte';
 	import type { SessionResponse } from '$lib/responses/session.response';
 	import Paywall from './Paywall.svelte';
+	import { UiError } from '$lib/entities/uierror.entity';
+	import type { AnniversariesEntity, AnniversaryExample } from '$lib/entities/anniversary.entity';
 
 	let dateService: DatesService;
 	let apiService: ApiService;
@@ -33,10 +32,7 @@
 	// Date from /claim (?date=YYYY-MM-DD), else today
 	let dateReactive = $state(new Date());
 
-	let heroAnniversary: Anniversary | undefined = $state<Anniversary>();
-	let topAnniversaries: Anniversary[] = $state([]);
-	let nextAnniversaries: Anniversary[] = $state([]);
-	let numberAnniversariesGenerated: number = $state(0);
+	let anniversaries: AnniversariesEntity | undefined = $state();
 
 	let paid: boolean = $state(false);
 	let uiError: UiErrorEntity | undefined = $state(undefined);
@@ -54,7 +50,7 @@
 	let { dataType }: Props = $props();
 
 	// Plain async function: all the awaiting lives here, outside the effect.
-	const fetchData = async () => {
+	const fetchData = async (): Promise<AnniversariesResponse> => {
 		console.log(`generating date from ${dateService.getDateString(dateReactive)}`);
 
 		let generatedAnniversaries: AnniversariesResponse;
@@ -78,54 +74,80 @@
 			console.log(generatedAnniversaries);
 		}
 
-		numberAnniversariesGenerated = generatedAnniversaries.total;
-
 		return generatedAnniversaries;
 	};
+
+	function parseDate(value: string): Date {
+		console.log(`parseDate date  ${value}`);
+		const d = new Date(value);
+		if (Number.isNaN(d.valueOf())) throw new Error(`invalid anniversary date: ${value}`);
+		return d;
+	}
+
+	function mapToEntity(r: AnniversariesResponse): AnniversariesEntity {
+		return {
+			total: r.total,
+			buckets: r.buckets.map((b: AnniversariesBucketResponse) => ({
+				...b,
+				anniversaries: b.anniversaries.map((a: AnniversaryBucketResponse) => ({
+					id: a.id,
+					unit: a.anniversary.unit,
+					funNumber: a.anniversary.funNumber,
+					date: parseDate(a.anniversary.date)
+				}))
+			}))
+		};
+	}
 
 	// Runs after the first render, then again whenever dateReactive, session or
 	// sessionLoaded change (Svelte tracks what is read synchronously inside).
 	$effect(() => {
 		if (!sessionLoaded) return;
 		let stale = false;
+		uiError = undefined;
 
 		console.log(`calculator date  ${dateReactive}`);
 
 		fetchData()
-			.then((result) => {
+			.then((response: AnniversariesResponse) => {
+				console.log('fetched');
+				console.log(response);
 				if (!stale) {
-					console.log(result.total);
-
-					const validAnniversaries: Anniversary[] = [];
-					result.anniversaries
-						// .filter((item: Anniversary | undefined): item is Anniversary => item !== undefined);
-						.forEach((response: AnniversaryResponse) => {
-							if (!response) {
-								return undefined;
-							}
-
-							const dateObj: Date = new Date(response.anniversary.date);
-							if (dateObj instanceof Date && !isNaN(dateObj.valueOf())) {
-								const annif: Anniversary = {
-									id: response.id,
-									date: dateObj,
-									unit: response.anniversary.unit,
-									funNumber: response.anniversary.funNumber
-								};
-								validAnniversaries.push(annif);
-							}
-						});
-
-					heroAnniversary = validAnniversaries[0];
-					console.log(heroAnniversary);
-					topAnniversaries = validAnniversaries.slice(1, 4);
-					console.log(topAnniversaries);
-					nextAnniversaries = validAnniversaries.slice(4);
-					console.log(nextAnniversaries);
+					anniversaries = mapToEntity(response);
+					console.log(anniversaries);
+					console.log(anniversaries.buckets[0].anniversaries[0].date instanceof Date);
 				}
+				// if (!stale) {
+				// 	console.log(response.total);
+
+				// 	// const anniversariesResponse: AnniversariesResponse;
+				// 	response.buckets
+				// 		// .filter((item: Anniversary | undefined): item is Anniversary => item !== undefined);
+				// 		.forEach((bucket: AnniversariesBucket) => {
+				// 			if (!bucket) {
+				// 				return undefined;
+				// 			}
+
+				// 			bucket.anniversaries.forEach((a) => {
+				// 				const dateObj: Date = new Date(a.date);
+				// 				if (dateObj instanceof Date && !isNaN(dateObj.valueOf())) {
+				// 					a.date = dateObj;
+				// 				}
+				// 			});
+				// 		});
+
+				// 	anniversaries = response;
+				// 	console.log(anniversaries);
+				// 	console.log(anniversaries.buckets[0].anniversaries[0].date instanceof Date);
+				// }
 			})
-			.catch(() => {
-				// if (!stale) loadError = true;
+			.catch((e) => {
+				if (!stale) {
+					uiError = {
+						title: 'error fetching',
+						message: e
+					};
+				}
 			});
 
 		// Cleanup: runs before the next run. Late answers for an old date are ignored.
@@ -182,7 +204,7 @@
 >
 	<MilestoneLabel {dataType} {selectExample} bind:dateReactive></MilestoneLabel>
 
-	{#if heroAnniversary}
+	<!-- {#if heroAnniversary}
 		<MilestoneHero {heroAnniversary} {topAnniversaries} {numberAnniversariesGenerated}
 		></MilestoneHero>
 	{:else}
@@ -191,13 +213,15 @@
 		>
 			<ListPlaceholder />
 		</div>
-	{/if}
+	{/if} -->
 </section>
 
 <section>
-	{#if paid}
-		<NextDates {nextAnniversaries} {numberAnniversariesGenerated}></NextDates>
-	{:else}
+	{#if anniversaries}
+		<NextDates {anniversaries} {paid}></NextDates>
+	{/if}
+
+	{#if !paid}
 		<Paywall {postPricing}></Paywall>
 	{/if}
 </section>

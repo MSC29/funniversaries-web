@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { Anniversary } from '$lib/entities/anniversary.entity';
+	import type { AnniversaryResponse } from '$lib/entities/anniversary.entity';
 	import { formatRelativeDays, formatCalendarDate } from '$lib/dates';
 
 	interface Props {
-		heroAnniversary: Anniversary;
-		topAnniversaries: Anniversary[];
+		heroAnniversary: AnniversaryResponse;
+		topAnniversaries: AnniversaryResponse[];
 		numberAnniversariesGenerated: number;
 	}
 
