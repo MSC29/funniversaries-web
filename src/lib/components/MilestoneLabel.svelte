@@ -14,17 +14,22 @@
 
 	$effect(() => console.log(`label date  ${dateReactive}`));
 
+	// const date_2_months_ago: Date = new Date() - 2 * 30;
+	// const date_6_months_ago: Date = new Date() - 2 * 30;
+	// const date_1_year_ago: Date = new Date() - 2 * 30;
+
 	const examples: AnniversaryExample[] = [
-		{ id: 1, title: 'The day the web went public', date: new Date('1991-08-06') },
-		{ id: 2, title: 'Y2K', date: new Date('2000-01-01') },
-		{ id: 3, title: 'Bitcoin launched', date: new Date('2009-01-03') }
+		{ id: 1, title: '2 months ago', date: new Date('1991-08-06') },
+		{ id: 2, title: '6 months ago', date: new Date('2000-01-01') },
+		{ id: 3, title: '1 year ago', date: new Date('2009-01-03') }
 	];
 </script>
 
 <div style="display:flex;flex-direction:column;gap:22px;min-width:0">
-	<h1
+	<!-- <h1
 		style="margin:0;font-size:clamp(32px,4.6vw,48px);line-height:1.06;font-weight:700;letter-spacing:-0.04em;text-wrap:balance"
-	>
+	> -->
+	<h1 style="font-size: clamp(2rem, 5vw + 0.5rem, 3.25rem); max-width: 30ch; text-wrap: balance;">
 		{dataType.h1}
 	</h1>
 	<p
@@ -34,7 +39,9 @@
 	</p>
 
 	<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+		<label for="dateinput" style="height: 3rem; width:min(100%, 16rem);">The day it started</label>
 		<Datepicker
+			id="dateinput"
 			inputProps={{
 				id: 'date-picker',
 				style:
@@ -42,14 +49,10 @@
 			}}
 			bind:value={dateReactive}
 			dateFormat={{ year: 'numeric', month: 'short', day: '2-digit' }}
-			placeholder="Type a date or use calendar"
+			placeholder="The day it started"
 			autohide={true}
 			required
 		/>
-		<Button>Default popover</Button>
-		<Popover class="w-64 text-sm font-light " title="Popover title"
-			>And here's some amazing content. It's very engaging. Right?</Popover
-		>
 	</div>
 	<div
 		style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px;color:var(--muted-3)"

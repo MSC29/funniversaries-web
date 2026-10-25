@@ -26,8 +26,7 @@ create checkout should create a check with no order id
 
 http://localhost:5175/fr-FR/?d=2026-10-15 not selecting a date
 
-1. update wasm & try
-
+1. today's date has 3 month & THis year with 42, doesn't look good
 2. bug; select date paid, then change date, paywall gone
 3. reload is brutal in UI
 4. slow API has preview happening first, then API, show flash & 2 "anniversaries coming up"

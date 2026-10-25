@@ -13,7 +13,7 @@
 	} from '$lib/responses/anniversary.response';
 	import MilestoneLabel from './MilestoneLabel.svelte';
 	import type { DateTypeCalculator } from '$lib/content/dateTypes';
-	import NextDates from './NextDates.svelte';
+	// import NextDates from './NextDates.svelte';
 	import { ApiService } from '$lib/services/api.service';
 	import type { CheckoutPayload } from '$lib/payloads/checkout.payload';
 	import type { CheckoutResponse } from '$lib/responses/checkout.response';
@@ -21,8 +21,9 @@
 	import UiErrorMessage from './UiErrorMessage.svelte';
 	import type { SessionResponse } from '$lib/responses/session.response';
 	import Paywall from './Paywall.svelte';
-	import { UiError } from '$lib/entities/uierror.entity';
 	import type { AnniversariesEntity, AnniversaryExample } from '$lib/entities/anniversary.entity';
+	import Paywallcard from './Paywallcard.svelte';
+	import PreviewList from './PreviewList.svelte';
 
 	let dateService: DatesService;
 	let apiService: ApiService;
@@ -39,9 +40,6 @@
 
 	let session = $state<SessionResponse | null>(null);
 	let sessionLoaded = $state(false);
-
-	// let origin = $state(DEFAULT_ORIGIN);
-	let now = $state(Date.now());
 
 	interface Props {
 		dataType: DateTypeCalculator;
@@ -70,6 +68,7 @@
 				dateService.getDateString(dateReactive)
 			);
 		} else {
+			paid = false;
 			generatedAnniversaries = await lib.compute_preview(dateService.getDateString(dateReactive));
 			console.log(generatedAnniversaries);
 		}
@@ -117,29 +116,6 @@
 					console.log(anniversaries);
 					console.log(anniversaries.buckets[0].anniversaries[0].date instanceof Date);
 				}
-				// if (!stale) {
-				// 	console.log(response.total);
-
-				// 	// const anniversariesResponse: AnniversariesResponse;
-				// 	response.buckets
-				// 		// .filter((item: Anniversary | undefined): item is Anniversary => item !== undefined);
-				// 		.forEach((bucket: AnniversariesBucket) => {
-				// 			if (!bucket) {
-				// 				return undefined;
-				// 			}
-
-				// 			bucket.anniversaries.forEach((a) => {
-				// 				const dateObj: Date = new Date(a.date);
-				// 				if (dateObj instanceof Date && !isNaN(dateObj.valueOf())) {
-				// 					a.date = dateObj;
-				// 				}
-				// 			});
-				// 		});
-
-				// 	anniversaries = response;
-				// 	console.log(anniversaries);
-				// 	console.log(anniversaries.buckets[0].anniversaries[0].date instanceof Date);
-				// }
 			})
 			.catch((e) => {
 				if (!stale) {
@@ -218,11 +194,13 @@
 
 <section>
 	{#if anniversaries}
-		<NextDates {anniversaries} {paid}></NextDates>
+		<!-- <NextDates {anniversaries} {paid} {postPricing}></NextDates> -->
+		<PreviewList {anniversaries} {paid} {postPricing}></PreviewList>
 	{/if}
 
 	{#if !paid}
 		<Paywall {postPricing}></Paywall>
+		<Paywallcard></Paywallcard>
 	{/if}
 </section>
 

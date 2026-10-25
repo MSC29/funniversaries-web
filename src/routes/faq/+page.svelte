@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import type { FunNumberDefResponse } from '$lib/entities/anniversary.entity';
+	import type { FunNumberDefResponse } from '$lib/responses/anniversary.response';
 
 	// Fill these in once; they're used throughout the page.
 	const PRICE = '[price]'; // e.g. '€9'

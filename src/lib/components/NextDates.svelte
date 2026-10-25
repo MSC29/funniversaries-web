@@ -1,27 +1,30 @@
 <script lang="ts">
-	import { Timeline, TimelineItem } from 'flowbite-svelte';
 	import { AccordionItem, Accordion } from 'flowbite-svelte';
 
 	import type { AnniversariesEntity } from '$lib/entities/anniversary.entity';
-	import { formatCalendarDate } from '$lib/dates';
 	import { date } from '$lib/i18n/format';
+	import { formatRelativeDays } from '$lib/dates';
 
 	interface Props {
 		anniversaries: AnniversariesEntity;
 		paid: boolean;
+		postPricing: (type: string) => Promise<void>;
 	}
 
-	let { anniversaries, paid }: Props = $props();
+	let { anniversaries, paid, postPricing }: Props = $props();
+
+	const postPricingSingleDate: () => Promise<void> = async () => {
+		await postPricing('single-date');
+	};
+	const postPricingAllDates: () => Promise<void> = async () => {
+		await postPricing('all-dates');
+	};
 </script>
 
 <section class="mt-10">
-	<p class="mb-10 text-center text-3xl font-medium text-[#7c7c8b]">
-		{anniversaries.total} Anniversaries coming up
-	</p>
-
-	<Accordion>
-		{#each anniversaries.buckets as bucket (bucket.horizon)}
-			<AccordionItem>
+	<Accordion multiple>
+		{#each anniversaries.buckets as bucket, i (bucket.horizon)}
+			<AccordionItem open={i == 0 || (i != 0 && !paid)}>
 				{#snippet header()}{bucket.horizon}{/snippet}
 				<ol class="relative border-s border-gray-200 dark:border-gray-700">
 					{#each bucket.anniversaries as a (a.id)}
@@ -31,9 +34,9 @@
 							></div>
 							<time
 								datetime={a.date.toISOString()}
-								class="mb-1 text-sm leading-none font-normal text-gray-400 dark:text-gray-500"
+								class="text-md mb-1 leading-none font-normal text-gray-400 dark:text-gray-500"
 							>
-								{date(a.date)}
+								{date(a.date)} - {formatRelativeDays(a.date)}
 							</time>
 							<h3 class="text-lg font-semibold text-gray-900 dark:text-white">
 								{a.funNumber.title}
@@ -45,11 +48,39 @@
 						</li>
 					{/each}
 				</ol>
+				{#if !paid && bucket.total - 1 > 0}
+					<p class="text mb-10 text-center font-medium text-gray-400">
+						🔒 More in this window <button
+							onclick={postPricingSingleDate}
+							style="font-size:15px;font-weight:600;color:inherit;background:transparent;border:1px solid var(--accent);border-radius:12px;padding:13px 20px;min-height:46px;align-items:center;justify-content:center;text-decoration:none;cursor: pointer;"
+							>Unlock this date</button
+						>
+					</p>
+				{/if}
 			</AccordionItem>
 		{/each}
-	</Accordion>
 
-	{#if !paid}
-		<p class="mb-10 text-center text-3xl font-medium text-[#7c7c8b]">BLUR HERE</p>
-	{/if}
+		{#if !paid}
+			<AccordionItem open={false}>
+				{#snippet header()}🔒 Next 5 years{/snippet}
+				<p class="text mb-10 text-center font-medium text-gray-400">
+					🔒 More in this window <button
+						onclick={postPricingSingleDate}
+						style="font-size:15px;font-weight:600;color:inherit;background:transparent;border:1px solid var(--accent);border-radius:12px;padding:13px 20px;min-height:46px;align-items:center;justify-content:center;text-decoration:none;cursor: pointer;"
+						>Unlock this date</button
+					>
+				</p>
+			</AccordionItem>
+			<AccordionItem open={false}>
+				{#snippet header()}🔒 Beyond{/snippet}
+				<p class="text mb-10 text-center font-medium text-gray-400">
+					🔒 More in this window <button
+						onclick={postPricingSingleDate}
+						style="font-size:15px;font-weight:600;color:inherit;background:transparent;border:1px solid var(--accent);border-radius:12px;padding:13px 20px;min-height:46px;align-items:center;justify-content:center;text-decoration:none;cursor: pointer;"
+						>Unlock this date</button
+					>
+				</p>
+			</AccordionItem>
+		{/if}
+	</Accordion>
 </section>
