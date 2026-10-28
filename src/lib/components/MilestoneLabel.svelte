@@ -8,9 +8,15 @@
 		dataType: DateTypeCalculator;
 		selectExample: (ex: AnniversaryExample) => Promise<void>;
 		dateReactive: Date;
+		onchange?: (date: Date) => void;
 	}
 
-	let { dataType, selectExample, dateReactive = $bindable<Date>(new Date()) }: Props = $props();
+	let {
+		dataType,
+		selectExample,
+		dateReactive = $bindable<Date>(new Date()),
+		onchange
+	}: Props = $props();
 
 	$effect(() => console.log(`label date  ${dateReactive}`));
 
@@ -26,6 +32,11 @@
 
 		date.setDate(Math.min(day, lastDay));
 		return date;
+	}
+
+	function pick(d: Date) {
+		dateReactive = d;
+		onchange?.(d);
 	}
 
 	const examples: AnniversaryExample[] = [
@@ -58,6 +69,7 @@
 					'background:var(--surface-2);border:1px solid var(--line-2);border-radius:12px;color:var(--ink);font-family:inherit;font-size:16px;padding:13px 15px;color-scheme:dark;min-height:48px;box-sizing:border-box'
 			}}
 			bind:value={dateReactive}
+			onselect={(d) => pick(d as Date)}
 			dateFormat={{ year: 'numeric', month: 'short', day: '2-digit' }}
 			placeholder={dataType.label}
 			autohide={true}

@@ -45,7 +45,7 @@
 				</p>
 			</div>
 			<button
-				onclick={postPricingAllDates}
+				onclick={postPricingSingleDate}
 				style="margin-top:auto;font-size:15px;font-weight:600;color:inherit;background:transparent;border:1px solid var(--line);border-radius:12px;padding:13px 20px;min-height:46px;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor: pointer;"
 				>{m.plan_date_cta({ price: '4$' })}</button
 			>
@@ -63,7 +63,7 @@
 				</p>
 			</div>
 			<button
-				onclick={postPricingSingleDate}
+				onclick={postPricingAllDates}
 				style="margin-top:auto;font-size:15px;font-weight:600;color:var(--bg);background:var(--accent);border-radius:12px;padding:13px 20px;min-height:46px;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor: pointer;"
 				>{m.plan_all_cta({ price: '10$' })}</button
 			>

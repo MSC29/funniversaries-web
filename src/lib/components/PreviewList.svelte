@@ -4,19 +4,27 @@
 
 	import type { AnniversariesEntity } from '$lib/entities/anniversary.entity';
 	import { formatDate, formatRelativeDays } from '$lib/utils/dates';
+	import AddToCalendar from './AddToCalendar.svelte';
+	import type { CalendarEvent } from '$lib/services/calendar.service';
 
 	interface Props {
 		anniversaries: AnniversariesEntity;
 		paid: boolean;
 		dateSelected: Date;
+		calendarEvents: CalendarEvent[];
 		postPricing: (type: string) => Promise<void>;
 	}
 
-	let { anniversaries, paid, dateSelected, postPricing }: Props = $props();
+	let { anniversaries, paid, dateSelected, calendarEvents, postPricing }: Props = $props();
 </script>
 
 <section class="preview" aria-labelledby="preview-title">
-	<h2 id="preview-title">{m.preview_title({ date: formatDate(dateSelected) })}</h2>
+	<div class="flex items-center justify-between gap-4">
+		<h2 id="preview-title">
+			{m.preview_title({ date: formatDate(dateSelected) })}
+		</h2>
+		<AddToCalendar events={calendarEvents} />
+	</div>
 
 	<ol class="timeline">
 		{#each anniversaries.buckets as bucket, i (bucket.horizon)}

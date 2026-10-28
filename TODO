@@ -21,21 +21,20 @@ Vertical list — yes, but tighten it; cf claude
 how to fucking debug sourcemaps?
 rust error handling
 
-http://localhost:5175/fr-FR/?d=2026-10-15 not selecting a date
-
 last features missing
 
 - Rust api ics
 - Dl ics from ui
 
-5. create privacy page
-6. slow API has preview happening first, then API, show flash & 2 "anniversaries coming up"
-7. error handling
-8. log level & turn them all in debug
-9. rate limiting server side
-10. refund & license removal
-11. affiliate?
-12. LS prod
+7. slow API has preview happening first, then API, show flash & 2 "anniversaries coming up" => TBD
+8. create privacy page
+9. FAQ page
+10. error handling
+11. log level & turn them all in debug
+12. rate limiting server side
+13. refund & license removal
+14. affiliate?
+15. LS prod
 
 https://paraglidejs.com/sveltekit#static-site-generation-ssg
 

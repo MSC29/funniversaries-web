@@ -1,15 +1,27 @@
 <script lang="ts">
+	import { m } from '$lib/paraglide/messages.js';
 	import { AccordionItem, Accordion } from 'flowbite-svelte';
 
 	import type { AnniversariesEntity } from '$lib/entities/anniversary.entity';
 	import { formatDate, formatRelativeDays } from '$lib/utils/dates';
+	import AddToCalendar from './AddToCalendar.svelte';
+	import type { CalendarEvent } from '$lib/services/calendar.service';
 
 	interface Props {
 		anniversaries: AnniversariesEntity;
+		dateSelected: Date;
+		calendarEvents: CalendarEvent[];
 	}
 
-	let { anniversaries }: Props = $props();
+	let { anniversaries, dateSelected, calendarEvents }: Props = $props();
 </script>
+
+<div class="flex items-center justify-between gap-4">
+	<h2 id="preview-title">
+		{m.preview_title({ date: formatDate(dateSelected) })}
+	</h2>
+	<AddToCalendar events={calendarEvents} />
+</div>
 
 <section class="mt-10">
 	<Accordion multiple>
@@ -42,3 +54,11 @@
 		{/each}
 	</Accordion>
 </section>
+
+<style>
+	h2 {
+		margin: 0;
+		font-size: 1.125rem;
+		font-weight: 600;
+	}
+</style>
