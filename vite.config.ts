@@ -1,3 +1,4 @@
+import { paraglideVitePlugin } from '@inlang/paraglide-js';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import { SvelteKitPWA } from '@vite-pwa/sveltekit';
@@ -62,9 +63,27 @@ export default defineConfig(({ mode }) => {
 					background_color: '#0e1626',
 					icons: [
 						{ src: '/favicon.png', type: 'image/png', sizes: '32x32' },
-						{ src: '/icon-48.png', type: 'image/png', sizes: '48x48', purpose: 'maskable' },
-						{ src: '/icon-72.png', type: 'image/png', sizes: '72x72', purpose: 'maskable' },
-						{ src: '/icon-96.png', type: 'image/png', sizes: '96x96', purpose: 'maskable' },
+						{
+							src: '/icon-48.png',
+							type: 'image/png',
+							sizes: '48x48',
+							purpose: 'maskable'
+						},
+
+						{
+							src: '/icon-72.png',
+							type: 'image/png',
+							sizes: '72x72',
+							purpose: 'maskable'
+						},
+
+						{
+							src: '/icon-96.png',
+							type: 'image/png',
+							sizes: '96x96',
+							purpose: 'maskable'
+						},
+
 						{
 							src: '/icon-128.png',
 							type: 'image/png',
@@ -101,6 +120,14 @@ export default defineConfig(({ mode }) => {
 				},
 				// if you have shared info in svelte config file put in a separate module and use it also here
 				kit: {}
+			}),
+
+			paraglideVitePlugin({
+				project: './project.inlang',
+				outdir: './src/lib/paraglide',
+				emitTsDeclarations: true,
+				// strategy: ['localStorage', 'cookie', 'preferredLanguage', 'url', 'baseLocale']
+				strategy: ['url', 'cookie', 'baseLocale']
 			})
 		],
 		resolve: {

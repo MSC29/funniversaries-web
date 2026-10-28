@@ -8,11 +8,8 @@
 <svelte:head>
 	<title>{data.title}</title>
 	<meta name="description" content={data.description} />
-	<meta property="og:title" content="Your next weird anniversary is closer than you think." />
-	<meta
-		property="og:description"
-		content="Pick a date and we'll find every number worth throwing a party for."
-	/>
+	<meta property="og:title" content={data.title} />
+	<meta property="og:description" content={data.description} />
 </svelte:head>
 
 <MilestoneCalculator dataType={data}></MilestoneCalculator>

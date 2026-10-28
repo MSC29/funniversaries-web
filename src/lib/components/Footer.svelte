@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { m } from '$lib/paraglide/messages.js';
 	import { resolve } from '$app/paths';
 </script>
 
@@ -7,9 +8,9 @@
 >
 	<span>Funniversaries</span>
 	<div style="display:flex;flex-wrap:wrap;gap:18px">
-		<a href={resolve('/recover', {})} style="color:var(--muted)">Recover your license</a>
-		<a href={resolve('/privacy', {})} style="color:var(--muted)">Privacy</a>
-		<a href={resolve('/pricing', {})} style="color:var(--muted)">Pricing</a>
-		<a href={resolve('/pricing', {})} style="color:var(--muted)">FAQ</a>
+		<a href={resolve('/recover', {})} style="color:var(--muted)">{m.nav_recover()}</a>
+		<a href={resolve('/privacy', {})} style="color:var(--muted)">{m.nav_privacy()}</a>
+		<a href={resolve('/pricing', {})} style="color:var(--muted)">{m.nav_pricing()}</a>
+		<a href={resolve('/faq', {})} style="color:var(--muted)">{m.nav_faq()}</a>
 	</div>
 </footer>

@@ -12,6 +12,10 @@ const config = {
 		}),
 		env: {
 			publicPrefix: 'PUBLIC_'
+		},
+		// https://github.com/opral/paraglide-js/blob/main/examples/sveltekit/README.md#usage
+		paths: {
+			relative: false
 		}
 	}
 };

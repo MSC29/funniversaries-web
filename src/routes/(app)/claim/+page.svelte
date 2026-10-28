@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { m } from '$lib/paraglide/messages.js';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { ApiService } from '$lib/services/api.service';
@@ -15,13 +16,23 @@
 
 	const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+	const reasonMessage = {
+		invalid_request: m.claim_reason_api_invalid_request(),
+		service_unavailable: m.claim_reason_api_service_unavailable(),
+		internal_error: m.claim_reason_api_internal_error()
+	} as const;
+
+	function getReason(reason: keyof typeof reasonMessage) {
+		return reasonMessage[reason];
+	}
+
 	const run = async (isCancelled: () => boolean) => {
 		const token = page.url.searchParams.get('t');
 		try {
 			if (!token) {
 				const session = await apiService.getSession();
 				if (session.authenticated) return await EntitlementsUtils.goHome(session.entitlements);
-				view = { kind: 'failed', reason: 'Missing claim token' };
+				view = { kind: 'failed', reason: m.claim_reason_missing_token() };
 				return;
 			}
 
@@ -33,11 +44,11 @@
 					const session = await apiService.getSession();
 					if (session.authenticated) return await EntitlementsUtils.goHome(session.entitlements);
 					// Claimed server-side but the browser has no session: a cookie problem
-					view = { kind: 'failed', reason: 'Session cookie was not received' };
+					view = { kind: 'failed', reason: m.claim_reason_cookie_not_received() };
 					return;
 				}
 				if (result.status === 'failed') {
-					view = { kind: 'failed', reason: result.reason };
+					view = { kind: 'failed', reason: getReason(result.reason) };
 					return;
 				}
 				await sleep(DELAY_MS); // pending: webhooks have not landed yet
@@ -50,7 +61,7 @@
 			if (session.authenticated) return await EntitlementsUtils.goHome(session.entitlements);
 			view = { kind: 'timeout' };
 		} catch {
-			view = { kind: 'failed', reason: 'Network error, please retry' };
+			view = { kind: 'failed', reason: m.claim_reason_other() };
 		}
 	};
 
@@ -64,12 +75,12 @@
 </script>
 
 {#if view.kind === 'working'}
-	<p role="status">Confirming your payment…</p>
+	<p role="status">{m.claim_working()}</p>
 {:else if view.kind === 'failed'}
-	<p role="alert">We could not complete your claim: {view.reason}</p>
+	<p role="alert">{m.claim_failed({ reason: view.reason })}</p>
 {:else}
 	<p role="status">
-		Still processing. Your payment went through.
-		<button onclick={() => location.reload()}>Check again</button>
+		{m.claim_payment_still_processing()}
+		<button onclick={() => location.reload()}>{m.claim_action_check_again()}</button>
 	</p>
 {/if}

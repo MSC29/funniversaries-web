@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { m } from '$lib/paraglide/messages.js';
 	import { onMount } from 'svelte';
 	import * as lib from '@msc29/funniversaries-wasm';
 	import { page } from '$app/state';
@@ -13,7 +14,6 @@
 	} from '$lib/responses/anniversary.response';
 	import MilestoneLabel from './MilestoneLabel.svelte';
 	import type { DateTypeCalculator } from '$lib/content/dateTypes';
-	// import NextDates from './NextDates.svelte';
 	import { ApiService } from '$lib/services/api.service';
 	import type { CheckoutPayload } from '$lib/payloads/checkout.payload';
 	import type { CheckoutResponse } from '$lib/responses/checkout.response';
@@ -22,8 +22,8 @@
 	import type { SessionResponse } from '$lib/responses/session.response';
 	import Paywall from './Paywall.svelte';
 	import type { AnniversariesEntity, AnniversaryExample } from '$lib/entities/anniversary.entity';
-	import Paywallcard from './Paywallcard.svelte';
 	import PreviewList from './PreviewList.svelte';
+	import NextDates from './NextDates.svelte';
 
 	let dateService: DatesService;
 	let apiService: ApiService;
@@ -31,7 +31,7 @@
 	// Prerendering has no query string, so reading page.url.searchParams at this level
 	// throws at build time. Start with today and apply ?date=YYYY-MM-DD in onMount (browser only).
 	// Date from /claim (?date=YYYY-MM-DD), else today
-	let dateReactive = $state(new Date());
+	let dateSelected = $state(new Date());
 
 	let anniversaries: AnniversariesEntity | undefined = $state();
 
@@ -49,7 +49,7 @@
 
 	// Plain async function: all the awaiting lives here, outside the effect.
 	const fetchData = async (): Promise<AnniversariesResponse> => {
-		console.log(`generating date from ${dateService.getDateString(dateReactive)}`);
+		console.log(`generating date from ${dateService.getDateString(dateSelected)}`);
 
 		let generatedAnniversaries: AnniversariesResponse;
 		let entitled = false;
@@ -58,18 +58,18 @@
 			entitled = session.entitlements.some(
 				(e) =>
 					e.scope === 'all-dates' ||
-					(e.scope === 'single-date' && e.date === dateService.getDateString(dateReactive))
+					(e.scope === 'single-date' && e.date === dateService.getDateString(dateSelected))
 			);
 		}
 
 		if (entitled) {
 			paid = true;
 			generatedAnniversaries = await apiService.getAllAnniversaries(
-				dateService.getDateString(dateReactive)
+				dateService.getDateString(dateSelected)
 			);
 		} else {
 			paid = false;
-			generatedAnniversaries = await lib.compute_preview(dateService.getDateString(dateReactive));
+			generatedAnniversaries = await lib.compute_preview(dateService.getDateString(dateSelected));
 			console.log(generatedAnniversaries);
 		}
 
@@ -105,7 +105,7 @@
 		let stale = false;
 		uiError = undefined;
 
-		console.log(`calculator date  ${dateReactive}`);
+		console.log(`calculator date  ${dateSelected}`);
 
 		fetchData()
 			.then((response: AnniversariesResponse) => {
@@ -142,25 +142,25 @@
 		sessionLoaded = true;
 
 		const time: TimeEntity = dateService.init_time();
-		dateReactive = time.now;
+		dateSelected = time.now;
 
 		if (page.url.searchParams.get('date') !== null) {
 			const dateString = page.url.searchParams.get('date')!;
-			dateReactive = new Date(dateString);
-			console.log(`date from param  ${dateService.getDateString(dateReactive)}`);
+			dateSelected = new Date(dateString);
+			console.log(`date from param  ${dateService.getDateString(dateSelected)}`);
 		}
 	});
 
 	const selectExample: (ex: AnniversaryExample) => Promise<void> = async (
 		ex: AnniversaryExample
 	) => {
-		dateReactive = ex.date!;
+		dateSelected = ex.date!;
 	};
 
 	const postPricing: (type: string) => Promise<void> = async (type: string) => {
 		try {
 			const payload: CheckoutPayload = {
-				date: dateService.getDateString(dateReactive),
+				date: dateService.getDateString(dateSelected),
 				scope: type
 			};
 			console.log(`posting ${payload.scope} ${payload.date}`);
@@ -168,8 +168,8 @@
 			window.location.assign(checkoutResponse.checkout_url); // full-page redirect to outside svelte (not using goto)
 		} catch {
 			uiError = {
-				title: 'Checkout failed',
-				message: 'Could not start the checkout. Please try again.'
+				title: m.checkout_failed_title(),
+				message: m.checkout_failed_message()
 			};
 		}
 	};
@@ -178,29 +178,20 @@
 <section
 	style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px;align-items:center"
 >
-	<MilestoneLabel {dataType} {selectExample} bind:dateReactive></MilestoneLabel>
-
-	<!-- {#if heroAnniversary}
-		<MilestoneHero {heroAnniversary} {topAnniversaries} {numberAnniversariesGenerated}
-		></MilestoneHero>
-	{:else}
-		<div
-			style="background:linear-gradient(160deg,#16233D,#121D33);border:1px solid #27385A;border-radius:20px;padding:28px 26px;display:flex;flex-direction:column;gap:16px;min-width:0;container-type:inline-size"
-		>
-			<ListPlaceholder />
-		</div>
-	{/if} -->
+	<MilestoneLabel {dataType} {selectExample} bind:dateReactive={dateSelected}></MilestoneLabel>
 </section>
 
 <section>
 	{#if anniversaries}
-		<!-- <NextDates {anniversaries} {paid} {postPricing}></NextDates> -->
-		<PreviewList {anniversaries} {paid} {postPricing}></PreviewList>
+		{#if paid}
+			<NextDates {anniversaries}></NextDates>
+		{:else}
+			<PreviewList {anniversaries} {paid} {dateSelected} {postPricing}></PreviewList>
+		{/if}
 	{/if}
 
 	{#if !paid}
-		<Paywall {postPricing}></Paywall>
-		<Paywallcard></Paywallcard>
+		<Paywall {dateSelected} {postPricing}></Paywall>
 	{/if}
 </section>
 

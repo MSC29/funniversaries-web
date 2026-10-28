@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { m } from '$lib/paraglide/messages.js';
 	import { resolve } from '$app/paths';
 	import { ApiService } from '$lib/services/api.service';
 	import { Label, Input } from 'flowbite-svelte';
-	import { EnvelopeSolid } from 'flowbite-svelte-icons';
 
 	const COOLDOWN_SECONDS = 30;
 
@@ -18,6 +18,15 @@
 
 	const emailLooksValid = $derived(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()));
 	const canSubmit = $derived(emailLooksValid && status !== 'sending' && cooldown === 0);
+
+	// i18n
+	const SLOT = '\u0001';
+	const around = (text: string): [string, string] => {
+		const [before, after = ''] = text.split(SLOT);
+		return [before, after];
+	};
+	const sentParts = $derived(around(m.recovery_sent({ email: SLOT })));
+	const helpParts = $derived(around(m.recovery_help({ faq: SLOT })));
 
 	// Client-side cooldown only discourages double clicks; the real limit is server-side.
 	$effect(() => {
@@ -63,35 +72,35 @@
 </script>
 
 <svelte:head>
-	<title>Recover your license</title>
+	<title>{m.recovery_title()}</title>
 </svelte:head>
 
 <main class="recover">
-	<h1>Recover your license</h1>
+	<h1>{m.recovery_title()}</h1>
 
 	{#if status === 'sent'}
 		<div class="confirmation" role="status">
 			<p>
-				If an order exists for <strong>{sentTo}</strong>, we've sent your license key there. It can
-				take a few minutes, and it's worth checking your spam folder.
+				{sentParts[0]}<strong>{sentTo}</strong>{sentParts[1]}
 			</p>
 		</div>
 
 		<div class="actions">
 			<button type="button" class="secondary" onclick={send} disabled={cooldown > 0}>
-				{cooldown > 0 ? `Send again in ${cooldown}s` : 'Send again'}
+				{cooldown > 0 ? m.recovery_send_again_in({ seconds: cooldown }) : m.recovery_send_again()}
 			</button>
-			<button type="button" class="link" onclick={useAnotherEmail}>Use a different email</button>
+			<button type="button" class="link" onclick={useAnotherEmail}>
+				{m.recovery_use_another_email()}
+			</button>
 		</div>
 	{:else}
 		<p class="lead">
-			Enter the email you used at checkout. If we find an order, we'll send your license key to that
-			address.
+			{m.recovery_lead()}
 		</p>
 
 		<form {onsubmit} novalidate>
 			<div class="mb-6">
-				<Label for="recover-email" class="mb-2 block">Your Email</Label>
+				<Label for="recover-email" class="mb-2 block">{m.recovery_email_label()}</Label>
 				<Input
 					id="recover-email"
 					name="email"
@@ -105,39 +114,26 @@
 					aria-invalid={status === 'error' ? 'true' : undefined}
 					aria-describedby={status === 'error' ? 'recover-error' : undefined}
 					class="pl-8"
-				>
-					{#snippet left()}
-						<EnvelopeSolid class="h-5 w-5 text-gray-500 dark:text-gray-400" />
-					{/snippet}
-				</Input>
+					style="background-color:var(--color-gray-800);"
+				></Input>
 			</div>
-			<!-- <label for="recover-email">Email</label>
-			<input
-				id="recover-email"
-				name="email"
-				type="email"
-				inputmode="email"
-				autocomplete="email"
-				autocapitalize="none"
-				spellcheck="false"
-				required
-				bind:value={email}
-				aria-invalid={status === 'error' ? 'true' : undefined}
-				aria-describedby={status === 'error' ? 'recover-error' : undefined}
-			/> -->
 
 			{#if status === 'error'}
 				<p id="recover-error" class="error" role="alert">{errorMessage}</p>
 			{/if}
 
-			<button type="submit" class="primary" disabled={!canSubmit}>
-				{status === 'sending' ? 'Sending…' : 'Send my license'}
+			<button
+				type="submit"
+				style="margin-top:auto;font-size:15px;font-weight:600;color:inherit;background:transparent;border:1px solid var(--line);border-radius:12px;padding:13px 20px;min-height:46px;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor: pointer;"
+				disabled={!canSubmit}
+			>
+				{status === 'sending' ? m.recovery_sending() : m.recovery_submit()}
 			</button>
 		</form>
 	{/if}
 
 	<p class="help">
-		Still stuck? The <a href={resolve('/faq', {})}>FAQ</a> covers the common cases.
+		{helpParts[0]}<a href={resolve('/faq', {})}>{m.recovery_help_link()}</a>{helpParts[1]}
 	</p>
 </main>
 
@@ -162,30 +158,12 @@
 
 	.lead {
 		margin: 0 0 1.5rem;
-		color: var(--color-muted, #555);
 	}
 
 	form {
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
-	}
-
-	label {
-		font-weight: 600;
-	}
-
-	input {
-		padding: 0.65rem 0.75rem;
-		font: inherit;
-		color: inherit;
-		background: var(--color-surface, #fff);
-		border: 1px solid var(--color-border, #bbb);
-		border-radius: 0.4rem;
-	}
-
-	input[aria-invalid='true'] {
-		border-color: var(--color-error, #b3261e);
 	}
 
 	button {
@@ -197,15 +175,6 @@
 	button:disabled {
 		cursor: not-allowed;
 		opacity: 0.55;
-	}
-
-	.primary {
-		margin-top: 0.75rem;
-		padding: 0.7rem 1rem;
-		font-weight: 600;
-		color: var(--color-on-accent, #fff);
-		background: var(--color-accent, #1a1a1a);
-		border: 1px solid transparent;
 	}
 
 	.secondary {
@@ -224,9 +193,7 @@
 	}
 
 	.confirmation {
-		padding: 1rem 1.1rem;
-		margin-bottom: 1.25rem;
-		border: 1px solid var(--color-border, #bbb);
+		margin-bottom: 2rem;
 		border-radius: 0.4rem;
 	}
 
@@ -248,10 +215,8 @@
 
 	.help {
 		margin: 2rem 0 0;
-		color: var(--color-muted, #555);
 	}
 
-	input:focus-visible,
 	button:focus-visible,
 	a:focus-visible {
 		outline: 2px solid var(--color-accent, #1a1a1a);

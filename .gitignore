@@ -10,3 +10,6 @@ vite.config.ts.timestamp-*
 /dev-dist
 /certs
 *.wasm
+# Paraglide
+src/lib/paraglide
+project.inlang/cache/

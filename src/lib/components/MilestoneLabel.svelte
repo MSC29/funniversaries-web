@@ -2,7 +2,7 @@
 	import { Datepicker } from 'flowbite-svelte';
 	import type { AnniversaryExample } from '$lib/entities/anniversary.entity';
 	import type { DateTypeCalculator } from '$lib/content/dateTypes';
-	import { Popover, Button } from 'flowbite-svelte';
+	import { m } from '$lib/paraglide/messages';
 
 	interface Props {
 		dataType: DateTypeCalculator;
@@ -14,14 +14,24 @@
 
 	$effect(() => console.log(`label date  ${dateReactive}`));
 
-	// const date_2_months_ago: Date = new Date() - 2 * 30;
-	// const date_6_months_ago: Date = new Date() - 2 * 30;
-	// const date_1_year_ago: Date = new Date() - 2 * 30;
+	function monthsAgo(months: number): Date {
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const date = new Date();
+		const day = date.getDate();
+
+		date.setDate(1);
+		date.setMonth(date.getMonth() - months);
+
+		const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+
+		date.setDate(Math.min(day, lastDay));
+		return date;
+	}
 
 	const examples: AnniversaryExample[] = [
-		{ id: 1, title: '2 months ago', date: new Date('1991-08-06') },
-		{ id: 2, title: '6 months ago', date: new Date('2000-01-01') },
-		{ id: 3, title: '1 year ago', date: new Date('2009-01-03') }
+		{ id: 1, title: m.hero_label_milestone_example_1(), date: monthsAgo(2) },
+		{ id: 2, title: m.hero_label_milestone_example_2(), date: monthsAgo(6) },
+		{ id: 3, title: m.hero_label_milestone_example_3(), date: monthsAgo(12) }
 	];
 </script>
 
@@ -39,7 +49,7 @@
 	</p>
 
 	<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-		<label for="dateinput" style="height: 3rem; width:min(100%, 16rem);">The day it started</label>
+		<label for="dateinput" style="width:min(100%, 16rem);">{dataType.label}</label>
 		<Datepicker
 			id="dateinput"
 			inputProps={{
@@ -49,7 +59,7 @@
 			}}
 			bind:value={dateReactive}
 			dateFormat={{ year: 'numeric', month: 'short', day: '2-digit' }}
-			placeholder="The day it started"
+			placeholder={dataType.label}
 			autohide={true}
 			required
 		/>

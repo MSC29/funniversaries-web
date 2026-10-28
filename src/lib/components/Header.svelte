@@ -1,5 +1,19 @@
 <script lang="ts">
+	import { m } from '$lib/paraglide/messages.js';
 	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
+	import { localizeHref } from '$lib/paraglide/runtime.js';
+
+	import { Dropdown, DropdownItem } from 'flowbite-svelte';
+	import { ChevronDownOutline } from 'flowbite-svelte-icons';
+
+	let activeUrl = $derived(page.url.pathname);
+
+	const languages = [
+		{ locale: 'en', flag: '🇬🇧', label: 'English' },
+		{ locale: 'fr', flag: '🇫🇷', label: 'Français' },
+		{ locale: 'es', flag: '🇪🇸', label: 'Español' }
+	] as const;
 </script>
 
 <header
@@ -16,7 +30,27 @@
 	</a>
 
 	<nav style="display:flex;align-items:center;gap:20px;font-size:14px">
-		<a href={resolve('/pricing', {})} style="color:var(--muted)">Pricing</a>
-		<a href={resolve('/faq', {})} style="color:var(--muted)">FAQ</a>
+		<a href={resolve('/pricing', {})} style="color:var(--muted)">{m.nav_pricing()}</a>
+		<a href={resolve('/faq', {})} style="color:var(--muted)">{m.nav_faq()}</a>
+
+		<button
+			style="margin-top:auto;font-size:15px;font-weight:600;color:inherit;background:transparent;border:1px solid var(--line);border-radius:12px;padding:13px 20px;min-height:46px;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor: pointer;"
+			aria-label={m.nav_choose_language()}
+		>
+			{m.nav_language()}
+			<ChevronDownOutline class="ms-2 h-5 w-5" />
+		</button>
+
+		<Dropdown {activeUrl} simple>
+			{#each languages as language (language)}
+				<DropdownItem
+					href={localizeHref(activeUrl, { locale: language.locale })}
+					data-sveltekit-reload
+				>
+					<span class="me-2" aria-hidden="true">{language.flag}</span>
+					<span lang={language.locale}>{language.label}</span>
+				</DropdownItem>
+			{/each}
+		</Dropdown>
 	</nav>
 </header>

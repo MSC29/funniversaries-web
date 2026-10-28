@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { m } from '$lib/paraglide/messages.js';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { ApiService } from '$lib/services/api.service';
@@ -16,7 +17,7 @@
 			if (!token) {
 				const session = await apiService.getSession();
 				if (session.authenticated) return await EntitlementsUtils.goHome(session.entitlements);
-				view = { kind: 'failed', reason: 'Missing verification token' };
+				view = { kind: 'failed', reason: m.verify_reason_missing_token() };
 				return;
 			}
 
@@ -27,7 +28,7 @@
 			if (session.authenticated) return await EntitlementsUtils.goHome(session.entitlements);
 			view = { kind: 'timeout' };
 		} catch {
-			view = { kind: 'failed', reason: 'Network error, please retry' };
+			view = { kind: 'failed', reason: m.verify_reason_other() };
 		}
 	};
 
@@ -37,12 +38,12 @@
 </script>
 
 {#if view.kind === 'working'}
-	<p role="status">Confirming your token</p>
+	<p role="status">{m.verify_working()}</p>
 {:else if view.kind === 'failed'}
-	<p role="alert">There was a problem with your verification link: {view.reason}</p>
+	<p role="alert">{m.verify_failed({ reason: view.reason })}</p>
 {:else}
 	<p role="status">
-		Still processing. Your payment went through.
-		<button onclick={() => location.reload()}>Check again</button>
+		{m.verify_pending()}
+		<button onclick={() => location.reload()}>{m.verify_check_again()}</button>
 	</p>
 {/if}

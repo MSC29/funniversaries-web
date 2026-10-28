@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { m } from '$lib/paraglide/messages.js';
 	import { resolve } from '$app/paths';
 	import type { FunNumberDefResponse } from '$lib/responses/anniversary.response';
+	import type { Snippet } from 'svelte';
 
 	// Fill these in once; they're used throughout the page.
 	const PRICE = '[price]'; // e.g. '€9'
@@ -15,36 +17,28 @@
 			title: '123,456',
 			label: 'Ascending sequence',
 			description: 'Six digits in perfect ascending order.',
-			type: '',
-			distance: '',
-			bucket: ''
+			type: ''
 		},
 		{
 			count: 9876543210,
 			title: '9,876,543,210',
 			label: 'Descending sequence',
 			description: 'All ten digits, in perfect descending order.',
-			type: '',
-			distance: '',
-			bucket: ''
+			type: ''
 		},
 		{
 			count: 10000,
 			title: '10,000',
 			label: 'Round number',
 			description: 'A clean, round milestone.',
-			type: '',
-			distance: '',
-			bucket: ''
+			type: ''
 		},
 		{
 			count: 777,
 			title: '777',
 			label: 'Lucky sevens',
 			description: 'The classic slot-machine jackpot number.',
-			type: '',
-			distance: '',
-			bucket: ''
+			type: ''
 		},
 		{
 			count: 451,
@@ -52,9 +46,7 @@
 			label: 'The temperature books burn at',
 			description:
 				"Fahrenheit 451 — Ray Bradbury's novel, named for the temperature at which paper is said to combust.",
-			type: '',
-			distance: '',
-			bucket: ''
+			type: ''
 		},
 		{
 			count: 1337,
@@ -62,58 +54,64 @@
 			label: 'Leet',
 			description:
 				'"Leet" — internet slang for "elite," popularized in early hacker and gaming culture.',
-			type: '',
-			distance: '',
-			bucket: ''
+			type: ''
 		}
 	];
+
+	// Messages with a link inside carry a slot where it goes, so each language keeps its own word order.
+	const SLOT = '\u0001';
 </script>
 
+{#snippet rich(text: string, link: Snippet)}
+	{@const [before, after = ''] = text.split(SLOT)}
+	{before}{@render link()}{after}
+{/snippet}
+
+{#snippet mail()}<a href="mailto:{SUPPORT_EMAIL}">{SUPPORT_EMAIL}</a>{/snippet}
+{#snippet pendingLink()}<a href="#pending">{m.faq_pending_q()}</a>{/snippet}
+{#snippet recoverLink()}<a href={resolve('/recover', {})}>{m.faq_lost_link()}</a>{/snippet}
+
 <svelte:head>
-	<title>FAQ</title>
+	<title>{m.faq_page_title()}</title>
 </svelte:head>
 
 <main class="faq">
-	<h1>Frequently asked questions</h1>
+	<h1>{m.faq_title()}</h1>
 
 	<section>
-		<h2>How it works</h2>
+		<h2>{m.faq_section_how()}</h2>
 
 		<details>
-			<summary>What is Funniversaries?</summary>
+			<summary>{m.faq_what_q()}</summary>
 			<p>
-				[One or two sentences: what the app does and who it's for. Say what people get in plain
-				terms, not how it's built.]
+				{m.faq_what_a()}
 			</p>
 		</details>
 
 		<details>
-			<summary>How do I unlock it?</summary>
+			<summary>{m.faq_unlock_q()}</summary>
 			<p>
-				Buy a license from the checkout page. Once your payment goes through, you get a license key
-				by email and your purchase is linked to your account automatically. If it doesn't show up
-				right away, see <a href="#pending">"I paid but my license is still pending"</a> below.
+				{@render rich(m.faq_unlock_a({ pending: SLOT }), pendingLink)}
 			</p>
 		</details>
 	</section>
 
 	<section>
-		<h2>Payment and what you get</h2>
+		<h2>{m.faq_section_payment()}</h2>
 
 		<details>
-			<summary>How much does it cost, and is it a subscription?</summary>
+			<summary>{m.faq_price_q()}</summary>
 			<p>
-				The license costs {PRICE}. [One-time payment, or recurring? State it explicitly, and say
-				what's free vs. unlocked.]
+				{m.faq_price_a({ price: PRICE })}
 			</p>
 		</details>
 
 		<details>
-			<summary>What exactly am I paying for?</summary>
+			<summary>{m.faq_included_q()}</summary>
 			<p>
-				[One sentence on what the license unlocks.]
+				{m.faq_included_a()}
 				{#if sample.length}
-					Here's a sample of what's included:
+					{m.faq_included_sample()}
 				{/if}
 			</p>
 			{#if sample.length}
@@ -126,98 +124,82 @@
 		</details>
 
 		<details>
-			<summary>Is the payment safe?</summary>
+			<summary>{m.faq_safe_q()}</summary>
 			<p>
-				Payments are handled by Lemon Squeezy, which processes your card and takes care of taxes and
-				receipts. Your card details never reach Funniversaries.
+				{m.faq_safe_a()}
 			</p>
 		</details>
 
 		<details>
-			<summary>What data do you keep?</summary>
+			<summary>{m.faq_data_q()}</summary>
 			<p>
-				We keep your purchase email and license key so you can recover your license later. [Add
-				anything else you store, and a link to your privacy page.]
+				{m.faq_data_a()}
 			</p>
 		</details>
 
 		<details>
-			<summary>Can I get a refund?</summary>
+			<summary>{m.faq_refund_q()}</summary>
 			<p>
-				{REFUND_POLICY} To request one, write to
-				<a href="mailto:{SUPPORT_EMAIL}">{SUPPORT_EMAIL}</a> with your order number.
+				{@render rich(m.faq_refund_a({ policy: REFUND_POLICY, email: SLOT }), mail)}
 			</p>
 		</details>
 	</section>
 
 	<section>
-		<h2>If something goes wrong</h2>
+		<h2>{m.faq_section_trouble()}</h2>
 
 		<details>
-			<summary>I lost my license key</summary>
+			<summary>{m.faq_lost_q()}</summary>
 			<p>
-				Use the <a href={resolve('/recover', {})}>recovery page</a>. Enter the email you used at
-				checkout and we'll send your key there. Check your spam folder if it doesn't arrive within a
-				few minutes.
+				{@render rich(m.faq_lost_a({ recovery: SLOT }), recoverLink)}
 			</p>
 		</details>
 
 		<details id="pending">
-			<summary>I paid but my license is still pending</summary>
+			<summary>{m.faq_pending_q()}</summary>
 			<p>
-				Activation can take a few minutes after payment. Wait a moment, then refresh the page and
-				try again. If it's still pending after 15 minutes, write to
-				<a href="mailto:{SUPPORT_EMAIL}">{SUPPORT_EMAIL}</a> with your order number and we'll sort it
-				out.
+				{@render rich(m.faq_pending_a({ email: SLOT }), mail)}
 			</p>
 		</details>
 
 		<details>
-			<summary>My license failed to activate</summary>
+			<summary>{m.faq_activation_q()}</summary>
 			<p>
-				First, check that you copied the whole key with no extra spaces. If it still fails, write to
-				<a href="mailto:{SUPPORT_EMAIL}">{SUPPORT_EMAIL}</a> with your order number and the error you
-				see.
+				{@render rich(m.faq_activation_a({ email: SLOT }), mail)}
 			</p>
 		</details>
 
 		<details>
-			<summary>It says my license is already in use or the limit is reached</summary>
+			<summary>{m.faq_limit_q()}</summary>
 			<p>
-				A license can only be active on a limited number of devices. If you've changed device or
-				cleared your browser data, write to
-				<a href="mailto:{SUPPORT_EMAIL}">{SUPPORT_EMAIL}</a> and we'll reset it for you.
+				{@render rich(m.faq_limit_a({ email: SLOT }), mail)}
 			</p>
 		</details>
 
 		<details>
-			<summary>I used the wrong email at checkout</summary>
+			<summary>{m.faq_wrong_email_q()}</summary>
 			<p>
-				Write to <a href="mailto:{SUPPORT_EMAIL}">{SUPPORT_EMAIL}</a> with your order number and the email
-				you meant to use, and we'll fix it.
+				{@render rich(m.faq_wrong_email_a({ email: SLOT }), mail)}
 			</p>
 		</details>
 
 		<details>
-			<summary>I need a receipt or invoice</summary>
+			<summary>{m.faq_receipt_q()}</summary>
 			<p>
-				Lemon Squeezy emails a receipt right after your purchase. If you can't find it, write to
-				<a href="mailto:{SUPPORT_EMAIL}">{SUPPORT_EMAIL}</a> with your order number.
+				{@render rich(m.faq_receipt_a({ email: SLOT }), mail)}
 			</p>
 		</details>
 
 		<details>
-			<summary>My payment was declined</summary>
+			<summary>{m.faq_declined_q()}</summary>
 			<p>
-				Declines usually come from your bank or card issuer. Try another card or payment method, or
-				contact your bank. Nothing is charged when a payment is declined.
+				{m.faq_declined_a()}
 			</p>
 		</details>
 	</section>
 
 	<p class="contact">
-		Didn't find your answer? Write to
-		<a href="mailto:{SUPPORT_EMAIL}">{SUPPORT_EMAIL}</a> and include your order number if you have one.
+		{@render rich(m.faq_contact({ email: SLOT }), mail)}
 	</p>
 </main>
 
@@ -237,10 +219,6 @@
 	h2 {
 		margin: 2.5rem 0 0.75rem;
 		font-size: 1.2rem;
-	}
-
-	details {
-		border-bottom: 1px solid var(--color-border, #ddd);
 	}
 
 	details:first-of-type {
