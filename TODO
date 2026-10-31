@@ -12,7 +12,6 @@
 how to fucking debug sourcemaps?
 rust error handling
 
-1. i18n units, funniversaies fun numbers
 2. FAQ page
 3. review wording => show MC
 
@@ -45,15 +44,15 @@ a privacy policy (GDPR information duties)
 terms of use / CGV, which French B2C online sales require
 mentions légales
 
-On naming processors: the GDPR requires you to disclose recipients and any transfers outside the EU. Naming Cloudflare, Lemon Squeezy, Resend and your host is common and is the safest approach. Describe storage accurately (“stored in a database hosted by Cloudflare”) and state a retention period, a deletion route and a contact. Don’t claim encryption you haven’t verified. Also say plainly whether you use cookies or analytics, since analytics usually needs consent under CNIL rules.
-
+3. create support & legal email addresses?
 4. translate FR EN
 5. log level & turn them all in debug
-6. affiliate?
-7. LS prod
-8. error handling
-9. rate limiting server side
-10. refund & license removal
+6. refund & license removal
+
+7. affiliate?
+8. LS prod
+9. error handling
+10. rate limiting server side
 11. more tests below
 12. cleaner code
 

@@ -47,5 +47,59 @@ export const dateTypes: DateTypeCalculator[] = [
 		label: m.datatype_bworkanniversary_label(),
 		description: m.datatype_workanniversary_description(),
 		defaultLabel: m.datatype_workanniversary_defaultLabel()
+	},
+	{
+		slug: 'moving-in',
+		title: m.datatype_moving_in_title(),
+		h1: m.datatype_moving_in_h1(),
+		subtitle: m.datatype_moving_in_subtitle(),
+		label: m.datatype_moving_in_label(),
+		description: m.datatype_moving_in_description(),
+		defaultLabel: m.datatype_moving_in_defaultLabel()
+	},
+	{
+		slug: 'new-home',
+		title: m.datatype_new_home_title(),
+		h1: m.datatype_new_home_h1(),
+		subtitle: m.datatype_new_home_subtitle(),
+		label: m.datatype_new_home_label(),
+		description: m.datatype_new_home_description(),
+		defaultLabel: m.datatype_new_home_defaultLabel()
+	},
+	{
+		slug: 'new-parent',
+		title: m.datatype_new_parent_title(),
+		h1: m.datatype_new_parent_h1(),
+		subtitle: m.datatype_new_parent_subtitle(),
+		label: m.datatype_new_parent_label(),
+		description: m.datatype_new_parent_description(),
+		defaultLabel: m.datatype_new_parent_defaultLabel()
+	},
+	{
+		slug: 'business-launch',
+		title: m.datatype_business_launch_title(),
+		h1: m.datatype_business_launch_h1(),
+		subtitle: m.datatype_business_launch_subtitle(),
+		label: m.datatype_business_launch_label(),
+		description: m.datatype_business_launch_description(),
+		defaultLabel: m.datatype_business_launch_defaultLabel()
+	},
+	{
+		slug: 'achievement',
+		title: m.datatype_achievement_title(),
+		h1: m.datatype_achievement_h1(),
+		subtitle: m.datatype_achievement_subtitle(),
+		label: m.datatype_achievement_label(),
+		description: m.datatype_achievement_description(),
+		defaultLabel: m.datatype_achievement_defaultLabel()
+	},
+	{
+		slug: 'reunion',
+		title: m.datatype_reunion_title(),
+		h1: m.datatype_reunion_h1(),
+		subtitle: m.datatype_reunion_subtitle(),
+		label: m.datatype_reunion_label(),
+		description: m.datatype_reunion_description(),
+		defaultLabel: m.datatype_reunion_defaultLabel()
 	}
 ];

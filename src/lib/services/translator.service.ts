@@ -26,6 +26,14 @@ const SUPERSCRIPT = '⁰¹²³⁴⁵⁶⁷⁸⁹';
 const superscript = (n: number) =>
 	[...String(n)].map((digit) => SUPERSCRIPT[Number(digit)]).join('');
 
+const LEGAL_PAGES = {
+	privacy: { title: m.legal_privacy_title(), description: m.legal_privacy_description() },
+	terms: { title: m.legal_terms_title(), description: m.legal_terms_description() },
+	sales: { title: m.legal_sales_title(), description: m.legal_sales_description() }
+};
+
+export type LegalDocument = keyof typeof LEGAL_PAGES;
+
 // "MercuryYears" or "mercury_years" -> "mercury_years"
 const snake = (value: string) => value.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase();
 
@@ -90,6 +98,19 @@ export class TranslatorService {
 
 	/** FunNumberType from the API ("PowerOfTwo" or "power_of_two") -> "Powers of two". */
 	getCategory = (kind: string): string => this.translate(`category_${snake(kind)}`);
+
+	isLegalDocument = (document: string): document is LegalDocument => {
+		return Object.hasOwn(LEGAL_PAGES, document);
+	};
+
+	getLegalMeta = (document: string) => {
+		if (!this.isLegalDocument(document)) return;
+		const page = LEGAL_PAGES[document];
+		return {
+			title: this.translate(page.title),
+			description: this.translate(page.description)
+		};
+	};
 }
 
 export const translatorService = new TranslatorService();
