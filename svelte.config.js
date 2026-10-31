@@ -16,7 +16,8 @@ const config = {
 		// https://github.com/opral/paraglide-js/blob/main/examples/sveltekit/README.md#usage
 		paths: {
 			relative: false
-		}
+		},
+		prerender: { entries: ['*', '/sitemap.xml'] }
 	}
 };
 

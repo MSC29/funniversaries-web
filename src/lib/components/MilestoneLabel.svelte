@@ -6,17 +6,11 @@
 
 	interface Props {
 		dataType: DateTypeCalculator;
-		selectExample: (ex: AnniversaryExample) => Promise<void>;
 		dateReactive: Date;
 		onchange?: (date: Date) => void;
 	}
 
-	let {
-		dataType,
-		selectExample,
-		dateReactive = $bindable<Date>(new Date()),
-		onchange
-	}: Props = $props();
+	let { dataType, dateReactive = $bindable<Date>(new Date()), onchange }: Props = $props();
 
 	$effect(() => console.log(`label date  ${dateReactive}`));
 
@@ -86,7 +80,7 @@
 		<span>Try:</span>
 		{#each examples as ex (ex.id)}
 			<button
-				onclick={() => selectExample(ex)}
+				onclick={() => pick(ex.date)}
 				style="font-size:14px;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line-2);border-radius:999px;padding:7px 13px;cursor:pointer"
 				>{ex.title}</button
 			>

@@ -1,16 +1,7 @@
 # ui ux
 
 - Claude design
-- Skeleton slight display issue
 - wording
-
-Format consistency
-Right now the hero card shows a weekday + full date ("Tuesday, September 29, 2026") while the timeline below drops the weekday ("October 11, 2026"). Pick one and use it everywhere — I'd drop the weekday from both. It doesn't add signal here, since "Ascending sequence" / "seconds" already tell the story. So: MMMM d, yyyy (e.g. "October 11, 2026") consistently, formatted client-side with Intl.DateTimeFormat(locale, { year:'numeric', month:'long', day:'numeric' }) so it respects the visitor's locale automatically instead of hardcoding English.
-
-Relative vs absolute
-Keep "tomorrow" as a relative label, but only for genuinely near dates (today/tomorrow/this week) — past that, relative labels ("in 14 days") get noisy next to a list of long-range milestones stretching to 2030. So: relative badge for anything within ~7 days, absolute date only beyond that. That's basically what you're already doing in the hero card; just don't extend it into the timeline list.
-
-Vertical list — yes, but tighten it; cf claude
 
 # tech
 
@@ -21,22 +12,50 @@ Vertical list — yes, but tighten it; cf claude
 how to fucking debug sourcemaps?
 rust error handling
 
-last features missing
+1. i18n units, funniversaies fun numbers
+2. FAQ page
+3. review wording => show MC
 
-- Rust api ics
-- Dl ics from ui
+Pricing page
 
-7. slow API has preview happening first, then API, show flash & 2 "anniversaries coming up" => TBD
-8. create privacy page
-9. FAQ page
-10. error handling
-11. log level & turn them all in debug
-12. rate limiting server side
-13. refund & license removal
-14. affiliate?
-15. LS prod
+The structure ($0 / $4 per date / $10 for all) is sound, and “no subscription” is a strong selling point. Things I’d change:
 
-https://paraglidejs.com/sveltekit#static-site-generation-ssg
+Typo and wording: “Add them milestone to your calendar” is broken. Also, free “add to calendar” next to paid “export the whole list” is the clearest difference, so word it that way.
+What the 4 free milestones are: say whether they’re the next 4 or a fixed set, and show a blurred or locked preview of what the other 180+ look like. Right now the paid value is only a number.
+“Any date” is vague: “All your dates” or “Unlimited dates” reads more naturally. A one-line example helps (“partner, kids, parents, work”).
+Currency and VAT: European visitors expect € with tax included. Lemon Squeezy handles VAT as merchant of record, but check how the price displays.
+Print partners line: only keep it if the partners really exist at launch.
+Refund policy: add a short line and link it.
+
+FAQ
+
+Cover at least:
+
+what’s free versus paid
+what unlocking a date means, and what happens if you change the date
+license recovery
+refunds
+how you count days (time zone, leap years, birth time)
+calendar export and reminders
+print partners
+what happens to emails
+who runs the site
+
+a privacy policy (GDPR information duties)
+terms of use / CGV, which French B2C online sales require
+mentions légales
+
+On naming processors: the GDPR requires you to disclose recipients and any transfers outside the EU. Naming Cloudflare, Lemon Squeezy, Resend and your host is common and is the safest approach. Describe storage accurately (“stored in a database hosted by Cloudflare”) and state a retention period, a deletion route and a contact. Don’t claim encryption you haven’t verified. Also say plainly whether you use cookies or analytics, since analytics usually needs consent under CNIL rules.
+
+4. translate FR EN
+5. log level & turn them all in debug
+6. affiliate?
+7. LS prod
+8. error handling
+9. rate limiting server side
+10. refund & license removal
+11. more tests below
+12. cleaner code
 
 improve testing
 
@@ -91,7 +110,6 @@ You're selling at $4 from France, so you'll probably need legal notices (mention
 # $$$
 
 - company name & product name
-- payment via Lemon
 - affiliate links
 
 Suggested first two weeks of actual work
@@ -100,3 +118,11 @@ Add one "🎁 Find a gift for this date" button that opens a pre-filled affiliat
 Add 5–10 static SEO landing pages for the most-searched milestone numbers.
 Set up Lemon Squeezy, wire a single "Download poster" paid button using canvas-rendered output from the existing WASM calc.
 Let it sit for a month. Check clicks and conversions before building anything else — including the API, the T-shirt integration, or reminders.
+
+Mentions légales: a French site needs a legal notice naming the publisher (name, address, SIREN, contact email) and the host. Add it before launch.
+
+Trademark: check “Funniversaries” in the INPI and EUIPO databases. It’s a playful common word, so collisions are plausible.
+Money admin: URSSAF declaration, a separate bank account (strongly recommended), a revenue ledger, and VAT franchise rules.
+Support: a monitored contact address, and a plan for refunds and lost licenses.
+Success criteria: decide now what numbers (visits, free-to-paid conversion) would make you continue, change course or stop.
+Timing: since gift season is close and SEO is slow, a free launch now helps you be indexed for Valentine’s Day and next Christmas.

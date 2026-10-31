@@ -6,16 +6,16 @@
 	import { formatDate, formatRelativeDays } from '$lib/utils/dates';
 	import AddToCalendar from './AddToCalendar.svelte';
 	import type { CalendarEvent } from '$lib/services/calendar.service';
+	import { translatorService } from '$lib/services/translator.service';
 
 	interface Props {
 		anniversaries: AnniversariesEntity;
 		paid: boolean;
 		dateSelected: Date;
 		calendarEvents: CalendarEvent[];
-		postPricing: (type: string) => Promise<void>;
 	}
 
-	let { anniversaries, paid, dateSelected, calendarEvents, postPricing }: Props = $props();
+	let { anniversaries, paid, dateSelected, calendarEvents }: Props = $props();
 </script>
 
 <section class="preview" aria-labelledby="preview-title">
@@ -27,7 +27,7 @@
 	</div>
 
 	<ol class="timeline">
-		{#each anniversaries.buckets as bucket, i (bucket.horizon)}
+		{#each anniversaries.buckets as bucket (bucket.horizon)}
 			<li>
 				<time datetime={bucket.anniversaries[0].date.toISOString()}>
 					<span class="rel">{formatRelativeDays(bucket.anniversaries[0].date)}</span>
@@ -35,10 +35,14 @@
 				</time>
 				<div class="body">
 					<p class="what">
-						{bucket.anniversaries[0].funNumber.title}
-						{bucket.anniversaries[0].unit}
+						{translatorService.formatQuantity(
+							bucket.anniversaries[0].funNumber.count,
+							bucket.anniversaries[0].unit
+						)}
 					</p>
-					<p class="why">{bucket.anniversaries[0].funNumber.description}</p>
+					<p class="why">
+						{translatorService.translate(bucket.anniversaries[0].funNumber.description)}
+					</p>
 				</div>
 				<span class="window">{bucket.horizon}</span>
 			</li>

@@ -1,6 +1,6 @@
 export interface FunNumberDefEntity {
-	// human readable anniversary "123321", "π"
-	title: string;
+	// // human readable anniversary "123321", "π"
+	// title: string;
 	// number associated with anniversary 123321, 3.14...
 	count: number;
 	// description & details
@@ -8,7 +8,7 @@ export interface FunNumberDefEntity {
 	// a label to identify the event
 	label: string;
 	// type of fun anniversary (palindrome, repeated digit, round number, geek code, meme number)
-	type: string;
+	kind: string;
 }
 
 export interface AnniversaryEntity {

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { m } from '$lib/paraglide/messages.js';
 	import { onMount } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
 	import { pwaInfo } from 'virtual:pwa-info';

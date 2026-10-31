@@ -17,28 +17,28 @@
 			title: '123,456',
 			label: 'Ascending sequence',
 			description: 'Six digits in perfect ascending order.',
-			type: ''
+			kind: ''
 		},
 		{
 			count: 9876543210,
 			title: '9,876,543,210',
 			label: 'Descending sequence',
 			description: 'All ten digits, in perfect descending order.',
-			type: ''
+			kind: ''
 		},
 		{
 			count: 10000,
 			title: '10,000',
 			label: 'Round number',
 			description: 'A clean, round milestone.',
-			type: ''
+			kind: ''
 		},
 		{
 			count: 777,
 			title: '777',
 			label: 'Lucky sevens',
 			description: 'The classic slot-machine jackpot number.',
-			type: ''
+			kind: ''
 		},
 		{
 			count: 451,
@@ -46,7 +46,7 @@
 			label: 'The temperature books burn at',
 			description:
 				"Fahrenheit 451 — Ray Bradbury's novel, named for the temperature at which paper is said to combust.",
-			type: ''
+			kind: ''
 		},
 		{
 			count: 1337,
@@ -54,7 +54,7 @@
 			label: 'Leet',
 			description:
 				'"Leet" — internet slang for "elite," popularized in early hacker and gaming culture.',
-			type: ''
+			kind: ''
 		}
 	];
 

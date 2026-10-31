@@ -3,10 +3,10 @@
 	import { replaceState } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import * as lib from '@msc29/funniversaries-wasm';
-	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 
 	import { DatesService } from '$lib/services/dates.service';
+	import { translatorService } from '$lib/services/translator.service';
 
 	import type { TimeEntity } from '$lib/entities/time.entity';
 	import type {
@@ -23,7 +23,7 @@
 	import UiErrorMessage from './UiErrorMessage.svelte';
 	import type { SessionResponse } from '$lib/responses/session.response';
 	import Paywall from './Paywall.svelte';
-	import type { AnniversariesEntity, AnniversaryExample } from '$lib/entities/anniversary.entity';
+	import type { AnniversariesEntity } from '$lib/entities/anniversary.entity';
 	import PreviewList from './PreviewList.svelte';
 	import NextDates from './NextDates.svelte';
 	import { eventUid, fromLocalDate, type CalendarEvent } from '$lib/services/calendar.service';
@@ -44,7 +44,6 @@
 	let uiError: UiErrorEntity | undefined = $state(undefined);
 
 	let session = $state<SessionResponse | null>(null);
-	let sessionLoaded: boolean = $state(false);
 	let calendarEvents: CalendarEvent[] = $state([]);
 
 	let loading = $state(true);
@@ -149,8 +148,8 @@
 						.map((a) => ({
 							uid: eventUid(claimed, a.funNumber.count, a.unit),
 							date: a.date,
-							title: `${formatDate(claimed)}: ${a.funNumber.title} ${a.unit} anniversary`, // your localized title
-							description: `Celebrate ${formatDate(claimed)}: ${a.funNumber.title} ${a.unit} anniversary with funniversaries.com`,
+							title: `${formatDate(claimed)}: ${translatorService.formatQuantity(a.funNumber.count, a.unit)} anniversary`, // your localized title
+							description: `Celebrate ${formatDate(claimed)}: ${translatorService.formatQuantity(a.funNumber.count, a.unit)} anniversary with funniversaries.com`,
 							url: `https://funniversaries.com/?d=${dateService.getDateString(a.date)}` // results page for this date
 						}));
 					console.log(calendarEvents);
@@ -180,7 +179,6 @@
 		apiService = new ApiService();
 
 		session = await apiService.getSession().catch(() => null);
-		sessionLoaded = true;
 
 		const time: TimeEntity = dateService.init_time();
 		// The URL wins; today is only the fallback. (Reading location here is safe: no prerender.)
@@ -195,12 +193,6 @@
 			console.log(`date from param  ${dateService.getDateString(dateSelected)}`);
 		}
 	});
-
-	const selectExample: (ex: AnniversaryExample) => Promise<void> = async (
-		ex: AnniversaryExample
-	) => {
-		dateSelected = ex.date!;
-	};
 
 	const postPricing: (type: string) => Promise<void> = async (type: string) => {
 		try {
@@ -223,21 +215,16 @@
 <section
 	style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px;align-items:center"
 >
-	<MilestoneLabel
-		{dataType}
-		{selectExample}
-		bind:dateReactive={dateSelected}
-		onchange={onDateChanged}
+	<MilestoneLabel {dataType} bind:dateReactive={dateSelected} onchange={onDateChanged}
 	></MilestoneLabel>
 </section>
 
 <section>
 	{#if anniversaries}
-		{#if paid}
-			<NextDates {anniversaries} {dateSelected} {calendarEvents}></NextDates>
+		{#if paid || loading}
+			<NextDates {anniversaries} {dateSelected} {calendarEvents} {loading}></NextDates>
 		{:else}
-			<PreviewList {anniversaries} {paid} {dateSelected} {calendarEvents} {postPricing}
-			></PreviewList>
+			<PreviewList {anniversaries} {paid} {dateSelected} {calendarEvents}></PreviewList>
 		{/if}
 	{/if}
 

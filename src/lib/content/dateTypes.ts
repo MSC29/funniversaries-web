@@ -2,7 +2,7 @@ import { m } from '$lib/paraglide/messages.js';
 
 // src/lib/content/dateTypes.ts
 export interface DateTypeCalculator {
-	slug: string;
+	slug: string | undefined;
 	title: string; // <title> tag
 	h1: string;
 	subtitle: string;

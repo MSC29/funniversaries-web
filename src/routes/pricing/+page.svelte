@@ -63,9 +63,7 @@
 	>
 		{m.pricing_title({ price: single })}
 	</h1>
-	<p
-		style="margin:0;font-size:17px;line-height:1.55;color:var(--muted);max-width:52ch;text-wrap:pretty"
-	>
+	<p style="margin:0;font-size:17px;line-height:1.55;color:var(--muted);text-wrap:pretty">
 		{m.pricing_lead()}
 	</p>
 </section>
@@ -84,8 +82,6 @@
 			style="display:flex;flex-direction:column;gap:9px;font-size:15px;color:var(--ink-2);line-height:1.45"
 		>
 			<span>{m.pricing_free_feature_preview()}</span>
-			<span>{m.pricing_free_feature_share()}</span>
-			<span>{m.pricing_free_feature_calendar()}</span>
 		</div>
 		<a
 			href={resolve('/', {})}
@@ -103,7 +99,6 @@
 			style="display:flex;flex-direction:column;gap:9px;font-size:15px;color:var(--ink-2);line-height:1.45"
 		>
 			<span>{m.pricing_single_feature_all()}</span>
-			<span>{m.pricing_single_feature_filter()}</span>
 			<span>{m.pricing_single_feature_export()}</span>
 			<span>{m.pricing_single_feature_reminder()}</span>
 		</div>
@@ -129,6 +124,8 @@
 			style="display:flex;flex-direction:column;gap:9px;font-size:15px;color:#E3E9F5;line-height:1.45"
 		>
 			<span>{m.pricing_all_feature()}</span>
+			<span>{m.pricing_all_feature_export()}</span>
+			<span>{m.pricing_all_feature_reminder()}</span>
 		</div>
 		<button
 			onclick={postPricing}
@@ -138,6 +135,6 @@
 	</div>
 </section>
 
-<p style="margin:0;font-size:14px;color:var(--muted-3);max-width:60ch">
+<p style="margin:0;font-size:14px;color:var(--muted-3)">
 	{m.pricing_print_note()}
 </p>

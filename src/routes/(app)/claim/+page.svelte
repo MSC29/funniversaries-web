@@ -4,6 +4,9 @@
 	import { page } from '$app/state';
 	import { ApiService } from '$lib/services/api.service';
 	import { EntitlementsUtils } from '$lib/utils/entitlements.utils';
+	import { TranslatorService } from '$lib/services/translator.service';
+
+	let translatorService: TranslatorService;
 
 	const MAX_ATTEMPTS = 20;
 	const DELAY_MS = 1500;
@@ -15,16 +18,6 @@
 	const apiService = new ApiService();
 
 	const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-	const reasonMessage = {
-		invalid_request: m.claim_reason_api_invalid_request(),
-		service_unavailable: m.claim_reason_api_service_unavailable(),
-		internal_error: m.claim_reason_api_internal_error()
-	} as const;
-
-	function getReason(reason: keyof typeof reasonMessage) {
-		return reasonMessage[reason];
-	}
 
 	const run = async (isCancelled: () => boolean) => {
 		const token = page.url.searchParams.get('t');
@@ -48,7 +41,7 @@
 					return;
 				}
 				if (result.status === 'failed') {
-					view = { kind: 'failed', reason: getReason(result.reason) };
+					view = { kind: 'failed', reason: translatorService.getClaimReason(result.reason) };
 					return;
 				}
 				await sleep(DELAY_MS); // pending: webhooks have not landed yet
@@ -66,6 +59,7 @@
 	};
 
 	onMount(() => {
+		translatorService = new TranslatorService();
 		let cancelled = false;
 		void run(() => cancelled);
 		return () => {
