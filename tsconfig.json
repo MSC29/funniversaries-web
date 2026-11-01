@@ -1,25 +1,34 @@
 {
-	"extends": "$app/tsconfig",
-	"compilerOptions": {
-		"target": "es2020",
-		"module": "ESNext",
-		"lib": ["es2020", "WebWorker", "dom", "dom.iterable"],
-		"checkJs": false,
-		"sourceMap": true,
-		"strict": true,
-		"types": ["$app/types", "vite-plugin-pwa"]
-	},
-	"include": [
-		"src/**/*.d.ts",
-		"src/**/*.js",
-		"src/**/*.ts",
-		"src/**/*.svelte",
-		".svelte-kit/ambient.d.ts",
-		"node_modules/vite-plugin-pwa/svelte.d.ts",
-		"archive/page.ts",
-		"archive/page.ts",
-		"archive/seo.ts",
-		"archive/seo.ts"
-	],
-	"exclude": ["dist", "archive", "node_modules", "test"]
+    "extends": "$app/tsconfig",
+    "compilerOptions": {
+        "target": "es2020",
+        "module": "ESNext",
+        "lib": [
+            "es2020",
+            "WebWorker",
+            "dom",
+            "dom.iterable"
+        ],
+        "checkJs": false,
+        "sourceMap": true,
+        "strict": true,
+        "types": [
+            "$app/types",
+            "vite-plugin-pwa/client"
+        ]
+    },
+    "include": [
+        "src/**/*.d.ts",
+        "src/**/*.js",
+        "src/**/*.ts",
+        "src/**/*.svelte",
+        ".svelte-kit/ambient.d.ts",
+        "node_modules/vite-plugin-pwa/svelte.d.ts",
+    ],
+    "exclude": [
+        "dist",
+        "archive",
+        "node_modules",
+        "test"
+    ]
 }
