@@ -12,8 +12,6 @@ const documents = import.meta.glob('$lib/content/faq/**/faq.html', {
 
 export function load() {
 	const path = `/src/lib/content/faq/${getLocale()}/faq.html`;
-	console.log('path legal ' + path);
-	console.log('Available files:', Object.keys(documents));
 	const loadDocument = documents[path];
 
 	if (!loadDocument) {

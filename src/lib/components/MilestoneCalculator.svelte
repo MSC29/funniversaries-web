@@ -64,8 +64,6 @@
 			throw uiError;
 		}
 
-		console.log(`generating date from ${dateService.getDateString(dateSelected)}`);
-
 		let generatedAnniversaries: AnniversariesResponse;
 		let entitled = false;
 
@@ -85,14 +83,12 @@
 		} else {
 			paid = false;
 			generatedAnniversaries = await lib.compute_preview(dateService.getDateString(dateSelected));
-			console.log(generatedAnniversaries);
 		}
 
 		return generatedAnniversaries;
 	};
 
 	function parseDate(value: string): Date {
-		console.log(`parseDate date  ${value}`);
 		const d = new Date(value);
 		if (Number.isNaN(d.valueOf())) throw new Error(`invalid anniversary date: ${value}`);
 		return fromLocalDate(d);
@@ -145,21 +141,14 @@
 		let stale = false;
 		uiError = undefined;
 
-		console.log(`calculator date  ${date}`);
-		console.log(`calculator date  ${dateSelected}`);
-
 		fetchData()
 			.then((response: AnniversariesResponse) => {
-				console.log('fetched' + !stale);
-				console.log(response);
 				if (!stale) {
 					anniversaries = mapToEntity(response);
-					console.log('anniversaries');
-					console.log(anniversaries);
+
 					const claimed = fromLocalDate(dateSelected!);
 					loading = false;
 
-					console.log('calendarEvents');
 					calendarEvents = anniversaries.buckets
 						.flatMap((b) => b.anniversaries)
 						.map((a) => ({
@@ -169,7 +158,6 @@
 							description: `Celebrate ${formatDate(claimed)}: ${translatorService.formatQuantity(a.funNumber.count, a.unit)} anniversary with funniversaries.com`,
 							url: `https://funniversaries.com/?d=${dateService.getDateString(a.date)}` // results page for this date
 						}));
-					console.log(calendarEvents);
 				}
 			})
 			.catch((e) => {
@@ -209,7 +197,6 @@
 		if (page.url.searchParams.get('date') !== null) {
 			const dateString = page.url.searchParams.get('date')!;
 			dateSelected = new Date(dateString);
-			console.log(`date from param  ${dateService.getDateString(dateSelected)}`);
 		}
 	});
 
@@ -223,7 +210,7 @@
 				date: dateService.getDateString(dateSelected),
 				scope: type
 			};
-			console.log(`posting ${payload.scope} ${payload.date}`);
+
 			const checkoutResponse: CheckoutResponse = await apiService.postCheckout(payload);
 			window.location.assign(checkoutResponse.checkout_url); // full-page redirect to outside svelte (not using goto)
 		} catch {

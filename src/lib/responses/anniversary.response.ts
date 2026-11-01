@@ -1,6 +1,4 @@
 export interface FunNumberDefResponse {
-	// // human readable anniversary "123321", "π"
-	// title: string;
 	// number associated with anniversary 123321, 3.14...
 	count: number;
 	// description & details

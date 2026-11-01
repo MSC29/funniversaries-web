@@ -40,7 +40,6 @@
 				date: undefined,
 				scope: 'all-dates'
 			};
-			console.log(`posting ${payload.scope}`);
 			const checkoutResponse: CheckoutResponse = await apiService.postCheckout(payload);
 			window.location.assign(checkoutResponse.checkout_url); // full-page redirect to outside svelte (not using goto)
 		} catch {

@@ -21,8 +21,6 @@ export function load({ params }) {
 	}
 
 	const path = `/src/lib/content/legal/${getLocale()}/${params.document}.html`;
-	console.log('path legal ' + path);
-	console.log('Available files:', Object.keys(documents));
 	const loadDocument = documents[path];
 
 	if (!loadDocument) {
@@ -30,7 +28,6 @@ export function load({ params }) {
 	}
 
 	const legalEntires = translatorService.getLegalMeta(params.document);
-	console.log(legalEntires);
 
 	return { documentType: params.document, loadDocument, ...legalEntires };
 }

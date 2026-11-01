@@ -16,8 +16,6 @@
 		onchange
 	}: Props = $props();
 
-	$effect(() => console.log(`label date  ${dateReactive}`));
-
 	function monthsAgo(months: number): Date {
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const date = new Date();
