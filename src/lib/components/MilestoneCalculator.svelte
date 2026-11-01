@@ -8,7 +8,6 @@
 	import { DatesService } from '$lib/services/dates.service';
 	import { translatorService } from '$lib/services/translator.service';
 
-	import type { TimeEntity } from '$lib/entities/time.entity';
 	import type {
 		AnniversariesBucketResponse,
 		AnniversariesResponse,
@@ -35,7 +34,7 @@
 	// Prerendering has no query string, so reading page.url.searchParams at this level
 	// throws at build time. Start with today and apply ?date=YYYY-MM-DD in onMount (browser only).
 	// Date from /claim (?date=YYYY-MM-DD), else today
-	let dateSelected = $state(new Date());
+	let dateSelected: Date | undefined = $state(undefined);
 	let dateReady = $state(false); // true once the real date is known
 
 	let anniversaries: AnniversariesEntity | undefined = $state();
@@ -57,6 +56,14 @@
 
 	// Plain async function: all the awaiting lives here, outside the effect.
 	const fetchData = async (): Promise<AnniversariesResponse> => {
+		if (!dateSelected) {
+			uiError = {
+				title: m.checkout_failed_title(),
+				message: m.checkout_failed_message()
+			};
+			throw uiError;
+		}
+
 		console.log(`generating date from ${dateService.getDateString(dateSelected)}`);
 
 		let generatedAnniversaries: AnniversariesResponse;
@@ -66,7 +73,7 @@
 			entitled = session.entitlements.some(
 				(e) =>
 					e.scope === 'all-dates' ||
-					(e.scope === 'single-date' && e.date === dateService.getDateString(dateSelected))
+					(e.scope === 'single-date' && e.date === dateService.getDateString(dateSelected!))
 			);
 		}
 
@@ -108,11 +115,13 @@
 
 	// Keep the address bar shareable (/fr/?d=2026-10-15) and clean when the date is today.
 	$effect(() => {
-		if (!dateReady) return;
+		if (!dateReady || !dateSelected) return;
+
 		const url = new URL(location.href);
 		const day = dateService.getDateString(dateSelected);
 		if (day === dateService.getDateString(new Date())) url.searchParams.delete('date');
 		else url.searchParams.set('date', day);
+
 		// eslint-disable-next-line svelte/no-navigation-without-resolve
 		if (url.href !== location.href) replaceState(url, {});
 	});
@@ -121,6 +130,14 @@
 	// sessionLoaded change (Svelte tracks what is read synchronously inside).
 
 	function onDateChanged(date: Date) {
+		if (!dateSelected) {
+			uiError = {
+				title: m.checkout_failed_title(),
+				message: m.checkout_failed_message()
+			};
+			throw uiError;
+		}
+
 		loading = true;
 		const id = ++latest;
 		// $effect(() => {
@@ -139,7 +156,7 @@
 					anniversaries = mapToEntity(response);
 					console.log('anniversaries');
 					console.log(anniversaries);
-					const claimed = fromLocalDate(dateSelected);
+					const claimed = fromLocalDate(dateSelected!);
 					loading = false;
 
 					console.log('calendarEvents');
@@ -180,12 +197,14 @@
 
 		session = await apiService.getSession().catch(() => null);
 
-		const time: TimeEntity = dateService.init_time();
 		// The URL wins; today is only the fallback. (Reading location here is safe: no prerender.)
 		dateSelected =
-			dateService.parseDay(new URLSearchParams(location.search).get('date')) ?? time.now;
-		dateReady = true;
-		onDateChanged(dateSelected);
+			dateService.parseDay(new URLSearchParams(location.search).get('date')) ?? undefined;
+
+		if (dateSelected) {
+			dateReady = true;
+			onDateChanged(dateSelected);
+		}
 
 		if (page.url.searchParams.get('date') !== null) {
 			const dateString = page.url.searchParams.get('date')!;
@@ -196,6 +215,10 @@
 
 	const postPricing: (type: string) => Promise<void> = async (type: string) => {
 		try {
+			if (!dateSelected) {
+				throw new Error();
+			}
+
 			const payload: CheckoutPayload = {
 				date: dateService.getDateString(dateSelected),
 				scope: type
@@ -220,7 +243,7 @@
 </section>
 
 <section>
-	{#if anniversaries}
+	{#if anniversaries && dateSelected}
 		{#if paid || loading}
 			<NextDates {anniversaries} {dateSelected} {calendarEvents} {loading}></NextDates>
 		{:else}
@@ -228,7 +251,7 @@
 		{/if}
 	{/if}
 
-	{#if !paid}
+	{#if !paid && dateSelected}
 		<Paywall {dateSelected} {postPricing}></Paywall>
 	{/if}
 </section>

@@ -3,7 +3,9 @@ import { error } from '@sveltejs/kit';
 import { getLocale } from '$lib/paraglide/runtime.js';
 import { translatorService } from '$lib/services/translator.service.js';
 
+//svelte pre-rendering
 export const prerender = true;
+export const entries = translatorService.getLegalEntries;
 
 const documents = import.meta.glob('$lib/content/legal/**/*.html', {
 	query: '?raw',

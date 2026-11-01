@@ -60,6 +60,7 @@ hack for browser support */
 	--accent-hover: #ff7a4d;
 	--font: Outfit, system-ui, sans-serif;
 }
+
 html,
 body {
 	margin: 0;

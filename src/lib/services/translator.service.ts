@@ -1,5 +1,6 @@
 import { m } from '$lib/paraglide/messages.js';
 import { getLocale } from '$lib/paraglide/runtime.js';
+import { locales } from '$lib/paraglide/runtime.js';
 
 const reasonMessage = {
 	invalid_request: m.claim_reason_api_invalid_request(),
@@ -111,6 +112,9 @@ export class TranslatorService {
 			description: this.translate(page.description)
 		};
 	};
+
+	getLegalEntries = () =>
+		locales.flatMap((locale) => Object.keys(LEGAL_PAGES).map((document) => ({ locale, document })));
 }
 
 export const translatorService = new TranslatorService();

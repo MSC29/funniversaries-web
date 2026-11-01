@@ -6,11 +6,15 @@
 
 	interface Props {
 		dataType: DateTypeCalculator;
-		dateReactive: Date;
+		dateReactive: Date | undefined;
 		onchange?: (date: Date) => void;
 	}
 
-	let { dataType, dateReactive = $bindable<Date>(new Date()), onchange }: Props = $props();
+	let {
+		dataType,
+		dateReactive = $bindable<Date | undefined>(undefined),
+		onchange
+	}: Props = $props();
 
 	$effect(() => console.log(`label date  ${dateReactive}`));
 
@@ -40,7 +44,7 @@
 	];
 </script>
 
-<div style="display:flex;flex-direction:column;gap:22px;min-width:0">
+<div style="display:flex;flex-direction:column;gap:22px;min-width:0; margin-bottom: 5rem;">
 	<!-- <h1
 		style="margin:0;font-size:clamp(32px,4.6vw,48px);line-height:1.06;font-weight:700;letter-spacing:-0.04em;text-wrap:balance"
 	> -->
@@ -54,7 +58,7 @@
 	</p>
 
 	<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-		<label for="dateinput" style="width:min(100%, 16rem);">{dataType.label}</label>
+		<!-- <label for="dateinput" style="width:min(100%, 16rem);">{dataType.label}</label> -->
 		<Datepicker
 			id="dateinput"
 			inputProps={{

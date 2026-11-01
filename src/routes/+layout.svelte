@@ -87,10 +87,14 @@
 	<!-- <p role="status">{m.offline_banner()}</p> -->
 {/if}
 
-<div style="min-height:100vh;background:var(--bg);padding:20px 20px 0;box-sizing:border-box">
-	<div style="max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:48px">
-		<Header />
-		{@render children()}
-		<Footer />
+<div
+	style="max-width:1120px;min-height:100vh;background:var(--bg);padding:20px 20px 0;box-sizing:border-box;display:flex;flex-direction:column;margin:0 auto;"
+>
+	<Header />
+	<div style="gap:48px; flex:1">
+		{#if children}
+			{@render children()}
+		{/if}
 	</div>
+	<Footer />
 </div>
