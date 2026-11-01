@@ -1,9 +1,5 @@
 <script lang="ts">
 	let { data } = $props();
-
-	console.log('legal');
-	console.log(data.title);
-	console.log(data.description);
 </script>
 
 <svelte:head>

@@ -28,7 +28,7 @@ export default tseslint.config(
 		}
 	},
 	{
-		ignores: ['node_modules/', '.svelte-kit/', 'build/', 'dev-dist/']
+		ignores: ['node_modules/', '.svelte-kit/', 'build/', 'dev-dist/', 'src/lib/paraglide/']
 	}
 );
 // .DS_Store

@@ -48,7 +48,7 @@
 	<!-- <h1
 		style="margin:0;font-size:clamp(32px,4.6vw,48px);line-height:1.06;font-weight:700;letter-spacing:-0.04em;text-wrap:balance"
 	> -->
-	<h1 style="font-size: clamp(2rem, 5vw + 0.5rem, 3.25rem); max-width: 30ch; text-wrap: balance;">
+	<h1 style="font-size: clamp(2rem, 5vw + 0.5rem, 3.25rem); max-width: 100%; text-wrap: balance;">
 		{dataType.h1}
 	</h1>
 	<p

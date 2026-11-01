@@ -53,11 +53,6 @@
 </footer>
 
 <style>
-	.site-footer {
-		padding: 2rem 1.5rem;
-		border-top: 1px solid #ddd;
-	}
-
 	.footer-columns {
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
