@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Datepicker } from 'flowbite-svelte';
-	import type { AnniversaryExample } from '$lib/entities/anniversary.entity';
-	import type { DateTypeCalculator } from '$lib/content/dateTypes';
-	import { m } from '$lib/paraglide/messages';
+	import type { AnniversaryExample } from '#lib/entities/anniversary.entity.ts';
+	import type { DateTypeCalculator } from '#lib/content/dateTypes.ts';
+	import { m } from '#lib/paraglide/messages.js';
 
 	interface Props {
 		dataType: DateTypeCalculator;

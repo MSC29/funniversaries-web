@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { m } from '$lib/paraglide/messages.js';
+	import { m } from '#lib/paraglide/messages.js';
 	import { AccordionItem, Accordion, TextPlaceholder } from 'flowbite-svelte';
 
-	import type { AnniversariesEntity } from '$lib/entities/anniversary.entity';
-	import { formatDate, formatRelativeDays } from '$lib/utils/dates';
+	import type { AnniversariesEntity } from '#lib/entities/anniversary.entity.ts';
+	import { formatDate, formatRelativeDays } from '#lib/utils/dates.ts';
 	import AddToCalendar from './AddToCalendar.svelte';
-	import type { CalendarEvent } from '$lib/services/calendar.service';
-	import { translatorService } from '$lib/services/translator.service';
+	import type { CalendarEvent } from '#lib/services/calendar.service.ts';
+	import { translatorService } from '#lib/services/translator.service.ts';
 
 	interface Props {
 		anniversaries: AnniversariesEntity;

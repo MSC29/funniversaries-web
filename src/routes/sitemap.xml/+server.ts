@@ -1,7 +1,7 @@
 // src/routes/sitemap.xml/+server.ts
 import type { RequestHandler } from './$types';
-import { dateTypes } from '$lib/content/dateTypes';
-import { LOCALES, DEFAULT_LOCALE, INDEXABLE_PATHS, urlFor } from '$lib/seo/pages';
+import { dateTypes } from '#lib/content/dateTypes.ts';
+import { LOCALES, DEFAULT_LOCALE, INDEXABLE_PATHS, urlFor } from '#lib/seo/pages.ts';
 
 export const prerender = true;
 

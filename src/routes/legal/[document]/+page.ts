@@ -1,13 +1,13 @@
 // src/routes/[lang]/legal/[document]/+page.server.ts
 import { error } from '@sveltejs/kit';
-import { getLocale } from '$lib/paraglide/runtime.js';
-import { translatorService } from '$lib/services/translator.service.js';
+import { getLocale } from '#lib/paraglide/runtime.js';
+import { translatorService } from '#lib/services/translator.service.ts';
 
 //svelte pre-rendering
 export const prerender = true;
 export const entries = translatorService.getLegalEntries;
 
-const documents = import.meta.glob('$lib/content/legal/**/*.html', {
+const documents = import.meta.glob('#lib/content/legal/**/*.html', {
 	query: '?raw',
 	import: 'default',
 	eager: true

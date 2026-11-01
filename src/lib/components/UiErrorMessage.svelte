@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { UiErrorEntity } from '$lib/entities/error.entity';
+	import type { UiErrorEntity } from '#lib/entities/error.entity.ts';
 	import { Alert } from 'flowbite-svelte';
 
 	export let uiError: UiErrorEntity;

@@ -1,32 +1,32 @@
 <script lang="ts">
-	import { m } from '$lib/paraglide/messages.js';
-	import { replaceState } from '$app/navigation';
+	import { m } from '#lib/paraglide/messages.js';
+	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import * as lib from '@msc29/funniversaries-wasm';
 	import { page } from '$app/state';
 
-	import { DatesService } from '$lib/services/dates.service';
-	import { translatorService } from '$lib/services/translator.service';
+	import { DatesService } from '#lib/services/dates.service.ts';
+	import { translatorService } from '#lib/services/translator.service.ts';
 
 	import type {
 		AnniversariesBucketResponse,
 		AnniversariesResponse,
 		AnniversaryBucketResponse
-	} from '$lib/responses/anniversary.response';
+	} from '#lib/responses/anniversary.response.ts';
 	import MilestoneLabel from './MilestoneLabel.svelte';
-	import type { DateTypeCalculator } from '$lib/content/dateTypes';
-	import { ApiService } from '$lib/services/api.service';
-	import type { CheckoutPayload } from '$lib/payloads/checkout.payload';
-	import type { CheckoutResponse } from '$lib/responses/checkout.response';
-	import type { UiErrorEntity } from '$lib/entities/error.entity';
+	import type { DateTypeCalculator } from '#lib/content/dateTypes.ts';
+	import { ApiService } from '#lib/services/api.service.ts';
+	import type { CheckoutPayload } from '#lib/payloads/checkout.payload.ts';
+	import type { CheckoutResponse } from '#lib/responses/checkout.response.ts';
+	import type { UiErrorEntity } from '#lib/entities/error.entity.ts';
 	import UiErrorMessage from './UiErrorMessage.svelte';
-	import type { SessionResponse } from '$lib/responses/session.response';
+	import type { SessionResponse } from '#lib/responses/session.response.ts';
 	import Paywall from './Paywall.svelte';
-	import type { AnniversariesEntity } from '$lib/entities/anniversary.entity';
+	import type { AnniversariesEntity } from '#lib/entities/anniversary.entity.ts';
 	import PreviewList from './PreviewList.svelte';
 	import NextDates from './NextDates.svelte';
-	import { eventUid, fromLocalDate, type CalendarEvent } from '$lib/services/calendar.service';
-	import { formatDate } from '$lib/utils/dates';
+	import { eventUid, fromLocalDate, type CalendarEvent } from '#lib/services/calendar.service.ts';
+	import { formatDate } from '#lib/utils/dates.ts';
 
 	let dateService: DatesService;
 	let apiService: ApiService;
@@ -119,13 +119,13 @@
 		else url.searchParams.set('date', day);
 
 		// eslint-disable-next-line svelte/no-navigation-without-resolve
-		if (url.href !== location.href) replaceState(url, {});
+		if (url.href !== location.href) goto(url, { shallow: true, replace: true });
 	});
 
 	// Runs after the first render, then again whenever dateReactive, session or
 	// sessionLoaded change (Svelte tracks what is read synchronously inside).
 
-	function onDateChanged(date: Date) {
+	function onDateChanged() {
 		if (!dateSelected) {
 			uiError = {
 				title: m.checkout_failed_title(),
@@ -191,7 +191,7 @@
 
 		if (dateSelected) {
 			dateReady = true;
-			onDateChanged(dateSelected);
+			onDateChanged();
 		}
 
 		if (page.url.searchParams.get('date') !== null) {
@@ -225,21 +225,20 @@
 <section
 	style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px;align-items:center"
 >
-	<MilestoneLabel {dataType} bind:dateReactive={dateSelected} onchange={onDateChanged}
-	></MilestoneLabel>
+	<MilestoneLabel {dataType} bind:dateReactive={dateSelected} onchange={onDateChanged} />
 </section>
 
 <section>
 	{#if anniversaries && dateSelected}
 		{#if paid || loading}
-			<NextDates {anniversaries} {dateSelected} {calendarEvents} {loading}></NextDates>
+			<NextDates {anniversaries} {dateSelected} {calendarEvents} {loading} />
 		{:else}
-			<PreviewList {anniversaries} {paid} {dateSelected} {calendarEvents}></PreviewList>
+			<PreviewList {anniversaries} {paid} {dateSelected} {calendarEvents} />
 		{/if}
 	{/if}
 
 	{#if !paid && dateSelected}
-		<Paywall {dateSelected} {postPricing}></Paywall>
+		<Paywall {dateSelected} {postPricing} />
 	{/if}
 </section>
 

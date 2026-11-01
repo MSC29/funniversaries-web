@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { m } from '$lib/paraglide/messages.js';
-	import MilestoneCalculator from '$lib/components/MilestoneCalculator.svelte';
-	import { dateTypes, type DateTypeCalculator } from '$lib/content/dateTypes';
+	import { m } from '#lib/paraglide/messages.js';
+	import MilestoneCalculator from '#lib/components/MilestoneCalculator.svelte';
+	import { dateTypes, type DateTypeCalculator } from '#lib/content/dateTypes.ts';
 
 	//default page, default DataType
 	let data: DateTypeCalculator = dateTypes[0];

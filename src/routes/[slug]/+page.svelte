@@ -1,6 +1,6 @@
 <script lang="ts">
-	import MilestoneCalculator from '$lib/components/MilestoneCalculator.svelte';
-	import type { DateTypeCalculator } from '$lib/content/dateTypes';
+	import MilestoneCalculator from '#lib/components/MilestoneCalculator.svelte';
+	import type { DateTypeCalculator } from '#lib/content/dateTypes.ts';
 
 	export let data: DateTypeCalculator;
 </script>

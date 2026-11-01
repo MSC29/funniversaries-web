@@ -6,7 +6,7 @@
 		todayUtc,
 		type CalendarEvent,
 		type ReminderMode
-	} from '$lib/services/calendar.service';
+	} from '#lib/services/calendar.service.ts';
 
 	interface Props {
 		/** Preview page passes preview events, full page passes the full list. */

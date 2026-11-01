@@ -1,4 +1,4 @@
-import { PUBLIC_READY } from '$env/static/public';
+import { PUBLIC_READY } from '$app/env/public';
 import { redirect } from '@sveltejs/kit';
 
 export const ssr: boolean = false;

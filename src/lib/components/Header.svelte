@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { m } from '$lib/paraglide/messages.js';
+	import { m } from '#lib/paraglide/messages.js';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { localizeHref } from '$lib/paraglide/runtime.js';
+	import { localizeHref } from '#lib/paraglide/runtime.js';
 
 	import { Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
@@ -20,7 +20,7 @@
 	style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;padding:6px 0 18px;border-bottom:1px solid #1E2C48"
 >
 	<a
-		href={resolve('/', {})}
+		href={resolve('/')}
 		style="display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none"
 	>
 		<span
@@ -30,9 +30,9 @@
 	</a>
 
 	<nav style="display:flex;align-items:center;gap:20px;font-size:14px">
-		<a href={resolve('/recover', {})} style="color:var(--muted)">{m.nav_recover()}</a>
-		<a href={resolve('/pricing', {})} style="color:var(--muted)">{m.nav_pricing()}</a>
-		<a href={resolve('/faq', {})} style="color:var(--muted)">{m.nav_faq()}</a>
+		<a href={resolve('/recover')} style="color:var(--muted)">{m.nav_recover()}</a>
+		<a href={resolve('/pricing')} style="color:var(--muted)">{m.nav_pricing()}</a>
+		<a href={resolve('/faq')} style="color:var(--muted)">{m.nav_faq()}</a>
 
 		<button
 			style="margin-top:auto;font-size:15px;font-weight:600;color:inherit;background:transparent;border:1px solid var(--line);border-radius:12px;padding:13px 20px;min-height:46px;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor: pointer;"

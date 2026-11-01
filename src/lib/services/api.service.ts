@@ -1,13 +1,13 @@
-import { PUBLIC_API_URL } from '$env/static/public';
-import type { AnniversariesResponse } from '$lib/entities/anniversary.entity';
-import { UiError } from '$lib/entities/uierror.entity';
+import { PUBLIC_API_URL } from '$app/env/public';
+import type { AnniversariesResponse } from '#lib/entities/anniversary.entity.ts';
+import { UiError } from '#lib/entities/uierror.entity.ts';
 
-import type { CheckoutPayload } from '$lib/payloads/checkout.payload';
-import type { ClaimPayload } from '$lib/payloads/claim.payload';
-import type { ResendAccessPayload } from '$lib/payloads/resendAccess.payload';
-import type { CheckoutResponse } from '$lib/responses/checkout.response';
-import type { ClaimResponse } from '$lib/responses/claim.response';
-import type { SessionResponse } from '$lib/responses/session.response';
+import type { CheckoutPayload } from '#lib/payloads/checkout.payload.ts';
+import type { ClaimPayload } from '#lib/payloads/claim.payload.ts';
+import type { ResendAccessPayload } from '#lib/payloads/resendAccess.payload.ts';
+import type { CheckoutResponse } from '#lib/responses/checkout.response.ts';
+import type { ClaimResponse } from '#lib/responses/claim.response.ts';
+import type { SessionResponse } from '#lib/responses/session.response.ts';
 
 export class ApiService {
 	constructor() {}

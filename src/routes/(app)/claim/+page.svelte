@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { m } from '$lib/paraglide/messages.js';
+	import { m } from '#lib/paraglide/messages.js';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
-	import { ApiService } from '$lib/services/api.service';
-	import { EntitlementsUtils } from '$lib/utils/entitlements.utils';
-	import { TranslatorService } from '$lib/services/translator.service';
+	import { ApiService } from '#lib/services/api.service.ts';
+	import { EntitlementsUtils } from '#lib/utils/entitlements.utils.ts';
+	import { TranslatorService } from '#lib/services/translator.service.ts';
 
 	let translatorService: TranslatorService;
 

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { m } from '$lib/paraglide/messages.js';
+	import { m } from '#lib/paraglide/messages.js';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
-	import { ApiService } from '$lib/services/api.service';
-	import { EntitlementsUtils } from '$lib/utils/entitlements.utils';
+	import { ApiService } from '#lib/services/api.service.ts';
+	import { EntitlementsUtils } from '#lib/utils/entitlements.utils.ts';
 
 	// Same shape the API returns for the session
 	type View = { kind: 'working' } | { kind: 'failed'; reason: string } | { kind: 'timeout' };

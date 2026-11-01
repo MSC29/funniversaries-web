@@ -5,9 +5,9 @@
 	import { useRegisterSW } from 'virtual:pwa-register/svelte';
 
 	import '../app.css';
-	import Header from '$lib/components/Header.svelte';
-	import Footer from '$lib/components/Footer.svelte';
-	import { isBusy } from '$lib/utils/update.gate';
+	import Header from '#lib/components/Header.svelte';
+	import Footer from '#lib/components/Footer.svelte';
+	import { isBusy } from '#lib/utils/update.gate.ts';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -32,7 +32,11 @@
 	}
 
 	// Quiet moment 1: right after a route change, the user is between tasks.
-	afterNavigate(() => applyIfSafe());
+	afterNavigate(({ shallow, type }) => {
+		if (shallow && type === 'goto') return;
+
+		return applyIfSafe();
+	});
 
 	onMount(() => {
 		if (!pwaInfo) return;

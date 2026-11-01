@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { m } from '$lib/paraglide/messages.js';
+	import { m } from '#lib/paraglide/messages.js';
 	import { resolve } from '$app/paths';
-	import { ApiService } from '$lib/services/api.service';
+	import { ApiService } from '#lib/services/api.service.ts';
 	import { Label, Input } from 'flowbite-svelte';
 
 	const COOLDOWN_SECONDS = 30;
@@ -133,7 +133,7 @@
 	{/if}
 
 	<p class="help">
-		{helpParts[0]}<a href={resolve('/faq', {})}>{m.recovery_help_link()}</a>{helpParts[1]}
+		{helpParts[0]}<a href={resolve('/faq')}>{m.recovery_help_link()}</a>{helpParts[1]}
 	</p>
 </main>
 

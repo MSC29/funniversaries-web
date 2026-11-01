@@ -1,3 +1,8 @@
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+
+// import adapter from '@sveltejs/adapter-node';
+import adapter from '@sveltejs/adapter-static';
+
 import { paraglideVitePlugin } from '@inlang/paraglide-js';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
@@ -13,8 +18,8 @@ export default defineConfig(({ mode }) => {
 	return {
 		logLevel: 'info',
 		build: {
-			sourcemap: !isProd, // maps on preview/dev, off in prod
-			minify: isProd // readable output on preview,
+			sourcemap: !isProd /* maps on preview/dev, off in prod */,
+			minify: isProd /* readable output on preview, */
 		},
 		// WARN: this will not be necessary on your project
 		define: {
@@ -41,12 +46,20 @@ export default defineConfig(({ mode }) => {
 		plugins: [
 			wasmPack([], ['@msc29/funniversaries-wasm']),
 			tailwindcss(),
-			sveltekit(),
+			sveltekit({
+				preprocess: [vitePreprocess({})],
+				adapter: adapter({ fallback: '200.html' }),
+				// env: { publicPrefix: 'PUBLIC_' },
+				// https://github.com/opral/paraglide-js/blob/main/examples/sveltekit/README.md#usage
+				paths: { relative: false },
+				prerender: { entries: ['*', '/sitemap.xml'] }
+			}),
+
 			SvelteKitPWA({
 				srcDir: './src',
 				mode: 'production',
 				// you don't need to do this if you're using generateSW strategy in your app
-				strategies: 'generateSW', // : "injectManifest",
+				strategies: 'generateSW' /* : "injectManifest", */,
 				// you don't need to do this if you're using generateSW strategy in your app
 				// filename: "prompt-sw.ts",
 				scope: '/',

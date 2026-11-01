@@ -1,6 +1,6 @@
 // src/routes/[slug]/+page.ts
 import { error } from '@sveltejs/kit';
-import { dateTypes } from '$lib/content/dateTypes';
+import { dateTypes } from '#lib/content/dateTypes.ts';
 import type { PageLoad, EntryGenerator } from './$types';
 
 export const prerender = true;

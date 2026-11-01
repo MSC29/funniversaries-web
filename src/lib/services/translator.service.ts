@@ -1,6 +1,6 @@
-import { m } from '$lib/paraglide/messages.js';
-import { getLocale } from '$lib/paraglide/runtime.js';
-import { locales } from '$lib/paraglide/runtime.js';
+import { m } from '#lib/paraglide/messages.js';
+import { getLocale } from '#lib/paraglide/runtime.js';
+import { locales } from '#lib/paraglide/runtime.js';
 
 const reasonMessage = {
 	invalid_request: m.claim_reason_api_invalid_request(),

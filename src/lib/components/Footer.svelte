@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { m } from '$lib/paraglide/messages.js';
+	import { m } from '#lib/paraglide/messages.js';
 	import { resolve } from '$app/paths';
-	import { dateTypes, type DateTypeCalculator } from '$lib/content/dateTypes';
+	import { dateTypes, type DateTypeCalculator } from '#lib/content/dateTypes.ts';
 
 	//default page, default DataType
 	let data: DateTypeCalculator[] = dateTypes;
@@ -17,31 +17,39 @@
 			<h2>Fun Anniversaries</h2>
 			<ul>
 				{#each data as d (d.slug)}
-					<li>
-						<a href={resolve(`/${d.slug}`, {})} style="color:var(--muted)">{d.title}</a>
-					</li>
+					{#if d.slug}
+						<li>
+							<a href={resolve(d.slug)} style="color:var(--muted)">{d.title}</a>
+						</li>
+					{/if}
 				{/each}
 			</ul>
 		</section>
 		<section>
 			<h2>Product</h2>
 			<ul>
-				<li><a href={resolve('/recover', {})} style="color:var(--muted)">{m.nav_recover()}</a></li>
-				<li><a href={resolve('/pricing', {})} style="color:var(--muted)">{m.nav_pricing()}</a></li>
-				<li><a href={resolve('/faq', {})} style="color:var(--muted)">{m.nav_faq()}</a></li>
+				<li><a href={resolve('/recover')} style="color:var(--muted)">{m.nav_recover()}</a></li>
+				<li><a href={resolve('/pricing')} style="color:var(--muted)">{m.nav_pricing()}</a></li>
+				<li><a href={resolve('/faq')} style="color:var(--muted)">{m.nav_faq()}</a></li>
 			</ul>
 		</section>
 		<section>
 			<h2>Legal</h2>
 			<ul>
 				<li>
-					<a href={resolve('/legal/privacy', {})} style="color:var(--muted)">{m.nav_privacy()}</a>
+					<a href={resolve('/legal/[document]', { document: 'privacy' })} style="color:var(--muted)"
+						>{m.nav_privacy()}</a
+					>
 				</li>
 				<li>
-					<a href={resolve('/legal/terms', {})} style="color:var(--muted)">{m.nav_terms()}</a>
+					<a href={resolve('/legal/[document]', { document: 'terms' })} style="color:var(--muted)"
+						>{m.nav_terms()}</a
+					>
 				</li>
 				<li>
-					<a href={resolve('/legal/sales', {})} style="color:var(--muted)">{m.nav_sales()}</a>
+					<a href={resolve('/legal/[document]', { document: 'sales' })} style="color:var(--muted)"
+						>{m.nav_sales()}</a
+					>
 				</li>
 			</ul>
 		</section>

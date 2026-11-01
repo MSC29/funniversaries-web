@@ -1,10 +1,10 @@
 // src/routes/[lang]/legal/[document]/+page.server.ts
 import { error } from '@sveltejs/kit';
-import { getLocale } from '$lib/paraglide/runtime.js';
+import { getLocale } from '#lib/paraglide/runtime.js';
 
 export const prerender = true;
 
-const documents = import.meta.glob('$lib/content/faq/**/faq.html', {
+const documents = import.meta.glob('#lib/content/faq/**/faq.html', {
 	query: '?raw',
 	import: 'default',
 	eager: true

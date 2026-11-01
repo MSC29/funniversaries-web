@@ -1,6 +1,6 @@
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
-import type { Entitlement } from '$lib/responses/session.response';
+import type { Entitlement } from '#lib/responses/session.response.ts';
 
 export class EntitlementsUtils {
 	// Entitlements come newest purchase first, so [0] is what was just claimed.
@@ -10,7 +10,7 @@ export class EntitlementsUtils {
 		const latest = entitlements[0];
 		const query = latest?.scope === 'single-date' ? `?date=${latest.date}` : '';
 		// replaceState: Back must not return to /claim (the token is spent).
-		// invalidateAll: layout loads that ran before the cookie existed must re-run.
-		await goto(resolve(`/${query}`, {}), { replaceState: true, invalidateAll: true });
+		// refreshAll: layout loads that ran before the cookie existed must re-run.
+		await goto(resolve(query), { replaceState: true, refreshAll: true });
 	};
 }

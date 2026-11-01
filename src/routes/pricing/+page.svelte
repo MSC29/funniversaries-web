@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { m } from '$lib/paraglide/messages.js';
-	import { getLocale } from '$lib/paraglide/runtime.js';
+	import { m } from '#lib/paraglide/messages.js';
+	import { getLocale } from '#lib/paraglide/runtime.js';
 
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 
-	import { ApiService } from '$lib/services/api.service';
-	import type { CheckoutPayload } from '$lib/payloads/checkout.payload';
-	import type { CheckoutResponse } from '$lib/responses/checkout.response';
-	import type { UiErrorEntity } from '$lib/entities/error.entity';
-	import UiErrorMessage from '$lib/components/UiErrorMessage.svelte';
+	import { ApiService } from '#lib/services/api.service.ts';
+	import type { CheckoutPayload } from '#lib/payloads/checkout.payload.ts';
+	import type { CheckoutResponse } from '#lib/responses/checkout.response.ts';
+	import type { UiErrorEntity } from '#lib/entities/error.entity.ts';
+	import UiErrorMessage from '#lib/components/UiErrorMessage.svelte';
 
 	let apiService: ApiService;
 	let uiError: UiErrorEntity;
@@ -83,7 +83,7 @@
 			<span>{m.pricing_free_feature_preview()}</span>
 		</div>
 		<a
-			href={resolve('/', {})}
+			href={resolve('/')}
 			style="font-size:15px;font-weight:600;color:var(--ink);background:transparent;border:1px solid #38496E;border-radius:12px;padding:13px 18px;min-height:46px;margin-top:auto;display:flex;align-items:center;justify-content:center;text-decoration:none"
 			>{m.pricing_free_cta()}</a
 		>
@@ -102,7 +102,7 @@
 			<span>{m.pricing_single_feature_reminder()}</span>
 		</div>
 		<a
-			href={resolve('/', {})}
+			href={resolve('/')}
 			style="font-size:15px;font-weight:600;color:var(--ink);background:transparent;border:1px solid #38496E;border-radius:12px;padding:13px 18px;min-height:46px;margin-top:auto;display:flex;align-items:center;justify-content:center;text-decoration:none"
 			>{m.pricing_single_cta()}</a
 		>

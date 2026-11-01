@@ -1,4 +1,4 @@
-import { m } from '$lib/paraglide/messages.js';
+import { m } from '#lib/paraglide/messages.js';
 
 // src/lib/content/dateTypes.ts
 export interface DateTypeCalculator {

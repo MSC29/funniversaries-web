@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { m } from '$lib/paraglide/messages.js';
-	import { formatDate } from '$lib/utils/dates';
+	import { m } from '#lib/paraglide/messages.js';
+	import { formatDate } from '#lib/utils/dates.ts';
 
 	interface Props {
 		dateSelected: Date;
@@ -72,7 +72,7 @@
 
 	<p style="margin:0;font-size:13px;color:var(--muted)">
 		{m.paywall_fine()}
-		<a href={resolve('/pricing', {})} style="color:inherit;text-decoration:underline"
+		<a href={resolve('/pricing')} style="color:inherit;text-decoration:underline"
 			>{m.paywall_pricing_link()}</a
 		>
 	</p>

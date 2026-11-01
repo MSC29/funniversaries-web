@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { m } from '$lib/paraglide/messages.js';
+	import { m } from '#lib/paraglide/messages.js';
 
-	import type { AnniversariesEntity } from '$lib/entities/anniversary.entity';
-	import { formatDate, formatRelativeDays } from '$lib/utils/dates';
+	import type { AnniversariesEntity } from '#lib/entities/anniversary.entity.ts';
+	import { formatDate, formatRelativeDays } from '#lib/utils/dates.ts';
 	import AddToCalendar from './AddToCalendar.svelte';
-	import type { CalendarEvent } from '$lib/services/calendar.service';
-	import { translatorService } from '$lib/services/translator.service';
+	import type { CalendarEvent } from '#lib/services/calendar.service.ts';
+	import { translatorService } from '#lib/services/translator.service.ts';
 
 	interface Props {
 		anniversaries: AnniversariesEntity;
@@ -50,7 +50,7 @@
 	</ol>
 
 	{#if !paid && anniversaries.total - anniversaries.buckets.length > 0}
-		<a class="lock" href={resolve('/pricing', {})}>
+		<a class="lock" href={resolve('/pricing')}>
 			<span aria-hidden="true">🔒</span>
 			<span class="lock-text"
 				>{m.lock_more({ max: anniversaries.total - anniversaries.buckets.length })}</span

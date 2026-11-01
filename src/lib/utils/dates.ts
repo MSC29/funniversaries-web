@@ -1,7 +1,7 @@
 const S = 1000;
 const DAY = 86400 * S;
 
-import { getLocale } from '$lib/paraglide/runtime.js';
+import { getLocale } from '#lib/paraglide/runtime.js';
 
 export function formatRelativeDays(ms: Date, now = Date.now()) {
 	const locale = getLocale();

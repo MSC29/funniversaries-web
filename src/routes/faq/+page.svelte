@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { m } from '$lib/paraglide/messages.js';
-	import { translatorService } from '$lib/services/translator.service';
+	import { m } from '#lib/paraglide/messages.js';
+	import { translatorService } from '#lib/services/translator.service.ts';
 
 	let { data } = $props();
 
