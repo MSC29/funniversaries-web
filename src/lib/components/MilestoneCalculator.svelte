@@ -43,6 +43,7 @@
 	let uiError: UiErrorEntity | undefined = $state(undefined);
 
 	let session = $state<SessionResponse | null>(null);
+	let wasmReady = $state<boolean>(false);
 	let calendarEvents: CalendarEvent[] = $state([]);
 
 	let loading = $state(true);
@@ -178,12 +179,18 @@
 	// });
 
 	onMount(async () => {
-		await lib.default();
-
-		dateService = new DatesService();
 		apiService = new ApiService();
+		dateService = new DatesService();
 
-		session = await apiService.getSession().catch(() => null);
+		// fire both immediately, in parallel
+		// await lib.default();
+		// session = await apiService.getSession().catch(() => null);
+		apiService
+			.getSession()
+			.catch(() => null)
+			.then((s) => (session = s));
+
+		lib.default().then(() => (wasmReady = true));
 
 		// The URL wins; today is only the fallback. (Reading location here is safe: no prerender.)
 		dateSelected =
@@ -233,7 +240,9 @@
 		{#if paid || loading}
 			<NextDates {anniversaries} {dateSelected} {calendarEvents} {loading} />
 		{:else}
-			<PreviewList {anniversaries} {paid} {dateSelected} {calendarEvents} />
+			{#if wasmReady}
+				<PreviewList {anniversaries} {paid} {dateSelected} {calendarEvents} />
+			{/if}
 		{/if}
 	{/if}
 
