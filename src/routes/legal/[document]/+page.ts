@@ -5,7 +5,7 @@ import { translatorService } from '$lib/services/translator.service.js';
 
 export const prerender = true;
 
-const documents = import.meta.glob('/src/content/legal/**/*.html', {
+const documents = import.meta.glob('$lib/content/legal/**/*.html', {
 	query: '?raw',
 	import: 'default',
 	eager: true
@@ -18,7 +18,7 @@ export function load({ params }) {
 		error(404, 'Document not found');
 	}
 
-	const path = `/src/content/legal/${getLocale()}/${params.document}.html`;
+	const path = `/src/lib/content/legal/${getLocale()}/${params.document}.html`;
 	console.log('path legal ' + path);
 	console.log('Available files:', Object.keys(documents));
 	const loadDocument = documents[path];

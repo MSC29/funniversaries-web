@@ -81,3 +81,74 @@ a:hover {
 button {
 	font-family: inherit;
 }
+
+.faq {
+	details:first-of-type {
+		border-top: 1px solid var(--color-border, #ddd);
+	}
+
+	summary {
+		/* padding: 0.9rem 0; */
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	details p,
+	.contact {
+		margin: 0 0 1rem;
+		line-height: 1.6;
+		color: var(--color-muted, #aebbd4);
+	}
+
+	.sample {
+		margin: 0 0 1rem;
+		padding-left: 1.25rem;
+		line-height: 1.6;
+		color: var(--color-muted, #aebbd4);
+	}
+
+	.contact {
+		margin-top: 2.5rem;
+	}
+
+	summary:focus-visible,
+	a:focus-visible {
+		outline: 2px solid var(--color-accent, #1a1a1a);
+		outline-offset: 2px;
+	}
+}
+.legal,
+.faq {
+	h1,
+	h2,
+	h3,
+	summary,
+	h4,
+	h5,
+	h6 {
+		font-family: Arial, sans-serif;
+		font-weight: 700;
+		line-height: 1.25;
+		margin: 1.2em 0 0.5em;
+	}
+
+	h1 {
+		font-size: 2rem;
+	}
+	h2 {
+		font-size: 1.65rem;
+	}
+	h3,
+	summary {
+		font-size: 1.35rem;
+	}
+	h4 {
+		font-size: 1.15rem;
+	}
+	h5 {
+		font-size: 1rem;
+	}
+	h6 {
+		font-size: 0.9rem;
+	}
+}

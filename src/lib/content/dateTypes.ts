@@ -58,15 +58,6 @@ export const dateTypes: DateTypeCalculator[] = [
 		defaultLabel: m.datatype_moving_in_defaultLabel()
 	},
 	{
-		slug: 'new-home',
-		title: m.datatype_new_home_title(),
-		h1: m.datatype_new_home_h1(),
-		subtitle: m.datatype_new_home_subtitle(),
-		label: m.datatype_new_home_label(),
-		description: m.datatype_new_home_description(),
-		defaultLabel: m.datatype_new_home_defaultLabel()
-	},
-	{
 		slug: 'new-parent',
 		title: m.datatype_new_parent_title(),
 		h1: m.datatype_new_parent_h1(),

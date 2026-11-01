@@ -12,49 +12,17 @@
 how to fucking debug sourcemaps?
 rust error handling
 
-2. FAQ page
-3. review wording => show MC
-
-Pricing page
-
-The structure ($0 / $4 per date / $10 for all) is sound, and “no subscription” is a strong selling point. Things I’d change:
-
-Typo and wording: “Add them milestone to your calendar” is broken. Also, free “add to calendar” next to paid “export the whole list” is the clearest difference, so word it that way.
-What the 4 free milestones are: say whether they’re the next 4 or a fixed set, and show a blurred or locked preview of what the other 180+ look like. Right now the paid value is only a number.
-“Any date” is vague: “All your dates” or “Unlimited dates” reads more naturally. A one-line example helps (“partner, kids, parents, work”).
-Currency and VAT: European visitors expect € with tax included. Lemon Squeezy handles VAT as merchant of record, but check how the price displays.
-Print partners line: only keep it if the partners really exist at launch.
-Refund policy: add a short line and link it.
-
-FAQ
-
-Cover at least:
-
-what’s free versus paid
-what unlocking a date means, and what happens if you change the date
-license recovery
-refunds
-how you count days (time zone, leap years, birth time)
-calendar export and reminders
-print partners
-what happens to emails
-who runs the site
-
-a privacy policy (GDPR information duties)
-terms of use / CGV, which French B2C online sales require
-mentions légales
-
-3. create support & legal email addresses?
-4. translate FR EN
-5. log level & turn them all in debug
-6. refund & license removal
-
-7. affiliate?
-8. LS prod
-9. error handling
-10. rate limiting server side
-11. more tests below
-12. cleaner code
+1. review wording => show MC
+2. create support & legal email addresses?
+3. translate FR EN
+4. log level & turn them all in debug
+5. refund & license removal
+6. affiliate?
+7. LS prod
+8. error handling
+9. rate limiting server side
+10. more tests below
+11. cleaner code
 
 improve testing
 
