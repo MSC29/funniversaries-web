@@ -5,28 +5,45 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-	--color-primary-50: #fff5f2;
-	--color-primary-100: #fff1ee;
-	--color-primary-200: #ffe4de;
-	--color-primary-300: #ffd5cc;
-	--color-primary-400: #ffbcad;
-	--color-primary-500: #fe795d;
-	--color-primary-600: #ef562f;
-	--color-primary-700: #eb4f27;
-	--color-primary-800: #cc4522;
-	--color-primary-900: #a5371b;
+	/* Sticker-party palette. Colours, fonts and shapes live here and in lib/styles/party.css;
+	   Tailwind utilities are for layout only (grid, flex, gap, spacing, sizing). */
+	--color-cream: #fff4e0;
+	--color-paper: #ffffff;
+	--color-ink: #1b1530;
+	--color-ink-2: #3a3350;
+	--color-muted: #5b5470;
+	--color-line: #f1e6cf;
+	--color-coral: #ff5a36;
+	--color-coral-ink: #c2361a; /* coral that passes 4.5:1 as text on cream */
+	--color-sun: #ffc93c;
+	--color-blush: #ffd9cf;
 
-	--color-secondary-50: #f0f9ff;
-	--color-secondary-100: #e0f2fe;
-	--color-secondary-200: #bae6fd;
-	--color-secondary-300: #7dd3fc;
-	--color-secondary-400: #38bdf8;
-	--color-secondary-500: #0ea5e9;
-	--color-secondary-600: #0284c7;
-	--color-secondary-700: #0369a1;
-	--color-secondary-800: #075985;
-	--color-secondary-900: #0c4a6e;
+	--font-sans: 'DM Sans', system-ui, sans-serif;
+	--font-display: 'Bricolage Grotesque', 'DM Sans', system-ui, sans-serif;
+
+	--radius-chip: 999px;
+	--radius-control: 0.875rem;
+	--radius-card: 1.5rem;
+	--radius-hero: 2rem;
+
+	--shadow-pop-sm: 3px 3px 0 var(--color-ink);
+	--shadow-pop: 6px 6px 0 var(--color-ink);
+	--shadow-pop-lg: 8px 8px 0 var(--color-ink);
+
+	/* Flowbite components (Datepicker, Dropdown) read primary-*: map it to coral. */
+	--color-primary-50: #fff4f1;
+	--color-primary-100: #ffe6df;
+	--color-primary-200: #ffcdbf;
+	--color-primary-300: #ffab95;
+	--color-primary-400: #ff7f60;
+	--color-primary-500: #ff5a36;
+	--color-primary-600: #e8431f;
+	--color-primary-700: #c2361a;
+	--color-primary-800: #9c2c16;
+	--color-primary-900: #7a2312;
 }
+
+@import './lib/styles/party.css';
 
 @source '../node_modules/flowbite-svelte/dist';
 @source '../node_modules/flowbite-svelte-icons/dist';
@@ -45,39 +62,23 @@ hack for browser support */
 	max-width: 800px;
 } */
 
-:root {
-	--bg: #0e1626;
-	--surface: #141f36;
-	--surface-2: #16223a;
-	--line: #1f2e4c;
-	--line-2: #2a3a5c;
-	--ink: #f2f5fa;
-	--ink-2: #c8d3e8;
-	--muted: #aebbd4;
-	--muted-2: #93a1bc;
-	--muted-3: #7a89a8;
-	--accent: #ff5a2b;
-	--accent-hover: #ff7a4d;
-	--font: Outfit, system-ui, sans-serif;
-}
-
 html,
 body {
 	margin: 0;
-	background: var(--bg);
+	background: var(--color-cream);
 }
 body {
-	font-family: var(--font);
-	color: var(--ink);
+	font-family: var(--font-sans);
+	color: var(--color-ink);
 	-webkit-font-smoothing: antialiased;
 }
 a {
-	color: var(--accent-hover);
-	text-decoration: none;
+	color: var(--color-ink);
+	text-decoration-thickness: 2px;
+	text-underline-offset: 3px;
 }
 a:hover {
-	color: #ff9a75;
-	text-decoration: underline;
+	color: var(--color-coral-ink);
 }
 button {
 	font-family: inherit;
@@ -85,7 +86,7 @@ button {
 
 .faq {
 	details:first-of-type {
-		border-top: 1px solid var(--color-border, #ddd);
+		border-top: 1px solid var(--color-ink);
 	}
 
 	summary {
@@ -98,14 +99,14 @@ button {
 	.contact {
 		margin: 0 0 1rem;
 		line-height: 1.6;
-		color: var(--color-muted, #aebbd4);
+		color: var(--color-ink-2);
 	}
 
 	.sample {
 		margin: 0 0 1rem;
 		padding-left: 1.25rem;
 		line-height: 1.6;
-		color: var(--color-muted, #aebbd4);
+		color: var(--color-ink-2);
 	}
 
 	.contact {
@@ -114,7 +115,7 @@ button {
 
 	summary:focus-visible,
 	a:focus-visible {
-		outline: 2px solid var(--color-accent, #1a1a1a);
+		outline: 2px solid var(--color-ink);
 		outline-offset: 2px;
 	}
 }
@@ -127,7 +128,7 @@ button {
 	h4,
 	h5,
 	h6 {
-		font-family: Arial, sans-serif;
+		font-family: var(--font-display);
 		font-weight: 700;
 		line-height: 1.25;
 		margin: 1.2em 0 0.5em;

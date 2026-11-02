@@ -114,7 +114,6 @@
 					aria-invalid={status === 'error' ? 'true' : undefined}
 					aria-describedby={status === 'error' ? 'recover-error' : undefined}
 					class="pl-8"
-					style="background-color:var(--color-gray-800);"
 				></Input>
 			</div>
 
@@ -122,11 +121,7 @@
 				<p id="recover-error" class="error" role="alert">{errorMessage}</p>
 			{/if}
 
-			<button
-				type="submit"
-				style="margin-top:auto;font-size:15px;font-weight:600;color:inherit;background:transparent;border:1px solid var(--line);border-radius:12px;padding:13px 20px;min-height:46px;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor: pointer;"
-				disabled={!canSubmit}
-			>
+			<button type="submit" disabled={!canSubmit}>
 				{status === 'sending' ? m.recovery_sending() : m.recovery_submit()}
 			</button>
 		</form>

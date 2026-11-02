@@ -91,14 +91,12 @@
 	<!-- <p role="status">{m.offline_banner()}</p> -->
 {/if}
 
-<div
-	style="max-width:1120px;min-height:100vh;background:var(--bg);padding:20px 20px 0;box-sizing:border-box;display:flex;flex-direction:column;margin:0 auto;"
->
+<div class="fv-confetti mx-auto flex min-h-screen max-w-6xl flex-col px-4 pt-5 sm:px-6">
 	<Header />
-	<div style="gap:48px; flex:1">
+	<main class="flex flex-1 flex-col gap-12">
 		{#if children}
 			{@render children()}
 		{/if}
-	</div>
+	</main>
 	<Footer />
 </div>

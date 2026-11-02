@@ -57,8 +57,7 @@
     },
     "type": "module",
     "dependencies": {
-        "@msc29/funniversaries-wasm": "^0.0.7",
-        "date-picker-svelte": "^2.12.0"
+        "@msc29/funniversaries-wasm": "^0.0.7"
     },
     "imports": {
         "#lib": "./src/lib/index.ts",

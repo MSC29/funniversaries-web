@@ -7,10 +7,8 @@
 	let data: DateTypeCalculator[] = dateTypes;
 </script>
 
-<footer
-	style="border-top:1px solid #1E2C48;padding:22px 0 30px;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:14px;color:var(--muted-3)"
->
-	<span>Funniversaries</span>
+<footer class="fv-divider mt-16 flex flex-wrap justify-between gap-4 pt-6 pb-10 text-sm">
+	<span class="fv-display text-lg">Funniversaries</span>
 
 	<nav class="footer-columns" aria-label="Footer">
 		<section>
@@ -19,7 +17,7 @@
 				{#each data as d (d.slug)}
 					{#if d.slug}
 						<li>
-							<a href={resolve(d.slug)} style="color:var(--muted)">{d.title}</a>
+							<a href={resolve(d.slug)}>{d.title}</a>
 						</li>
 					{/if}
 				{/each}
@@ -28,28 +26,22 @@
 		<section>
 			<h2>Product</h2>
 			<ul>
-				<li><a href={resolve('/recover')} style="color:var(--muted)">{m.nav_recover()}</a></li>
-				<li><a href={resolve('/pricing')} style="color:var(--muted)">{m.nav_pricing()}</a></li>
-				<li><a href={resolve('/faq')} style="color:var(--muted)">{m.nav_faq()}</a></li>
+				<li><a href={resolve('/recover')}>{m.nav_recover()}</a></li>
+				<li><a href={resolve('/pricing')}>{m.nav_pricing()}</a></li>
+				<li><a href={resolve('/faq')}>{m.nav_faq()}</a></li>
 			</ul>
 		</section>
 		<section>
 			<h2>Legal</h2>
 			<ul>
 				<li>
-					<a href={resolve('/legal/[document]', { document: 'privacy' })} style="color:var(--muted)"
-						>{m.nav_privacy()}</a
-					>
+					<a href={resolve('/legal/[document]', { document: 'privacy' })}>{m.nav_privacy()}</a>
 				</li>
 				<li>
-					<a href={resolve('/legal/[document]', { document: 'terms' })} style="color:var(--muted)"
-						>{m.nav_terms()}</a
-					>
+					<a href={resolve('/legal/[document]', { document: 'terms' })}>{m.nav_terms()}</a>
 				</li>
 				<li>
-					<a href={resolve('/legal/[document]', { document: 'sales' })} style="color:var(--muted)"
-						>{m.nav_sales()}</a
-					>
+					<a href={resolve('/legal/[document]', { document: 'sales' })}>{m.nav_sales()}</a>
 				</li>
 			</ul>
 		</section>
@@ -71,6 +63,8 @@
 
 	.footer-columns h2 {
 		margin: 0 0 0.75rem;
+		font-family: var(--font-display);
+		font-weight: 800;
 		font-size: 1rem;
 	}
 

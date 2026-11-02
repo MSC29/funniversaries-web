@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { m } from '#lib/paraglide/messages.js';
-	import { formatDate } from '#lib/utils/dates.ts';
+	import { DatesService } from '#lib/services/dates.service.ts';
+	import { celebrants } from '#lib/stores/celebrants.svelte.ts';
 
 	interface Props {
 		dateSelected: Date;
@@ -9,6 +10,14 @@
 	}
 
 	let { dateSelected, postPricing }: Props = $props();
+
+	const day = $derived(new DatesService().getDateString(dateSelected));
+	// "Just Léa & Tom" when names were typed, else the generic plan name
+	const singleName = $derived(
+		celebrants.get(day).trim()
+			? m.plan_date_name_who({ who: celebrants.get(day).trim() })
+			: m.plan_date_name()
+	);
 
 	const postPricingSingleDate: () => Promise<void> = async () => {
 		await postPricing('single-date');
@@ -18,62 +27,37 @@
 	};
 </script>
 
-<section
-	style="background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px 24px;display:flex;flex-direction:column;gap:18px"
-	class="mt-6"
->
-	<div style="display:flex;flex-direction:column;gap:6px;min-width:0">
-		<div style="font-size:20px;font-weight:600;letter-spacing:-0.02em">
-			{m.paywall_title({ date: formatDate(dateSelected) })}
-		</div>
-
-		<p style="margin:0;font-size:15px;line-height:1.5;color:var(--muted);">
-			{m.paywall_sub({ max: '200' })}
-		</p>
+<section class="fv-card fv-card--ink fv-card--hero mt-10 flex flex-col gap-6 p-8 sm:p-10">
+	<div class="flex flex-col gap-2">
+		<h2 class="fv-display m-0 text-[clamp(2rem,4vw,2.5rem)]">{m.paywall_party_title()}</h2>
+		<p class="m-0 text-lg leading-relaxed opacity-90">{m.paywall_sub({ max: '200' })}</p>
 	</div>
 
-	<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">
-		<!-- This date -->
-		<div
-			style="background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:14px"
-		>
-			<div style="display:flex;flex-direction:column;gap:4px">
-				<div style="font-size:15px;font-weight:600">{m.plan_date_name()}</div>
-				<div style="font-size:32px;font-weight:600;letter-spacing:-0.03em;line-height:1.1">$4</div>
-				<p style="margin:0;font-size:14px;line-height:1.5;color:var(--muted)">
-					{m.plan_date_blurb()}
-				</p>
-			</div>
-			<button
-				onclick={postPricingSingleDate}
-				style="margin-top:auto;font-size:15px;font-weight:600;color:inherit;background:transparent;border:1px solid var(--line);border-radius:12px;padding:13px 20px;min-height:46px;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor: pointer;"
-				>{m.plan_date_cta({ price: '4$' })}</button
+	<div class="grid gap-5 sm:grid-cols-2">
+		<div class="fv-card flex flex-col gap-2.5 p-7">
+			<span class="font-bold">{singleName}</span>
+			<span class="fv-display text-6xl">$4</span>
+			<p class="fv-soft m-0 leading-snug">{m.plan_date_blurb()}</p>
+			<button class="fv-btn mt-auto" onclick={postPricingSingleDate}
+				>{m.plan_date_cta_short()}</button
 			>
 		</div>
 
-		<!-- All dates -->
-		<div
-			style="background:var(--bg);border:1px solid var(--accent);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:14px"
-		>
-			<div style="display:flex;flex-direction:column;gap:4px">
-				<div style="font-size:15px;font-weight:600">{m.plan_all_name()}</div>
-				<div style="font-size:32px;font-weight:600;letter-spacing:-0.03em;line-height:1.1">$10</div>
-				<p style="margin:0;font-size:14px;line-height:1.5;color:var(--muted)">
-					{m.plan_all_blurb()}
-				</p>
-			</div>
-			<button
-				onclick={postPricingAllDates}
-				style="margin-top:auto;font-size:15px;font-weight:600;color:var(--bg);background:var(--accent);border-radius:12px;padding:13px 20px;min-height:46px;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor: pointer;"
-				>{m.plan_all_cta({ price: '10$' })}</button
+		<div class="fv-card fv-card--sun relative flex flex-col gap-2.5 p-7">
+			<span class="fv-pill fv-pill--coral absolute -top-4 right-5 rotate-3 normal-case"
+				>{m.plan_all_badge()}</span
+			>
+			<span class="font-bold">{m.plan_all_name_love()}</span>
+			<span class="fv-display text-6xl">$10</span>
+			<p class="m-0 leading-snug">{m.plan_all_blurb()}</p>
+			<button class="fv-btn fv-btn--ink mt-auto" onclick={postPricingAllDates}
+				>{m.plan_all_cta_short()}</button
 			>
 		</div>
 	</div>
 
-	<p style="margin:0;font-size:13px;color:var(--muted)">
+	<p class="m-0 text-sm opacity-90">
 		{m.paywall_fine()}
-		<a href={resolve('/pricing')} style="color:inherit;text-decoration:underline"
-			>{m.paywall_pricing_link()}</a
-		>
+		<a href={resolve('/pricing')} class="text-inherit underline">{m.paywall_pricing_link()}</a>
 	</p>
 </section>

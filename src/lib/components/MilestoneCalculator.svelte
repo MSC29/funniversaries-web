@@ -23,8 +23,7 @@
 	import type { SessionResponse } from '#lib/responses/session.response.ts';
 	import Paywall from './Paywall.svelte';
 	import type { AnniversariesEntity } from '#lib/entities/anniversary.entity.ts';
-	import PreviewList from './PreviewList.svelte';
-	import NextDates from './NextDates.svelte';
+	import ResultsTimeline from './results/ResultsTimeline.svelte';
 	import { eventUid, fromLocalDate, type CalendarEvent } from '#lib/services/calendar.service.ts';
 	import { formatDate } from '#lib/utils/dates.ts';
 
@@ -229,21 +228,11 @@
 	};
 </script>
 
-<section
-	style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px;align-items:center"
->
-	<MilestoneLabel {dataType} bind:dateReactive={dateSelected} onchange={onDateChanged} />
-</section>
+<MilestoneLabel {dataType} bind:dateReactive={dateSelected} onchange={onDateChanged} />
 
 <section>
-	{#if anniversaries && dateSelected}
-		{#if paid || loading}
-			<NextDates {anniversaries} {dateSelected} {calendarEvents} {loading} />
-		{:else}
-			{#if wasmReady}
-				<PreviewList {anniversaries} {paid} {dateSelected} {calendarEvents} />
-			{/if}
-		{/if}
+	{#if anniversaries && dateSelected && (paid || loading || wasmReady)}
+		<ResultsTimeline {anniversaries} {dateSelected} {calendarEvents} {loading} {paid} />
 	{/if}
 
 	{#if !paid && dateSelected}
