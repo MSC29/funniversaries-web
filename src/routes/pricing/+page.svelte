@@ -33,6 +33,7 @@
 	onMount(async () => {
 		apiService = new ApiService();
 	});
+	// "Just Léa & Tom" when names were typed, else the generic plan name
 
 	const postPricing: () => Promise<void> = async () => {
 		try {
@@ -71,69 +72,37 @@
 	<UiErrorMessage {uiError} />
 {/if}
 
-<section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
-	<div
-		style="background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px"
-	>
-		<div style="font-size:18px;font-weight:600">{m.pricing_free_name()}</div>
-		<div style="font-size:34px;font-weight:700;letter-spacing:-0.03em">{free}</div>
-		<div
-			style="display:flex;flex-direction:column;gap:9px;font-size:15px;color:var(--ink-2);line-height:1.45"
-		>
-			<span>{m.pricing_free_feature_preview()}</span>
+<section>
+	<div class="grid gap-5 sm:grid-cols-3">
+		<div class="fv-card flex flex-col gap-2.5 p-7">
+			<span class="font-bold">{m.pricing_free_name()}</span>
+			<span class="fv-display text-6xl">{free}</span>
+			<p class="fv-soft m-0 leading-snug">{m.pricing_free_feature_preview()}</p>
+			<a class="fv-btn mt-auto" href={resolve('/')}>{m.pricing_free_cta()}</a>
 		</div>
-		<a
-			href={resolve('/')}
-			style="font-size:15px;font-weight:600;color:var(--ink);background:transparent;border:1px solid #38496E;border-radius:12px;padding:13px 18px;min-height:46px;margin-top:auto;display:flex;align-items:center;justify-content:center;text-decoration:none"
-			>{m.pricing_free_cta()}</a
-		>
-	</div>
-
-	<div
-		style="background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px"
-	>
-		<div style="font-size:18px;font-weight:600">{m.pricing_single_name()}</div>
-		<div style="font-size:34px;font-weight:700;letter-spacing:-0.03em">{single}</div>
-		<div
-			style="display:flex;flex-direction:column;gap:9px;font-size:15px;color:var(--ink-2);line-height:1.45"
-		>
-			<span>{m.pricing_single_feature_all()}</span>
-			<span>{m.pricing_single_feature_export()}</span>
-			<span>{m.pricing_single_feature_reminder()}</span>
+		<div class="fv-card flex flex-col gap-2.5 p-7">
+			<span class="font-bold">{m.pricing_single_name()}</span>
+			<span class="fv-display text-6xl">{single}</span>
+			<p class="fv-soft m-0 leading-snug">{m.plan_date_blurb()}</p>
+			<a class="fv-btn mt-auto" href={resolve('/')}>{m.pricing_single_cta()}</a>
 		</div>
-		<a
-			href={resolve('/')}
-			style="font-size:15px;font-weight:600;color:var(--ink);background:transparent;border:1px solid #38496E;border-radius:12px;padding:13px 18px;min-height:46px;margin-top:auto;display:flex;align-items:center;justify-content:center;text-decoration:none"
-			>{m.pricing_single_cta()}</a
-		>
-	</div>
 
-	<div
-		style="background:linear-gradient(160deg,#1B2A47,#131F37);border:1px solid var(--accent);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px"
-	>
-		<div style="display:flex;align-items:center;gap:10px">
-			<span style="font-size:18px;font-weight:600">{m.pricing_all_name()}</span>
-			<span
-				style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--bg);background:var(--accent);border-radius:999px;padding:4px 9px"
-				>{m.pricing_all_badge()}</span
+		<div class="fv-card fv-card--sun relative flex flex-col gap-2.5 p-7">
+			<span class="fv-pill fv-pill--coral absolute -top-4 right-5 rotate-3 normal-case"
+				>{m.plan_all_badge()}</span
+			>
+			<span class="font-bold">{m.plan_all_name_love()}</span>
+			<span class="fv-display text-6xl">{all}</span>
+			<p class="m-0 leading-snug">{m.plan_all_blurb()}</p>
+			<button class="fv-btn fv-btn--ink mt-auto" onclick={postPricing}>{m.pricing_all_cta()}</button
 			>
 		</div>
-		<div style="font-size:34px;font-weight:700;letter-spacing:-0.03em">{all}</div>
-		<div
-			style="display:flex;flex-direction:column;gap:9px;font-size:15px;color:#E3E9F5;line-height:1.45"
-		>
-			<span>{m.pricing_all_feature()}</span>
-			<span>{m.pricing_all_feature_export()}</span>
-			<span>{m.pricing_all_feature_reminder()}</span>
-		</div>
-		<button
-			onclick={postPricing}
-			style="font-size:15px;font-weight:600;color:var(--bg);background:var(--accent);border:0;border-radius:12px;padding:13px 18px;cursor:pointer;min-height:46px;margin-top:auto"
-			>{m.pricing_all_cta({ price: all })}</button
-		>
 	</div>
-</section>
 
-<p style="margin:0;font-size:14px;color:var(--muted-3)">
-	{m.pricing_print_note()}
-</p>
+	<p class="mt-12 text-sm opacity-90">
+		{m.paywall_fine()}
+	</p>
+	<p class="mt-5 text-sm opacity-90">
+		{m.pricing_print_note()}
+	</p>
+</section>

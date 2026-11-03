@@ -48,7 +48,7 @@
 	</nav>
 
 	<p class="copyright">
-		© {new Date().getFullYear()} 1100 Labs
+		© {new Date().getFullYear()} 1100Labs
 	</p>
 </footer>
 
