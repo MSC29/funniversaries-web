@@ -76,11 +76,9 @@ export class DatesService {
 
 	getDateString = (now: Date): string => {
 		this.applyLocale(now);
-
 		const year = now.getFullYear();
 		const month = String(now.getMonth() + 1).padStart(2, '0');
 		const day = String(now.getDate()).padStart(2, '0');
-
 		return [year, month, day].join('-');
 	};
 
@@ -108,11 +106,14 @@ export class DatesService {
 	parseDay = (value: string | null): Date | undefined => {
 		const match = value?.match(/^(\d{4})-(\d{2})-(\d{2})$/);
 		if (!match) return undefined;
+
 		const [year, month, day] = match.slice(1).map(Number);
+		const utcYMD = new Date(Date.UTC(year, month - 1, day));
+
 		// Built from local parts: new Date('2026-10-15') is UTC midnight, which is the 14th west of UTC.
-		const date = new Date(year, month - 1, day);
+		// const date = new Date(year, month - 1, day);
 		const isReal =
-			date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
-		return isReal ? date : undefined;
+			utcYMD.getFullYear() === year && utcYMD.getMonth() === month - 1 && utcYMD.getDate() === day;
+		return isReal ? utcYMD : undefined;
 	};
 }

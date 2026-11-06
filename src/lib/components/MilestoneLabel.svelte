@@ -47,8 +47,12 @@
 	}
 
 	function pick(d: Date) {
-		dateReactive = d;
-		onchange?.(d);
+		// Rebuild the date as UTC midnight using the *local* Y/M/D the user clicked
+		const utcYMD = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+		// use `utc` for state, API calls, and formatDate
+
+		dateReactive = utcYMD;
+		onchange?.(utcYMD);
 	}
 
 	const examples: AnniversaryExample[] = [
@@ -113,7 +117,6 @@
 					<label for="date-picker" class="fv-label">{dataType.label}</label>
 					<Datepicker
 						inputProps={{ id: 'date-picker', class: 'fv-input' }}
-						bind:value={dateReactive}
 						onselect={(d) => pick(d as Date)}
 						dateFormat={{ year: 'numeric', month: 'short', day: '2-digit' }}
 						placeholder={dataType.label}

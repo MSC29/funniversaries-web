@@ -12,18 +12,18 @@
 how to fucking debug sourcemaps?
 rust error handling
 
-0. bug Your next milestones since April 6, 2024
-1. rewording & restyling
-2. create support & legal email addresses?
-3. translate FR EN
-4. log level & turn them all in debug
-5. refund & license removal
-6. affiliate?
-7. LS prod
-8. error handling
-9. rate limiting server side
-10. more tests below
-11. cleaner code
+3. rewording & restyling => MC
+4. translate FR EN
+5. create support & legal email addresses?
+6. refund & license removal
+7. affiliate?
+8. LS prod
+9. error handling
+10. rust error test in CI
+11. more tests below
+12. cleaner code
+13. rate limiting server side
+14. compile smaller exec? more optimization? especially wasm FE
 
 improve testing
 

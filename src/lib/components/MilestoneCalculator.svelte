@@ -54,6 +54,20 @@
 
 	let { dataType }: Props = $props();
 
+	// module-level or component-level: one shared init promise
+	const wasmInit = lib.default().then(() => {
+		wasmReady = true;
+	});
+
+	let sessionPromise: Promise<SessionResponse | null> | undefined;
+
+	function ensureSession(force = false) {
+		if (!sessionPromise || force) {
+			sessionPromise = apiService.getSession().catch(() => null);
+		}
+		return sessionPromise;
+	}
+
 	// Plain async function: all the awaiting lives here, outside the effect.
 	const fetchData = async (): Promise<AnniversariesResponse> => {
 		if (!dateSelected) {
@@ -63,6 +77,9 @@
 			};
 			throw uiError;
 		}
+
+		await wasmInit;
+		session = await ensureSession();
 
 		let generatedAnniversaries: AnniversariesResponse;
 		let entitled = false;
@@ -134,6 +151,12 @@
 			throw uiError;
 		}
 
+		console.log('date selected changed');
+		console.log(dateSelected);
+		console.log(dateSelected.toISOString()); // 2026-11-05T23:00:00.000Z → UTC is the previous day
+		console.log(dateSelected.getTimezoneOffset()); // -60 in winter, -120 in summer (CET/CEST)
+		console.log(dateSelected.getHours()); // 0 → created at local midnight
+
 		loading = true;
 		const id = ++latest;
 		// $effect(() => {
@@ -161,6 +184,7 @@
 				}
 			})
 			.catch((e) => {
+				console.error(e);
 				if (!stale) {
 					uiError = {
 						title: 'error fetching',
@@ -181,16 +205,6 @@
 		apiService = new ApiService();
 		dateService = new DatesService();
 
-		// fire both immediately, in parallel
-		// await lib.default();
-		// session = await apiService.getSession().catch(() => null);
-		apiService
-			.getSession()
-			.catch(() => null)
-			.then((s) => (session = s));
-
-		lib.default().then(() => (wasmReady = true));
-
 		// The URL wins; today is only the fallback. (Reading location here is safe: no prerender.)
 		dateSelected =
 			dateService.parseDay(new URLSearchParams(location.search).get('date')) ?? undefined;
@@ -198,11 +212,6 @@
 		if (dateSelected) {
 			dateReady = true;
 			onDateChanged();
-		}
-
-		if (page.url.searchParams.get('date') !== null) {
-			const dateString = page.url.searchParams.get('date')!;
-			dateSelected = new Date(dateString);
 		}
 	});
 
